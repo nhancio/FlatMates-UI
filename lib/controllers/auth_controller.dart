@@ -6,7 +6,7 @@ class AuthController extends GetxController {
     var isLoading = false.obs;
   var isError = false.obs;
   String phone= "";
-
+// comment
    void submitUserInformation({
     required String phone,
     required String name,
