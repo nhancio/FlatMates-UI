@@ -63,6 +63,7 @@ class AuthController extends GetxController {
             Get.to(() => BottomNavigation());
       } else {
         Get.snackbar('Error', 'User does not exist');
+        Get.to(()=> UserInformationScreen());
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to verify user');
