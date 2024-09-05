@@ -4,7 +4,6 @@ import 'package:flatmates/widgets/bottomBar.dart';
 import 'package:get/get.dart';
 
 class RoomController extends GetxController {
-
   RoomController();
 
   var isLoading = true.obs;
@@ -22,13 +21,13 @@ class RoomController extends GetxController {
       var rooms = await RoomRepo().fetchRooms();
       roomList.value = rooms;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load rooms');
+      // Get.snackbar('Error', 'Failed to load rooms');
     } finally {
       isLoading(false);
     }
   }
 
-   Future<void> addRoomDetails({
+  Future<void> addRoomDetails({
     required String location,
     required int rent,
     required String roomType,
@@ -37,14 +36,18 @@ class RoomController extends GetxController {
   }) async {
     isLoading(true);
     try {
-      await RoomRepo().addRoomDetails(buildingType: buildingType,location: location,rent: rent,roomType: roomType);
+      await RoomRepo().addRoomDetails(
+          buildingType: buildingType,
+          location: location,
+          rent: rent,
+          roomType: roomType);
       Get.snackbar('Success', 'Room details added successfully');
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
       isLoading(false);
       fetchRooms();
-            Get.to(() => BottomNavigation());
+      Get.to(() => BottomNavigation());
     }
   }
 }

@@ -1,13 +1,12 @@
+import 'package:flatmates/controllers/bottom_bar_controller.dart';
 import 'package:flatmates/controllers/flat_controller.dart';
 import 'package:flatmates/controllers/room_controller.dart';
 import 'package:flatmates/screen/chat_screen/chat_screen.dart';
 import 'package:flatmates/screen/details_screen/flate_mate_details.dart';
 import 'package:flatmates/screen/details_screen/room_details.dart';
-import 'package:flatmates/screen/speech_text_screen.dart';
-import 'package:flatmates/widgets/bottomBar.dart';
-import 'package:flutter/material.dart';
-import 'package:flatmates/theme/app_text_styles.dart';
 import 'package:flatmates/theme/app_colors.dart';
+import 'package:flatmates/theme/app_text_styles.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FlatmateRoomScreen extends StatefulWidget {
@@ -15,12 +14,13 @@ class FlatmateRoomScreen extends StatefulWidget {
   _FlatmateRoomScreenState createState() => _FlatmateRoomScreenState();
 }
 
-class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTickerProviderStateMixin {
+class _FlatmateRoomScreenState extends State<FlatmateRoomScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late bool isDarkMode;
-    final FlatController flatController = Get.put(FlatController());
-    final RoomController roomController = Get.put(RoomController());
-
+  final FlatController flatController = Get.put(FlatController());
+  final RoomController roomController = Get.put(RoomController());
+  final BottomNavController bottomController = Get.put(BottomNavController());
 
   @override
   void initState() {
@@ -40,15 +40,16 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
     super.dispose();
   }
 
-
   Future<void> _refreshFlatmateList() async {
     // Call the function in the controller to refresh the data
-    flatController.fetchFlatmates(); // Assuming you have a method for fetching the flatmates
+    flatController
+        .fetchFlatmates(); // Assuming you have a method for fetching the flatmates
   }
 
   Future<void> _refreshRoomList() async {
     // Call the function in the controller to refresh the data
-    roomController.fetchRooms(); // Assuming you have a method for fetching the flatmates
+    roomController
+        .fetchRooms(); // Assuming you have a method for fetching the flatmates
   }
 
   @override
@@ -56,9 +57,10 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDarkMode ? Colors.white : Colors.black),
+          icon: Icon(Icons.arrow_back,
+              color: isDarkMode ? Colors.white : Colors.black),
           onPressed: () {
-            Get.to(() => BottomNavigation());
+            bottomController.changeTabIndex(0);
           },
         ),
         title: Text('Your Matches', style: AppTextStyles.titleStyle(context)),
@@ -79,7 +81,7 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
         controller: _tabController,
         children: [
           // Flatmate Tab
-        Obx(() {
+          Obx(() {
             if (flatController.isLoading.value) {
               return const Center(child: CircularProgressIndicator());
             } else {
@@ -104,7 +106,7 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
               return const Center(child: CircularProgressIndicator());
             } else {
               return RefreshIndicator(
-                                onRefresh: _refreshRoomList,
+                onRefresh: _refreshRoomList,
                 child: ListView.builder(
                   itemCount: roomController.roomList.length,
                   itemBuilder: (context, index) {
@@ -112,8 +114,8 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
                     return _buildRoomTile(
                       context,
                       sharing: room.roomType,
-                      rent:  room.rent.toString(),
-                     location: room.location,
+                      rent: room.rent.toString(),
+                      location: room.location,
                       profession: room.buildingType,
                     );
                   },
@@ -126,8 +128,12 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
     );
   }
 
-  Widget _buildMatchTile(BuildContext context, {String? name, int? age,
-      String? profession, String? location, String? imagePath}) {
+  Widget _buildMatchTile(BuildContext context,
+      {String? name,
+      int? age,
+      String? profession,
+      String? location,
+      String? imagePath}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -138,13 +144,16 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
         onTap: () {
           Get.to(() => FlateMateDetails());
         },
-        borderRadius: BorderRadius.circular(15), // This will match the Card's border radius
+        borderRadius: BorderRadius.circular(
+            15), // This will match the Card's border radius
         child: ListTile(
           contentPadding: const EdgeInsets.all(15),
-          leading: imagePath!=null ? CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage(imagePath),
-          ) : const SizedBox(),
+          leading: imagePath != null
+              ? CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(imagePath),
+                )
+              : const SizedBox(),
           title: Text(
             'Name: $name',
             style: AppTextStyles.bodyStyle(context).copyWith(
@@ -162,7 +171,8 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
             ],
           ),
           trailing: IconButton(
-            icon: Icon(Icons.chat_bubble_outline, color: isDarkMode ? Colors.purpleAccent : Colors.purple),
+            icon: Icon(Icons.chat_bubble_outline,
+                color: isDarkMode ? Colors.purpleAccent : Colors.purple),
             onPressed: () {
               Get.to(() => ChatScreen(chatName: "$name"));
             },
@@ -172,8 +182,12 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
     );
   }
 
-  Widget _buildRoomTile(BuildContext context,{ String? sharing, String ?rent,
-      String? profession, String? location, String? imagePath}) {
+  Widget _buildRoomTile(BuildContext context,
+      {String? sharing,
+      String? rent,
+      String? profession,
+      String? location,
+      String? imagePath}) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -184,13 +198,16 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
         onTap: () {
           Get.to(() => RoomProfileScreen());
         },
-        borderRadius: BorderRadius.circular(15), // This will match the Card's border radius
+        borderRadius: BorderRadius.circular(
+            15), // This will match the Card's border radius
         child: ListTile(
           contentPadding: const EdgeInsets.all(15),
-          leading: imagePath != null ? CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage(imagePath),
-          ) : const SizedBox(),
+          leading: imagePath != null
+              ? CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(imagePath),
+                )
+              : const SizedBox(),
           title: Text(
             'Sharing: $sharing',
             style: AppTextStyles.bodyStyle(context).copyWith(
@@ -208,7 +225,8 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen> with SingleTick
             ],
           ),
           trailing: IconButton(
-            icon: Icon(Icons.chat_bubble_outline, color: isDarkMode ? Colors.purpleAccent : Colors.purple),
+            icon: Icon(Icons.chat_bubble_outline,
+                color: isDarkMode ? Colors.purpleAccent : Colors.purple),
             onPressed: () {
               Get.to(() => ChatScreen(chatName: "$sharing"));
             },
