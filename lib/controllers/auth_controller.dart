@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/repo/auth_repo.dart';
 import 'package:flatmates/screen/user_info_screen.dart';
 import 'package:flatmates/widgets/bottomBar.dart';
@@ -73,3 +74,4 @@ class AuthController extends GetxController {
     }
   }
 }
+*/

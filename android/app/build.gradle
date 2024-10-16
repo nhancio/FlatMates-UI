@@ -46,9 +46,9 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            classpath 'com.android.tools.build:gradle:7.3.0' // Or another compatible version for your Java and Gradle version
+            // Add Flutter Gradle plugin
+            classpath "dev.flutter:flutter-gradle-plugin"
         }
     }
 }

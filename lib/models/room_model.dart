@@ -1,3 +1,4 @@
+/*
 class RoomModel {
   int? id;
   String? location;
@@ -50,3 +51,4 @@ class RoomModel {
     );
   }
 }
+*/

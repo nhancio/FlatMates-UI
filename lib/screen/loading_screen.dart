@@ -31,7 +31,7 @@ class LoadingScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/img.png', height: 300), // Replace with your image
+            Image.asset('assets/images/icon.png', height: 300), // Replace with your image
             SizedBox(height: 20),
             CustomButton(
               text: 'Process',

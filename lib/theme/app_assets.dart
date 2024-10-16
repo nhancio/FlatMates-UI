@@ -1,10 +1,11 @@
+/*
 class AppAssets {
   // Flag images
   static const String indiaFlag = 'assets/images/india.png';
 
   // Placeholder images
-  static const String login = 'assets/images/home.png';
-  static const String home = 'assets/images/home.png';
+
+  static const String home = 'assets/images/first_icon.png';
   static const String roomPlaceholder = 'assets/images/room_placeholder.png';
 
   // Icons
@@ -20,3 +21,4 @@ class AppAssets {
 
 // Add more asset paths as needed
 }
+*/

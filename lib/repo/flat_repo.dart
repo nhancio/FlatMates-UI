@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/models/flatmate_model.dart';
 import 'package:flatmates/network/network_service.dart';
 
@@ -21,3 +22,4 @@ class FlatRepo {
     }
   }
 }
+*/

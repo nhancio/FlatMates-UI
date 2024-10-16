@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/models/flatmate_model.dart';
 import 'package:flatmates/repo/flat_repo.dart';
 import 'package:get/get.dart';
@@ -27,3 +28,4 @@ class FlatController extends GetxController {
     }
   }
 }
+*/

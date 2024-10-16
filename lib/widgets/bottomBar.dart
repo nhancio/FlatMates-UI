@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/controllers/bottom_bar_controller.dart';
 import 'package:flatmates/screen/chat_screen/chat.dart';
 import 'package:flatmates/screen/chat_screen/home_chat_screen.dart';
@@ -88,3 +89,4 @@ class _BottomNavigationState extends State<BottomNavigation> {
     ];
   }
 }
+*/

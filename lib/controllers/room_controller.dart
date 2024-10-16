@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/models/room_model.dart';
 import 'package:flatmates/repo/room_repo.dart';
 import 'package:flatmates/widgets/bottomBar.dart';
@@ -51,3 +52,4 @@ class RoomController extends GetxController {
     }
   }
 }
+*/

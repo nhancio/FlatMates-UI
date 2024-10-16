@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/models/room_model.dart';
 import 'package:flatmates/network/network_service.dart';
 
@@ -47,3 +48,4 @@ class RoomRepo {
     }
   }
 }
+*/

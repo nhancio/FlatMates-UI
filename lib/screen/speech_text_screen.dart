@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/screen/flate_mates.dart';
 import 'package:flatmates/screen/speech_details/speech_details.dart';
 import 'package:flutter/material.dart';
@@ -182,3 +183,4 @@ class _SpeechTextScreenState extends State<SpeechTextScreen> {
     );
   }
 }
+*/

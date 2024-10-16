@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/controllers/bottom_bar_controller.dart';
 import 'package:flatmates/controllers/flat_controller.dart';
 import 'package:flatmates/controllers/room_controller.dart';
@@ -236,3 +237,4 @@ class _FlatmateRoomScreenState extends State<FlatmateRoomScreen>
     );
   }
 }
+*/
