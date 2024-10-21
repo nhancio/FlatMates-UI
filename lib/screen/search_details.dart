@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/screen/chat_screen/chat_screen.dart';
 import 'package:flatmates/screen/details_screen/flate_mate_details.dart';
 import 'package:flatmates/screen/details_screen/room_details.dart';
@@ -186,3 +187,4 @@ class _Search_detailsState extends State<Search_details> with SingleTickerProvid
 
   }
 
+*/

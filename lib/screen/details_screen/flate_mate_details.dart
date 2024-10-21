@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/screen/chat_screen/chat_screen.dart';
 import 'package:flatmates/theme/app_colors.dart';
 import 'package:flatmates/theme/app_text_styles.dart';
@@ -231,3 +232,4 @@ class ProfileChip extends StatelessWidget {
     );
   }
 }
+*/

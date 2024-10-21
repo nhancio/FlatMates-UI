@@ -28,7 +28,7 @@ import 'package:flatmates/widgets/bottomBar.dart';
               Text(
                 'WELCOME',
                 style: AppTextStyles.largeTitleStyle(context).copyWith(
-                  fontSize: 40,  // Larger font size for emphasis
+                  fontSize: 40,  // Larger fonts size for emphasis
                   fontWeight: FontWeight.w600,  // Semi-bold weight
                   letterSpacing: 2.0,  // Increase spacing for visual appeal
                 ),
@@ -36,7 +36,7 @@ import 'package:flatmates/widgets/bottomBar.dart';
               Text(
                 'to',
                 style: AppTextStyles.titleStyle(context).copyWith(
-                  fontSize: 24,  // Smaller font size for "to"
+                  fontSize: 24,  // Smaller fonts size for "to"
                   fontWeight: FontWeight.normal,  // Normal weight
                   letterSpacing: 1.0,  // Slight letter spacing
                 ),
@@ -44,7 +44,7 @@ import 'package:flatmates/widgets/bottomBar.dart';
               Text(
                 'FLATMATE.AI',
                 style: AppTextStyles.largeTitleStyle(context).copyWith(
-                  fontSize: 40,  // Larger font size matching "WELCOME"
+                  fontSize: 40,  // Larger fonts size matching "WELCOME"
                   fontWeight: FontWeight.w600,  // Semi-bold weight
                   letterSpacing: 2.0,  // Matching spacing for uniformity
                 ),
@@ -53,7 +53,7 @@ import 'package:flatmates/widgets/bottomBar.dart';
               Text(
                 '# Find Roomie With Same Qualities',
                 style: AppTextStyles.subtitleStyle(context).copyWith(
-                  fontSize: 14,  // Smaller, more subtle font size
+                  fontSize: 14,  // Smaller, more subtle fonts size
                   fontStyle: FontStyle.italic,  // Italicized for emphasis
                   fontWeight: FontWeight.w400,  // Normal weight
                 ),

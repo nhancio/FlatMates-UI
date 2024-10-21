@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/controllers/auth_controller.dart';
 import 'package:flatmates/routes/app_routes.dart';
 import 'package:flatmates/screen/user_info_screen.dart';
@@ -150,3 +151,4 @@ class _VerificationScreenState extends State<VerificationScreen> {
     );
   }
 }
+*/

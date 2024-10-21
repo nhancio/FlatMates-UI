@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -38,3 +39,4 @@ class AppColors {
   static const Color lightChipBackground = Color(0xFFF0F0F0);
   static const Color darkChipBackground = Color(0xFF333333);
 }
+*/

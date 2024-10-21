@@ -1,3 +1,4 @@
+/*
 import 'package:flatmates/controllers/bottom_bar_controller.dart';
 import 'package:flatmates/screen/details_screen/flate_mate_details.dart';
 import 'package:flatmates/screen/search_details.dart';
@@ -113,10 +114,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             // if (value.toLowerCase() == "hyderabad") {
                             Get.to(
                               () =>
-                                  Search_details(), /*rguments: {
+                                  Search_details(), */
+/*rguments: {
                                 "location": "Hyderabad",
                                 "flatmates": hyderabadFlatmates,0
-                              }*/
+                              }*//*
+
                             );
                             // }
                           },
@@ -255,3 +258,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+*/

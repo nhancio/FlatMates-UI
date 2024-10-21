@@ -1,3 +1,4 @@
+/*
 class FlatmateModel {
   String phoneNumber;
   String name;
@@ -36,3 +37,4 @@ class FlatmateModel {
     );
   }
 }
+*/

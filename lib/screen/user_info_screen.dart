@@ -1,3 +1,4 @@
+/*
 import 'dart:io';
 import 'package:flatmates/controllers/auth_controller.dart';
 import 'package:flatmates/screen/flate_mates.dart';
@@ -257,3 +258,4 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
     );
   }
 }
+*/

@@ -1,3 +1,4 @@
+/*
   import 'package:flatmates/auth/screen/verification.dart';
   import 'package:flatmates/auth/screen/welcome_screen.dart';
   import 'package:flatmates/widgets/bottomBar.dart';
@@ -22,11 +23,14 @@
       GetPage(name: AppRoutes.SPEECH_TEXT, page: () => SpeechTextScreen()),
       GetPage(name: AppRoutes.USER_INFO, page: () => UserInformationScreen()),
       GetPage(name: AppRoutes.VERIFICATION, page: () => VerificationScreen()),
-     /* GetPage(
+     */
+/* GetPage(
           name: AppRoutes.WELCOME_FLATMATE,
-          page: () => WelcomeToFlatmateScreen()),*/
+          page: () => WelcomeToFlatmateScreen()),*//*
+
       // Add the Welcome Flatmate screen
       GetPage(name: AppRoutes.WELCOME, page: () => WelcomeScreen()),
       // Add the Welcome screen
     ];
   }
+*/

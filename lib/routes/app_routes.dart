@@ -1,3 +1,4 @@
+/*
 class AppRoutes {
   static const WELCOME = '/welcome';
   static const LOGIN = '/login';
@@ -10,3 +11,4 @@ class AppRoutes {
   static const SPEECH_TEXT = '/speech-text';
   static const USER_INFO = '/user-info';
 }
+*/

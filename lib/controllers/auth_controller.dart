@@ -1,13 +1,15 @@
+/*
 import 'package:flatmates/repo/auth_repo.dart';
+import 'package:flatmates/screen/user_info_screen.dart';
 import 'package:flatmates/widgets/bottomBar.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
-    var isLoading = false.obs;
+  var isLoading = false.obs;
   var isError = false.obs;
-  String phone= "";
-
-   void submitUserInformation({
+  String phone = "";
+// comment
+  void submitUserInformation({
     required String phone,
     required String name,
     required String gender,
@@ -36,7 +38,7 @@ class AuthController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Handle successful response4
-            Get.to(() => BottomNavigation());
+        Get.to(() => BottomNavigation());
         Get.snackbar('Success', 'User information submitted successfully');
       } else {
         print("response.statusCode");
@@ -57,12 +59,13 @@ class AuthController extends GetxController {
   Future<void> verifyUser(String phone) async {
     isLoading(true);
     try {
-      bool userExists = await AuthRepo().checkUserExists(phone:phone);
+      bool userExists = await AuthRepo().checkUserExists(phone: phone);
 
       if (userExists) {
-            Get.to(() => BottomNavigation());
+        Get.to(() => BottomNavigation());
       } else {
-        Get.snackbar('Error', 'User does not exist');
+        Get.to(() => UserInformationScreen());
+        // Get.snackbar('Error', 'User does not exist');
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to verify user');
@@ -71,3 +74,4 @@ class AuthController extends GetxController {
     }
   }
 }
+*/
