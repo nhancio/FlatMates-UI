@@ -1,3 +1,4 @@
+/*
 import 'package:dio/dio.dart';
 
 class NetworkService {
@@ -46,3 +47,4 @@ class NetworkService {
     }
   }
 }
+*/

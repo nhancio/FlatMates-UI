@@ -40,11 +40,13 @@ class ProfileScreen extends StatelessWidget {
                       border: Border.all(color: Colors.purple, width: 2),
                     ),
                     child: InkWell(
+
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ProfileIntroScreen()));
+
                       },
                       child: Row(
                         children: [
@@ -89,6 +91,7 @@ class ProfileScreen extends StatelessWidget {
 
                   // More Options
                   _buildSectionTitle('More', fontSize),
+
                   _buildOptionItem(
                       context, 'Manage your Listing', Icons.arrow_forward_ios,
                       onTap: () {}),
@@ -99,6 +102,7 @@ class ProfileScreen extends StatelessWidget {
                   _buildOptionItem(context, 'Feedback', Icons.feedback_outlined,
                       subtitle: 'Help Us To Improve More', onTap: () {}),
 
+
                   _buildOptionItem(
                     context,
                     'Contact Us',
@@ -106,8 +110,10 @@ class ProfileScreen extends StatelessWidget {
                     subtitle: 'We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
+
                       MaterialPageRoute(
                           builder: (context) => ContactUsScreen()),
+
                     ),
                   ),
 
@@ -115,6 +121,7 @@ class ProfileScreen extends StatelessWidget {
                     context,
                     'Terms and Conditions',
                     Icons.article_outlined,
+
                     subtitle: ' We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
@@ -154,6 +161,7 @@ class ProfileScreen extends StatelessWidget {
 
                   _buildOptionItem(context, 'Logout', Icons.logout,
                       subtitle: 'You can log in anytime.', onTap: () {}),
+
                 ],
               ),
             ),
@@ -189,18 +197,21 @@ class ProfileScreen extends StatelessWidget {
       ),
       subtitle: subtitle != null
           ? Text(
+
               subtitle,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
             )
+
           : null,
       trailing: Icon(icon, color: Colors.grey),
       onTap: onTap,
     );
   }
 }
+
 
 void _showLogoutDialog(BuildContext context) {
   showDialog(
@@ -237,3 +248,4 @@ void _showLogoutDialog(BuildContext context) {
     },
   );
 }
+

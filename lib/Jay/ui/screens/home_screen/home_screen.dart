@@ -101,6 +101,7 @@ class HomePage extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
+
                             // _buildInfoCard(
                             //   'Rental Agreement',
                             //   'Tap Interested Options to Do a Rent Agreement for The Renter And Tenant.',
@@ -115,6 +116,7 @@ class HomePage extends StatelessWidget {
                             //   'Rental Receipt',
                             //   'Rent Receipts are Legal Proof of The Rent Being Paid With the Compliance of Income Tax Laws.',
                             // ),
+
                           ],
                         ),
                       ),
