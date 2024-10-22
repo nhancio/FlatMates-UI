@@ -8,13 +8,13 @@ class AuthController extends GetxController {
     try {
       isLoading.value = true; // Set loading state to true
       // Simulate verification process
-      await Future.delayed(Duration(seconds: 2)); // Replace with actual API call logic
+      //await Future.delayed(Duration(seconds: 2)); // Replace with actual API call logic
 
       // Here, implement the logic for verifying the phone number
       // If verification is successful:
       Get.snackbar('Success', 'Verification successful!');
       // Navigate to the next screen, for example:
-      Get.toNamed('/home'); // Replace '/home' with your desired route
+     // Get.toNamed('/home'); // Replace '/home' with your desired route
 
     } catch (e) {
       Get.snackbar('Error', 'Verification failed: $e');

@@ -128,9 +128,9 @@ class HomeMateDetailsScreen extends StatelessWidget {
                 onPressed: () {
                   // Handle message action
                 },
-                child: Text('Message'),
+                child: Text('Message',style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Color(0xFFB60F6E),
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

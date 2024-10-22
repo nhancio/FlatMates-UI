@@ -14,7 +14,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        bool isWideScreen = constraints.maxWidth > 600; // 600px is a breakpoint for wide screens
+        bool isWideScreen = constraints.maxWidth > 600;
 
         return Scaffold(
           body: Stack(

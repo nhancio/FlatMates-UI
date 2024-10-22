@@ -19,7 +19,7 @@ class AppRoutes {
   static List<GetPage> routes = [
     GetPage(name: welcome, page: () => WelcomeScreen()),
     GetPage(name: register, page: () => RegisterScreen()),
-    GetPage(name: verification, page: () => PreferenceScreen()),
+    GetPage(name: verification, page: () => VerificationScreen()),
     GetPage(name: registerUser, page: () => RegisterUserScreen()),
     GetPage(name: preferences, page: () => PreferenceScreen()),
     GetPage(name: bottomNavBar, page: () => BottomNavBarScreen()),

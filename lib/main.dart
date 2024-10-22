@@ -1,6 +1,5 @@
 import 'package:flatmates/Jay/navigation/app_routes/routes.dart';
 import 'package:flatmates/Jay/res/font/font_size.dart';
-import 'package:flatmates/Jay/ui/screens/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

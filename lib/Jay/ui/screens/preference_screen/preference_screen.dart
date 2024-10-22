@@ -1,6 +1,6 @@
-import 'package:flatmates/Jay/navigation/app_routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flatmates/Jay/navigation/app_routes/routes.dart';
 import 'package:flatmates/Jay/res/assets/icons/icons.dart';
 import 'package:flatmates/Jay/res/colors/colors.dart';
 import 'package:flatmates/Jay/res/font/text_style.dart';
@@ -45,23 +45,26 @@ class PreferenceScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: GridView.builder(
-                physics: MediaQuery.of(context).size.width > 800
-                    ? NeverScrollableScrollPhysics()
-                    : BouncingScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).size.width > 800 ? 5 : 3,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 1,
-                ),
-                itemCount: preferenceItems.length,
-                itemBuilder: (context, index) {
-                  return _buildPreferenceItem(preferenceItems[index]);
-                },
+              child: ListView(
+                children: [
+                  GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: _getCrossAxisCount(context),
+                      mainAxisSpacing: _getSpacing(context),
+                      crossAxisSpacing: _getSpacing(context),
+                      childAspectRatio: 1,
+                    ),
+                    itemCount: preferenceItems.length,
+                    itemBuilder: (context, index) {
+                      return _buildPreferenceItem(context, preferenceItems[index]);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
-            const SizedBox(height: 20),
             Center(
               child: CustomButton(
                 text: 'Next',
@@ -76,27 +79,120 @@ class PreferenceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPreferenceItem(PreferenceItem item) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
+  int _getCrossAxisCount(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth > 800) {
+      return 5; // For larger screens
+    } else if (screenWidth > 600) {
+      return 4; // Medium screen
+    } else {
+      return 3; // For mobile
+    }
+  }
+
+  double _getSpacing(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth > 800) {
+      return 8.0; // Less spacing on web
+    } else if (screenWidth > 600) {
+      return 10.0; // Slightly more space for medium screens
+    } else {
+      return 12.0; // Larger space for mobile
+    }
+  }
+
+  Widget _buildPreferenceItem(BuildContext context, PreferenceItem item) {
+    double iconSize = MediaQuery.of(context).size.width > 800 ? 50 : 60; // Smaller icon for web
+    double padding = MediaQuery.of(context).size.width > 800 ? 4.0 : 8.0;
+
+    return GestureDetector(
+      onTap: () {
+        // Add your onClick functionality here
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          padding: EdgeInsets.all(padding),
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              item.iconPath,
-              fit: BoxFit.cover,
-              height: 60,
-              width: 60,
+            border: Border.all(color: Colors.transparent, width: 2),
+          ),
+          child: HoverButton(
+            item: item,
+            iconSize: iconSize,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HoverButton extends StatefulWidget {
+  final PreferenceItem item;
+  final double iconSize;
+
+  const HoverButton({Key? key, required this.item, required this.iconSize})
+      : super(key: key);
+
+  @override
+  _HoverButtonState createState() => _HoverButtonState();
+}
+
+class _HoverButtonState extends State<HoverButton> {
+  bool _isHovering = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Click functionality here
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) {
+          setState(() {
+            _isHovering = true;
+          });
+        },
+        onExit: (_) {
+          setState(() {
+            _isHovering = false;
+          });
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: _isHovering ? AppColors.primaryColor : Colors.transparent,
+              width: 2,
             ),
+            borderRadius: BorderRadius.circular(10),
           ),
-          const SizedBox(height: 8),
-          Text(
-            item.name,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  widget.item.iconPath,
+                  fit: BoxFit.cover,
+                  height: widget.iconSize,
+                  width: widget.iconSize,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.item.name,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

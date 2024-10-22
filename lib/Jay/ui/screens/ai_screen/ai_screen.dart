@@ -110,9 +110,9 @@ class VoiceInputScreen extends StatelessWidget {
                 onPressed: () {
                   // Handle Done action
                 },
-                child: Text('Done'),
+                child: Text('Done',style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
+                  backgroundColor: Color(0xFFB60F6E),
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

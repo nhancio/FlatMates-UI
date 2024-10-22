@@ -19,10 +19,12 @@ class RegisterScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
+            height: MediaQuery.sizeOf(context).height,
             width: double.infinity,
             padding: const EdgeInsets.all(AppDimensions.medium),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // App Icon
                 Image.asset(
@@ -57,7 +59,7 @@ class RegisterScreen extends StatelessWidget {
                   builder: (context, constraints) {
                     // Calculate the width based on screen size
                     double inputWidth = constraints.maxWidth > 600
-                        ? constraints.maxWidth * 0.5
+                        ? constraints.maxWidth * 0.3
                         : constraints.maxWidth * 0.85;
 
                     return Container(
