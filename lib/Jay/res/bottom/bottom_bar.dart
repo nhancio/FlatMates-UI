@@ -34,7 +34,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildBottomNavItem(Icons.home_outlined, 'Home', 0),
-              _buildBottomNavItem(Icons.book_outlined, 'Bookings', 1),
+              _buildBottomNavItem(Icons.book_outlined, 'Chats', 1),
               SizedBox(width: 48), // Space for the FAB
               _buildBottomNavItem(
                   Icons.account_balance_wallet_outlined, 'List', 2),
