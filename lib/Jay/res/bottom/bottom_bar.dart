@@ -15,7 +15,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-  HomePage(),
+    HomePage(),
     ChatListScreen(),
     HomemateRoomScreen(),
     ProfileScreen()
@@ -36,7 +36,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
               _buildBottomNavItem(Icons.home_outlined, 'Home', 0),
               _buildBottomNavItem(Icons.book_outlined, 'Bookings', 1),
               SizedBox(width: 48), // Space for the FAB
-              _buildBottomNavItem(Icons.account_balance_wallet_outlined, 'Wallet', 2),
+              _buildBottomNavItem(
+                  Icons.account_balance_wallet_outlined, 'List', 2),
               _buildBottomNavItem(Icons.person_outline, 'Profile', 3),
             ],
           ),
@@ -44,9 +45,14 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         Navigator.push(context, MaterialPageRoute(builder: (context)=> VoiceInputScreen()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => VoiceInputScreen()));
         },
-        child:Image.asset(AppIcons.ai,height: 20,width: 20,),
+        child: Image.asset(
+          AppIcons.ai,
+          height: 20,
+          width: 20,
+        ),
         backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

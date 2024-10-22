@@ -46,9 +46,7 @@ android {
 
     buildTypes {
         release {
-            classpath 'com.android.tools.build:gradle:7.3.0' // Or another compatible version for your Java and Gradle version
-            // Add Flutter Gradle plugin
-            classpath "dev.flutter:flutter-gradle-plugin"
+
         }
     }
 }
