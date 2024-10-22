@@ -101,15 +101,15 @@ class HomePage extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            _buildInfoCard(
-                              'Rental Agreement',
-                              'Tap Interested Options to Do a Rent Agreement for The Renter And Tenant.',
-                            ),
-                            SizedBox(width: 15), // Add spacing between cards
-                            _buildInfoCard(
-                              'Tennant Verification',
-                              'Fill an Online Or Offline Form to Get the Background Check of The Tenant And Landlord.',
-                            ),
+                            // _buildInfoCard(
+                            //   'Rental Agreement',
+                            //   'Tap Interested Options to Do a Rent Agreement for The Renter And Tenant.',
+                            // ),
+                            // SizedBox(width: 15), // Add spacing between cards
+                            // _buildInfoCard(
+                            //   'Tennant Verification',
+                            //   'Fill an Online Or Offline Form to Get the Background Check of The Tenant And Landlord.',
+                            // ),
                             // SizedBox(width: 15), // Add spacing between cards
                             // _buildInfoCard(
                             //   'Rental Receipt',

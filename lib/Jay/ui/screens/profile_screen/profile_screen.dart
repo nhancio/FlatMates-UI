@@ -40,8 +40,11 @@ class ProfileScreen extends StatelessWidget {
                       border: Border.all(color: Colors.purple, width: 2),
                     ),
                     child: InkWell(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileIntroScreen()));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileIntroScreen()));
                       },
                       child: Row(
                         children: [
@@ -86,10 +89,15 @@ class ProfileScreen extends StatelessWidget {
 
                   // More Options
                   _buildSectionTitle('More', fontSize),
-                  _buildOptionItem(context, 'Manage your Listing', Icons.arrow_forward_ios, onTap: () {  }),
-                  _buildOptionItem(context, 'About Us', Icons.info_outline, subtitle: 'Know who we are and what we are doing.', onTap: () {  }),
+                  _buildOptionItem(
+                      context, 'Manage your Listing', Icons.arrow_forward_ios,
+                      onTap: () {}),
+                  _buildOptionItem(context, 'About Us', Icons.info_outline,
+                      subtitle: 'Know who we are and what we are doing.',
+                      onTap: () {}),
 
-                  _buildOptionItem(context, 'Feedback', Icons.feedback_outlined, subtitle: 'Help Us To Improve More', onTap: () {  }),
+                  _buildOptionItem(context, 'Feedback', Icons.feedback_outlined,
+                      subtitle: 'Help Us To Improve More', onTap: () {}),
 
                   _buildOptionItem(
                     context,
@@ -98,7 +106,8 @@ class ProfileScreen extends StatelessWidget {
                     subtitle: 'We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ContactUsScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => ContactUsScreen()),
                     ),
                   ),
 
@@ -106,42 +115,45 @@ class ProfileScreen extends StatelessWidget {
                     context,
                     'Terms and Conditions',
                     Icons.article_outlined,
-                    subtitle:' We are always here for you.',
+                    subtitle: ' We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TermsConditionsScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => TermsConditionsScreen()),
                     ),
                   ),
                   SizedBox(height: 20),
-                  _buildOptionItem(
-                    context,
-                    'Rental Agreement',
-                    Icons.description_outlined,
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RentalAgreementScreen()),
-                    ),
-                  ),
-                  _buildOptionItem(
-                    context,
-                    'Tenant Verification',
-                    Icons.check_circle_outline,
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TenantVerificationScreen()),
-                    ),
-                  ),
-                  _buildOptionItem(
-                    context,
-                    'Rental Receipt',
-                    Icons.receipt_long,
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RentalReceiptScreen()),
-                    ),
-                  ),
+                  // _buildOptionItem(
+                  //   context,
+                  //   'Rental Agreement',
+                  //   Icons.description_outlined,
+                  //   onTap: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => RentalAgreementScreen()),
+                  //   ),
+                  // ),
+                  // _buildOptionItem(
+                  //   context,
+                  //   'Tenant Verification',
+                  //   Icons.check_circle_outline,
+                  //   onTap: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => TenantVerificationScreen()),
+                  //   ),
+                  // ),
+                  // _buildOptionItem(
+                  //   context,
+                  //   'Rental Receipt',
+                  //   Icons.receipt_long,
+                  //   onTap: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => RentalReceiptScreen()),
+                  //   ),
+                  // ),
 
-                  _buildOptionItem(context, 'Logout', Icons.logout, subtitle: 'You can log in anytime.', onTap: () {  }),
+                  _buildOptionItem(context, 'Logout', Icons.logout,
+                      subtitle: 'You can log in anytime.', onTap: () {}),
                 ],
               ),
             ),
@@ -177,51 +189,51 @@ class ProfileScreen extends StatelessWidget {
       ),
       subtitle: subtitle != null
           ? Text(
-        subtitle,
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.grey,
-        ),
-      )
+              subtitle,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            )
           : null,
       trailing: Icon(icon, color: Colors.grey),
       onTap: onTap,
     );
   }
 }
-  void _showLogoutDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Log Out'),
-          content: Text('Are you sure you want to log out?'),
-          actions: [
-            TextButton(
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: Colors.grey),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-            ElevatedButton(
-              child: Text('Yes'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                // Perform the logout action here
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('You have been logged out.')),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
+void _showLogoutDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Log Out'),
+        content: Text('Are you sure you want to log out?'),
+        actions: [
+          TextButton(
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+          ),
+          ElevatedButton(
+            child: Text('Yes'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.purple,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+              // Perform the logout action here
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('You have been logged out.')),
+              );
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
