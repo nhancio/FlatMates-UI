@@ -1,4 +1,3 @@
-/*
 import 'package:dio/dio.dart';
 
 class NetworkService {
@@ -6,13 +5,13 @@ class NetworkService {
 
   NetworkService() {
     dio = Dio(BaseOptions(
-      baseUrl: 'http://16.16.24.201:8000/api', // Replace with your base URL
+      baseUrl: 'http://20.193.152.22:8000/api', // Replace with your base URL
       connectTimeout: const Duration(seconds: 5000),
       receiveTimeout: const Duration(seconds: 3000),
       headers: {'Content-Type': 'application/json'},
       validateStatus: (status) {
-            return status != null; // Accept all status codes
-          },
+        return status != null; // Accept all status codes
+      },
     ));
   }
 
@@ -27,8 +26,8 @@ class NetworkService {
 
   Future<Response> postRequest(
       String endpoint, Map<String, dynamic> data) async {
-        print("data");
-        print(data);
+    print("data");
+    print(data);
     try {
       Response response = await dio.post(endpoint, data: data);
       return response;
@@ -47,4 +46,3 @@ class NetworkService {
     }
   }
 }
-*/
