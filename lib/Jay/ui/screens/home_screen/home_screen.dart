@@ -110,11 +110,11 @@ class HomePage extends StatelessWidget {
                               'Tennant Verification',
                               'Fill an Online Or Offline Form to Get the Background Check of The Tenant And Landlord.',
                             ),
-                            SizedBox(width: 15), // Add spacing between cards
-                            _buildInfoCard(
-                              'Rental Receipt',
-                              'Rent Receipts are Legal Proof of The Rent Being Paid With the Compliance of Income Tax Laws.',
-                            ),
+                            // SizedBox(width: 15), // Add spacing between cards
+                            // _buildInfoCard(
+                            //   'Rental Receipt',
+                            //   'Rent Receipts are Legal Proof of The Rent Being Paid With the Compliance of Income Tax Laws.',
+                            // ),
                           ],
                         ),
                       ),
