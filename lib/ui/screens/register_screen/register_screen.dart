@@ -6,7 +6,9 @@ import 'package:flatemates_ui/widgets/custom_button/custom_button.dart';
 import 'package:flatemates_ui/widgets/custom_textfield/custom_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../../res/font/text_style.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -96,6 +98,35 @@ class RegisterScreen extends StatelessWidget {
                   },
                 ),
                 // Background Image (optional, can be used for decoration)
+
+                CustomButton(
+                  text: 'Google Sign in',
+                  onPressed: () async {
+                    try {
+                      // Call the function that may throw an error
+                      await signInWithGoogle();
+                      // await signInWithGoogle(context);
+                    } catch (e) {
+                      // Get.toNamed(AppRoutes
+                      //     .verification);
+                      //// If an error occurs, navigate to the error page
+                    }
+                  }, //todo:complete process
+                ),
+                CustomButton(
+                  text: 'Anonymous Sign in',
+                  onPressed: () async {
+                    try {
+                      // Call the function that may throw an error
+                      await signInAnonymously();
+                      // await signInWithGoogle(context);
+                    } catch (e) {
+                      // Get.toNamed(AppRoutes
+                      //     .verification);
+                      //// If an error occurs, navigate to the error page
+                    }
+                  }, //todo:complete process
+                ),
               ],
             ),
           ),
@@ -103,4 +134,79 @@ class RegisterScreen extends StatelessWidget {
       ),
     );
   }
+
+  signInWithGoogle() async {
+    GoogleSignInAccount? googleuser = await GoogleSignIn().signIn();
+    GoogleSignInAuthentication? googleAuth = await googleuser?.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    UserCredential usercredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    // print(usercredential.user?.displayName);
+  } // option 1
+
+  signInAnonymously() async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInAnonymously();
+      if (userCredential.user != null) {
+        print("👤 Successfully signed in anonymously!");
+      }
+    } catch (e) {
+      print("⚠️ Failed to sign in anonymously: $e");
+    }
+    //WARNING: You are using the Auth Emulator, which is intended for local testing only.  Do not use with production credentials.
+    //notethisisnotan error, rather informational messages
+  }
+// //Option 2
+  // Future<void> signInWithGoogle(BuildContext context) async {
+  //   try {
+  //     // Attempt to sign in with Google
+  //     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  //     // If the user cancels the sign-in, return early
+  //     if (googleUser == null) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Sign-in canceled by user')),
+  //       );
+  //       return;
+  //     }
+
+  //     // Obtain the authentication details
+  //     GoogleSignInAuthentication? googleAuth = await googleUser.authentication;
+  //     if (googleAuth == null) {
+  //       throw Exception('Google Authentication failed');
+  //     }
+
+  //     // Create a new credential for Firebase Authentication
+  //     AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+
+  //     // Sign in to Firebase with the Google credentials
+  //     UserCredential userCredential =
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
+
+  //     // Sign-in successful
+  //     print('Signed in as ${userCredential.user?.displayName}');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Welcome ${userCredential.user?.displayName}!')),
+  //     );
+  //   } on FirebaseAuthException catch (e) {
+  //     // Handle Firebase-specific errors
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Firebase Auth Error: ${e.message}')),
+  //     );
+  //     print('FirebaseAuthException: ${e.message}');
+  //   } catch (e) {
+  //     // Handle other errors
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('An error occurred: $e')),
+  //     );
+  //     print('Error: $e');
+  //   }
+  // }
 }

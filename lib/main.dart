@@ -1,10 +1,18 @@
 import 'package:flatemates_ui/res/font/font_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'navigation/app_routes/routes.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); //todo : Check this
+
+  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(MyApp());
 }
 
