@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flatemates_ui/navigation/app_routes/routes.dart';
 import 'package:flatemates_ui/res/colors/colors.dart';
 import 'package:flatemates_ui/res/font/text_style.dart';
+import 'package:flatemates_ui/ui/screens/register_yourself_screen/registration_controller.dart';
 import 'package:flatemates_ui/widgets/custom_button/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,18 +16,13 @@ class RegisterUserScreen extends StatefulWidget {
 }
 
 class _RegisterUserScreenState extends State<RegisterUserScreen> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController professionController = TextEditingController();
-  final TextEditingController ageController = TextEditingController();
-  String? selectedGender;
-  File? profileImage;
-
+  final RegisterController registerCtrl = Get.put(RegisterController());
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        profileImage = File(pickedFile.path);
+        registerCtrl.profileImage = File(pickedFile.path);
       });
     }
   }
@@ -75,14 +71,14 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       alignment: WrapAlignment.center,
                       children: [
                         _buildTextField(
-                          controller: nameController,
+                          controller: registerCtrl.nameController,
                           labelText: 'Your Name*',
                           width: isWideScreen
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
                         ),
                         _buildTextField(
-                          controller: professionController,
+                          controller: registerCtrl.professionController,
                           labelText: 'Profession',
                           width: isWideScreen
                               ? constraints.maxWidth * 0.45
@@ -96,7 +92,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               : double.infinity,
                         ),
                         _buildTextField(
-                          controller: ageController,
+                          controller: registerCtrl.ageController,
                           labelText: 'Age',
                           keyboardType: TextInputType.number,
                           width: isWideScreen
@@ -123,10 +119,10 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                           child: CircleAvatar(
                             radius: 40,
                             backgroundColor: Colors.grey[300],
-                            backgroundImage: profileImage != null
-                                ? FileImage(profileImage!)
+                            backgroundImage: registerCtrl.profileImage != null
+                                ? FileImage(registerCtrl.profileImage!)
                                 : null,
-                            child: profileImage == null
+                            child: registerCtrl.profileImage == null
                                 ? Icon(
                                     Icons.camera_alt,
                                     size: 30,
@@ -144,6 +140,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       text: 'Register Your Account',
                       onPressed: () {
                         if (_validateForm()) {
+                          registerCtrl.registerUser();
                           // Navigate to preferences screen only if validation passes
                           Get.toNamed(AppRoutes.preferences);
                         }
@@ -218,7 +215,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     return SizedBox(
       width: width,
       child: DropdownButtonFormField<String>(
-        value: selectedGender,
+        value: registerCtrl.selectedGender,
         hint: Text('Gender'),
         items: ['Male', 'Female', 'Other']
             .map((gender) => DropdownMenuItem(
@@ -228,7 +225,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             .toList(),
         onChanged: (value) {
           setState(() {
-            selectedGender = value;
+            registerCtrl.selectedGender = value;
           });
         },
         decoration: InputDecoration(
@@ -240,10 +237,10 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   }
 
   bool _validateForm() {
-    if (nameController.text.isEmpty ||
-        selectedGender == null ||
-        ageController.text.isEmpty ||
-        profileImage == null) {
+    if (registerCtrl.nameController.text.isEmpty ||
+        registerCtrl.selectedGender == null ||
+        registerCtrl.ageController.text.isEmpty ||
+        registerCtrl.profileImage == null) {
       Get.snackbar('Error',
           'Please fill all required fields and upload your profile picture.');
       return false;

@@ -45,12 +45,18 @@ dependencies:
   firebase_core: ^3.7.0
   firebase_auth: ^5.3.2
   google_sign_in: ^6.2.2
+  retrofit: 
+  json_annotation: 
+  freezed_annotation: 
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  build_runner: 
+  json_serializable: 
+  freezed: 
+  retrofit_generator:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
