@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
@@ -42,6 +45,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -52,6 +56,23 @@ android {
         }
     }
 }
+
+dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'
+}
+
+dependencies {
+  // Import the BoM for the Firebase platform
+  implementation platform('com.google.firebase:firebase-bom:33.5.1')
+
+  // Declare the dependencies for the desired Firebase products without specifying versions
+  // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
+  implementation 'com.google.firebase:firebase-auth'
+  implementation 'com.google.firebase:firebase-firestore'
+
+      // Also add the dependency for the Google Play services library and specify its version
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+}//added for Firebase authentication
 
 flutter {
     source = "../.."
