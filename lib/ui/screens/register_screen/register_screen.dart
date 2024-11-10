@@ -1,13 +1,13 @@
-import 'package:flatemates_ui/auth/auth_controller.dart';
-import 'package:flatemates_ui/navigation/app_routes/routes.dart';
-import 'package:flatemates_ui/res/assets/icons/icons.dart';
-import 'package:flatemates_ui/res/dimensions/dimensions.dart';
-import 'package:flatemates_ui/widgets/custom_button/custom_button.dart';
-import 'package:flatemates_ui/widgets/custom_textfield/custom_textfield.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../auth/auth_controller.dart';
+import '../../../navigation/app_routes/routes.dart';
+import '../../../res/assets/icons/icons.dart';
+import '../../../res/dimensions/dimensions.dart';
 import '../../../res/font/text_style.dart';
+import '../../../widgets/custom_button/custom_button.dart';
 
 class RegisterScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
@@ -15,6 +15,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -23,15 +24,22 @@ class RegisterScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(AppDimensions.medium),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start, // Align to left
               children: [
-                // App Icon
-                Image.asset(
-                  AppIcons.icon, // App icon
-                  height: 80, // Adjust the height as needed
+                // Top Icon Bar
+                SizedBox(
+                  height: MediaQuery.of(context).size.height > 600 ? 60 : 100,
                 ),
-                const SizedBox(height: AppDimensions.large),
+                Align(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    AppIcons.icon, // App icon
+                    height: 80, // Adjust the height as needed
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height > 600 ? 60 : 100,
+                ),
 
                 // Login/Register Title
                 Text(
@@ -42,7 +50,8 @@ class RegisterScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: AppDimensions.small),
+
+                SizedBox(height: AppDimensions.extraLarge),
 
                 // Description Text
                 Text(
@@ -50,52 +59,74 @@ class RegisterScreen extends StatelessWidget {
                   style: AppTextStyles.bodyStyle(context).copyWith(
                     color: Colors.black.withOpacity(0.6),
                   ),
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                 ),
-                const SizedBox(height: AppDimensions.large),
+                SizedBox(height: AppDimensions.extraLarge),
 
-                // Responsive Phone Number Input with Flag
+                // Responsive Phone Number Input with Flag and Down Arrow
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    // Calculate the width based on screen size
                     double inputWidth = constraints.maxWidth > 600
                         ? constraints.maxWidth * 0.3
                         : constraints.maxWidth * 0.85;
 
-                    return Container(
-                      width: inputWidth,
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            AppIcons.flag, // Country flag icon
-                            height: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: CustomTextField(
-                              controller: phoneController,
-                              keyboardType: TextInputType.phone,
-                              hintText: 'Enter Number',
-                              height: AppDimensions.textFieldHeight,
+                    return Center(
+                      child: Container(
+                        width: inputWidth,
+                        child: TextField(
+                          controller: phoneController,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            hintText: 'Enter Number',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            contentPadding: EdgeInsets.symmetric(vertical: AppDimensions.textFieldHeight / 2),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0), // Customize as needed
                             ),
+                            prefixIcon: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Image.asset(
+                                    AppIcons.flag, // Country flag icon
+                                    height: 24,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.grey,
+                                ),
+                                const VerticalDivider(
+                                  width: 1,
+                                  thickness: 1,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+
                           ),
-                        ],
+                        ),
                       ),
                     );
+
+
                   },
                 ),
-                const SizedBox(height: AppDimensions.large),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height > 600 ? 120 : 120,
+                ),
 
                 // Request OTP Button
-                CustomButton(
-                  text: 'Request OTP',
-                  onPressed: () {
-                    authController.phone.value = phoneController.text;
-                    // Uncomment the below line to navigate to the verification screen
-                    Get.toNamed(AppRoutes.verification);
-                  },
+                Center(
+                  child: CustomButton(
+                    text: 'Request OTP',
+                    onPressed: () {
+                      authController.phone.value = phoneController.text;
+                      Get.toNamed(AppRoutes.verification);
+                    },
+                  ),
                 ),
-                // Background Image (optional, can be used for decoration)
               ],
             ),
           ),
