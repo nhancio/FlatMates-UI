@@ -56,14 +56,13 @@ class ChatListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Message',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color:Color(0xFFB60F6E),
+            color: Color(0xFFD32F2F),
           ),
         ),
         backgroundColor: Colors.white,
@@ -89,7 +88,6 @@ class ChatListScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               margin: EdgeInsets.symmetric(vertical: 8),
-              color: Colors.white60,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Row(
