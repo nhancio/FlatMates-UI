@@ -1,12 +1,17 @@
-import 'package:flatemates_ui/res/font/font_size.dart';
+import 'package:flatemates_ui/Jay/navigation/app_routes/routes.dart';
+import 'package:flatemates_ui/Jay/res/font/font_size.dart';
+
+import 'package:flatemates_ui/Jay/ui/screens/profile_screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'navigation/app_routes/routes.dart';
+
 
 void main() async {
+
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -23,6 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.welcome,
       getPages: AppRoutes.routes,
+
     );
   }
 }

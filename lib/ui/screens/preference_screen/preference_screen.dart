@@ -28,33 +28,32 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
     PreferenceItem(name: 'Growth', iconPath: AppIcons.growth),
     PreferenceItem(name: 'Non-Smoker', iconPath: AppIcons.nonSmoker),
   ];
-
   List<String> selectedPreferences = [];
   String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Choose your preferences'),
-        backgroundColor: AppColors.primaryColor,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (errorMessage != null) ...[
-                Center(
-                  child: Text(
-                    errorMessage!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.red, fontSize: 14),
+
+              SizedBox(
+                height: MediaQuery.of(context).size.height > 600 ? 60 : 100,
+              ),
+              Center(
+                child: Text(
+                  'Choose your preferences',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.bodyStyle(context).copyWith(
+                    fontSize: 24,
+                    color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 10),
-              ],
+              ),
               Center(
                 child: Text(
                   'Choose at least 5 preferences for better results',
@@ -79,25 +78,41 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 itemBuilder: (context, index) {
                   return _buildPreferenceItem(context, preferenceItems[index]);
                 },
-              ),
+              ),    const SizedBox(height: 20),
+              if (errorMessage != null) ...[
+                Center(
+                  child: Text(
+                    errorMessage!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
               const SizedBox(height: 20),
               Center(
-                child: CustomButton(
-                  text: 'Next',
-                  onPressed: () {
-                    if (selectedPreferences.length >= 5) {
-                      setState(() {
-                        errorMessage = null;
-                      });
-                      Get.toNamed(AppRoutes.bottomNavBar);
-                    } else {
-                      setState(() {
-                        errorMessage = 'Please select at least 5 preferences.';
-                      });
-                    }
-                  },
+                child: SizedBox(
+                  width: 200, // Increase the width of the button
+                  height: 60, // Increase the height of the button
+                  child: CustomButton(
+                    text: 'Next',
+                    onPressed: () {
+                      if (selectedPreferences.length >= 5) {
+                        setState(() {
+                          errorMessage = null;
+                        });
+                        Get.toNamed(AppRoutes.bottomNavBar);
+                      } else {
+                        setState(() {
+                          errorMessage = 'Please select at least 5 preferences.';
+                        });
+                      }
+                    },
+                  ),
                 ),
               ),
+
+              const SizedBox(height: 16),
             ],
           ),
         ),

@@ -1,10 +1,10 @@
-import 'package:flatemates_ui/navigation/app_routes/routes.dart';
-import 'package:flatemates_ui/res/assets/images/images.dart';
-import 'package:flatemates_ui/res/colors/colors.dart';
-import 'package:flatemates_ui/res/dimensions/dimensions.dart';
-import 'package:flatemates_ui/res/font/font_size.dart';
-import 'package:flatemates_ui/res/font/text_style.dart';
-import 'package:flatemates_ui/widgets/custom_button/custom_button.dart';
+import 'package:flatemates_ui/Jay/navigation/app_routes/routes.dart';
+import 'package:flatemates_ui/Jay/res/assets/images/images.dart';
+import 'package:flatemates_ui/Jay/res/colors/colors.dart';
+import 'package:flatemates_ui/Jay/res/dimensions/dimensions.dart';
+import 'package:flatemates_ui/Jay/res/font/font_size.dart';
+import 'package:flatemates_ui/Jay/res/font/text_style.dart';
+import 'package:flatemates_ui/Jay/widgets/custom_button/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,7 +29,7 @@ class WelcomeScreen extends StatelessWidget {
               // Background Opacity Layer
               Positioned.fill(
                 child: Container(
-                  color: AppColors.backgroundOpacity.withOpacity(0.68),
+                  color: AppColors.backgroundOpacity.withOpacity(0.5),
                 ),
               ),
 
@@ -37,11 +37,8 @@ class WelcomeScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
-                  horizontal:
-                      isWideScreen ? AppDimensions.large : AppDimensions.small,
-                  vertical: isWideScreen
-                      ? AppDimensions.extraLarge
-                      : AppDimensions.medium,
+                  horizontal: isWideScreen ? AppDimensions.large : AppDimensions.small,
+                  vertical: isWideScreen ? AppDimensions.extraLarge : AppDimensions.medium,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -50,60 +47,68 @@ class WelcomeScreen extends StatelessWidget {
                     // Image Section
                     Image.asset(
                       Images.firstScreenIcon,
-                      height: isWideScreen
-                          ? AppDimensions.largeImageHeight
-                          : AppDimensions.smallImageHeight,
+                      height: isWideScreen ? AppDimensions.largeImageHeight : AppDimensions.smallImageHeight,
                       fit: BoxFit.contain,
                     ),
-                    SizedBox(
-                        height: isWideScreen
-                            ? AppDimensions.medium
-                            : AppDimensions.small),
+                    SizedBox(height: isWideScreen ? AppDimensions.medium : AppDimensions.small),
 
                     // Title Section with Gradient Text
-                    ShaderMask(
-                      shaderCallback: (Rect bounds) {
-                        return LinearGradient(
-                          colors: <Color>[
-                            Color(0xFF824CF2),
-                            Color(0xFFCC2584),
-                          ],
-                        ).createShader(bounds);
-                      },
-                      child: Text(
-                        "Homemates.AI",
-                        style: AppTextStyles.largeTitleStyle(context).copyWith(
-                          fontSize:
-                              isWideScreen ? 32 : 24, // Responsive font size
-                          fontFamily: AppFonts.familyPoppins,
-                          color: Colors.white,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              colors: <Color>[Color(0xFF561583), Color(0xFF561583)],
+                            ).createShader(bounds);
+                          },
+                          child: Text(
+                            "HOMEMATES",
+                            style: AppTextStyles.largeTitleStyle(context).copyWith(
+                              fontSize: isWideScreen ? 34 : 26, // Responsive font size
+                              fontFamily: AppFonts.familyPoppins,
+                              color: Colors.white, // White to ensure the shader shows
+                            ),
+                          ),
                         ),
-                      ),
+                        ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              colors: <Color>[Color(0xFFb60f6e), Color(0xFFb60f6e)],
+                            ).createShader(bounds);
+                          },
+                          child: Text(
+                            ".AI",
+                            style: AppTextStyles.largeTitleStyle(context).copyWith(
+                              fontSize: isWideScreen ? 34 : 26, // Responsive font size
+                              fontFamily: AppFonts.familyPoppins,
+                              color: Colors.white, // White to ensure the shader shows
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                        height: isWideScreen
-                            ? AppDimensions.small
-                            : AppDimensions.extraSmall),
+
+                    SizedBox(height: isWideScreen ? AppDimensions.small : AppDimensions.extraSmall),
 
                     // Tagline
                     Text(
-                      '# Find roomie with same Qualities',
+                      '# Find Roomie With Same Qualities',
                       style: AppTextStyles.bodyStyle(context).copyWith(
-                        fontSize: isWideScreen ? 18 : 14,
+                        fontSize: isWideScreen ? 20 : 16,
                         fontFamily: AppFonts.familyPoppins,
                         color: AppColors.textColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: isWideScreen ? 60 : 50),
+                    SizedBox(height: isWideScreen ? 60 : 100),
 
                     // Button Section
                     Center(
                       child: CustomButton(
                         text: 'Login/Sign Up',
                         onPressed: () {
-                          Get.toNamed(
-                              AppRoutes.register); // Use GetX for navigation
+                          Get.toNamed(AppRoutes.register); // Use GetX for navigation
                         },
                       ),
                     ),
@@ -117,3 +122,4 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
+

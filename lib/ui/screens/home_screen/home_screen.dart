@@ -217,9 +217,8 @@ class HomePage extends StatelessWidget {
   }
 }
 */
-
-import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
-import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
+import 'package:flatemates_ui/Jay/ui/screens/list_my_room_screen/list_my_room.dart';
+import 'package:flatemates_ui/Jay/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -308,8 +307,7 @@ class HomePage extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              _showBottomSheet(context, 'HomemateList',
-                                  'Looking for a RoomMate');
+                              _showBottomSheet(context, 'HomemateList', 'Looking for a RoomMate');
                             },
                             child: _buildServiceCard(
                               'assets/images/look_roommate.png',
@@ -318,8 +316,7 @@ class HomePage extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              _showBottomSheet(
-                                  context, 'RoomList', 'Looking for a Room');
+                              _showBottomSheet(context, 'RoomList', 'Looking for a Room');
                             },
                             child: _buildServiceCard(
                               'assets/images/look_room.png',
@@ -419,3 +416,5 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+
