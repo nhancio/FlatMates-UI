@@ -1,14 +1,15 @@
 import 'dart:io';
-import 'package:flatemates_ui/navigation/app_routes/routes.dart';
-import 'package:flatemates_ui/res/colors/colors.dart';
 import 'package:flatemates_ui/res/font/text_style.dart';
 import 'package:flatemates_ui/ui/screens/register_yourself_screen/registration_controller.dart';
-import 'package:flatemates_ui/widgets/custom_button/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:flutter/foundation.dart'; // For kIsWeb
+import 'package:flutter/foundation.dart';
+
+import '../../../navigation/app_routes/routes.dart';
+import '../../../res/colors/colors.dart';
+import '../../../widgets/custom_button/custom_button.dart'; // For kIsWeb
 
 class RegisterUserScreen extends StatefulWidget {
   @override
@@ -38,22 +39,21 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             child: Center(
               child: Container(
                 width: double.infinity,
-                height: kIsWeb
-                    ? MediaQuery.of(context).size.height
-                    : null, // Full height for web, null for mobile
+                height: kIsWeb ? MediaQuery.of(context).size.height : null,
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // App Icon
+                    SizedBox(
+                      height:
+                          MediaQuery.of(context).size.height > 600 ? 60 : 100,
+                    ),
                     Image.asset(
-                      'assets/icons/icon.png', // Your app logo path
+                      'assets/icons/icon.png',
                       height: 80,
                     ),
                     const SizedBox(height: 20),
-
-                    // Title
                     Text(
                       'Register Yourself',
                       style: AppTextStyles.largeTitleStyle(context).copyWith(
@@ -63,8 +63,6 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
-
-                    // Input fields with responsiveness
                     Wrap(
                       spacing: 15,
                       runSpacing: 15,
@@ -77,13 +75,13 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
                         ),
-                        _buildTextField(
-                          controller: registerCtrl.professionController,
-                          labelText: 'Profession',
-                          width: isWideScreen
-                              ? constraints.maxWidth * 0.45
-                              : double.infinity,
-                        ),
+                        // _buildProfessionDropdown(
+                        //   context: context,
+                        //   labelText: 'Profession',
+                        //   width: isWideScreen
+                        //       ? constraints.maxWidth * 0.45
+                        //       : double.infinity,
+                        // ),
                         _buildDropdown(
                           context: context,
                           labelText: 'Your gender*',
@@ -98,12 +96,12 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                           width: isWideScreen
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
+                          isAgeField:
+                              true, // Specify that this is the age field
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-
-                    // Profile Picture Upload
                     Column(
                       children: [
                         Text(
@@ -134,21 +132,16 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       ],
                     ),
                     const SizedBox(height: 30),
-
-                    // Register Button with Validation
                     CustomButton(
                       text: 'Register Your Account',
                       onPressed: () {
                         if (_validateForm()) {
-                          registerCtrl.registerUser();
                           // Navigate to preferences screen only if validation passes
                           Get.toNamed(AppRoutes.preferences);
                         }
                       },
                     ),
                     const SizedBox(height: 15),
-
-                    // Terms and Conditions
                     Text.rich(
                       TextSpan(
                         text:
@@ -193,6 +186,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     required String labelText,
     TextInputType keyboardType = TextInputType.text,
     required double width,
+    bool isAgeField = false,
   }) {
     return SizedBox(
       width: width,
@@ -203,6 +197,13 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
           labelText: labelText,
           border: OutlineInputBorder(),
         ),
+        onChanged: (value) {
+          if (isAgeField && value.length > 2) {
+            controller.text = value.substring(0, 2); // Limit to two digits
+            controller.selection = TextSelection.fromPosition(
+                TextPosition(offset: controller.text.length));
+          }
+        },
       ),
     );
   }
@@ -235,6 +236,78 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
       ),
     );
   }
+
+  // Widget _buildProfessionDropdown({
+  //   required BuildContext context,
+  //   required String labelText,
+  //   required double width,
+  // }) {
+  //   return SizedBox(
+  //     width: width,
+  //     child: DropdownButtonFormField<String>(
+  //       value: selectedProfession,
+  //       hint: Text('Select Profession'),
+  //       items: [
+  //         'IT',
+  //         'Medicine',
+  //         'Student',
+  //         'Seeking Job',
+  //         'Content Creator',
+  //         'Others'
+  //       ]
+  //           .map((profession) => DropdownMenuItem(
+  //                 value: profession,
+  //                 child: Text(profession),
+  //               ))
+  //           .toList(),
+  //       onChanged: (value) {
+  //         // setState(() {
+  //         //   selectedProfession = value;
+  //         // });
+  //       },
+  //       decoration: InputDecoration(
+  //         labelText: labelText,
+  //         border: OutlineInputBorder(),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Widget _buildProfessionDropdown({
+  //   required BuildContext context,
+  //   required String labelText,
+  //   required double width,
+  // }) {
+  //   return SizedBox(
+  //     width: width,
+  //     child: DropdownButtonFormField<String>(
+  //       value: registerCtrl.selectedProfession,
+  //       hint: Text('Select Profession'),
+  //       items: [
+  //         'IT',
+  //         'Medicine',
+  //         'Student',
+  //         'Seeking Job',
+  //         'Content Creator',
+  //         'Others'
+  //       ]
+  //           .map((profession) => DropdownMenuItem(
+  //                 value: profession,
+  //                 child: Text(profession),
+  //               ))
+  //           .toList(),
+  //       onChanged: (value) {
+  //         setState(() {
+  //           selectedProfession = value;
+  //         });
+  //       },
+  //       decoration: InputDecoration(
+  //         labelText: labelText,
+  //         border: OutlineInputBorder(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   bool _validateForm() {
     if (registerCtrl.nameController.text.isEmpty ||
