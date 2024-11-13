@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flatemates_ui/auth/auth_controller.dart';
 import 'package:flatemates_ui/models/user_model.dart';
 import 'package:flatemates_ui/services/api_service.dart';
@@ -15,6 +16,7 @@ class RegisterController extends GetxController {
   final ageController = TextEditingController();
   String? selectedGender;
   File? profileImage;
+  String? selectedProfession;
 
   Future<void> pickImage() async {
     final pickedFile =
@@ -29,18 +31,14 @@ class RegisterController extends GetxController {
     if (!_validateForm()) return;
 
     final user = User(
-      phoneNumber: authController.phone.value, // Replace with actual value
+      phone_number: authController.phone.value, // Replace with actual value
       name: nameController.text,
       gender: selectedGender!,
       age: int.tryParse(ageController.text),
-      location: '',
-      foodChoice: '',
-      drinking: false,
-      smoking: false,
-      pet: false,
     );
 
     try {
+      print(user.toJson());
       await _apiService.registerUser(user);
       Get.snackbar('Success', 'User registered successfully!');
       Get.toNamed('/preferences');

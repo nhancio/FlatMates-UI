@@ -1,9 +1,8 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 import '../../../auth/auth_controller.dart';
 import '../../../navigation/app_routes/routes.dart';
 import '../../../res/assets/icons/icons.dart';
@@ -17,7 +16,6 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -26,7 +24,7 @@ class RegisterScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(AppDimensions.medium),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Align to left
+              crossAxisAlignment: CrossAxisAlignment.center, // Align to left
               children: [
                 // Top Icon Bar
                 SizedBox(
@@ -53,7 +51,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: AppDimensions.extraLarge),
+                const SizedBox(height: AppDimensions.extraLarge),
 
                 // Description Text
                 Text(
@@ -63,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                SizedBox(height: AppDimensions.extraLarge),
+                const SizedBox(height: AppDimensions.extraLarge),
 
                 // Responsive Phone Number Input with Flag and Down Arrow
                 LayoutBuilder(
@@ -80,22 +78,25 @@ class RegisterScreen extends StatelessWidget {
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             hintText: 'Enter Number',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            contentPadding: EdgeInsets.symmetric(vertical: AppDimensions.textFieldHeight / 2),
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: AppDimensions.textFieldHeight / 2),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0), // Customize as needed
+                              borderRadius: BorderRadius.circular(
+                                  8.0), // Customize as needed
                             ),
                             prefixIcon: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: Image.asset(
                                     AppIcons.flag, // Country flag icon
                                     height: 24,
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_drop_down,
                                   color: Colors.grey,
                                 ),
@@ -106,13 +107,10 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-
                           ),
                         ),
                       ),
                     );
-
-
                   },
                 ),
                 SizedBox(
@@ -120,18 +118,16 @@ class RegisterScreen extends StatelessWidget {
                 ),
 
                 // Request OTP Button
-                Center(
-                  child: CustomButton(
-                    text: 'Request OTP',
-                    onPressed: () {
-                      authController.phone.value = phoneController.text;
-                      Get.toNamed(AppRoutes.verification);
-                    },
-                  ),
+                CustomButton(
+                  text: 'Request OTP',
+                  onPressed: () {
+                    authController.phone.value = phoneController.text;
+                    Get.toNamed(AppRoutes.verification);
+                  },
                 ),
 
                 // Background Image (optional, can be used for decoration)
-
+                const SizedBox(height: 10),
                 CustomButton(
                   text: 'Google Sign in',
                   onPressed: () async {
@@ -146,8 +142,9 @@ class RegisterScreen extends StatelessWidget {
                     }
                   }, //todo:complete process
                 ),
+                const SizedBox(height: 10),
                 CustomButton(
-                  text: 'Anonymous Sign in',
+                  text: 'Guest Sign in',
                   onPressed: () async {
                     try {
                       // Call the function that may throw an error
