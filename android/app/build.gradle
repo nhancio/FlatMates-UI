@@ -1,3 +1,18 @@
+buildscript {
+    ext.kotlin_version = '1.9.10' // Update to the latest version
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+
+
+
 plugins {
     id "com.android.application"
     // START: FlutterFire Configuration
@@ -77,3 +92,14 @@ dependencies {
 flutter {
     source = "../.."
 }
+ext.kotlin_version = '1.9.10'  // Update to the latest version
+
+android {
+    // Your android config here
+}
+
+android {                                                                                                         
+   defaultConfig {                                                                                                 
+     minSdkVersion 23                                                                                              
+   }                                                                                                               
+ }  
