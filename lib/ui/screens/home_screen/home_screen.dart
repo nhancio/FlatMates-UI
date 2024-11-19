@@ -1,6 +1,9 @@
+import 'package:flatemates_ui/controllers/bottomnav.controller.dart';
+import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../res/assets/images/images.dart';
 import '../../../res/colors/colors.dart';
@@ -8,14 +11,14 @@ import '../../../res/colors/colors.dart';
 class HomePage extends StatefulWidget {
   static const String firstScreen = "assets/images/first_page.png";
 
-  const HomePage({super.key});
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   String? selectedCity;
+  BottomNavController bottomNavController = Get.put(BottomNavController());
+  TabControllerState tabCtrl = Get.put(TabControllerState());
 
   final List<String> cities = [
     'Hitech City, Hyderabad',
@@ -57,11 +60,11 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 60),
+                      SizedBox(height: 60),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             'Hi Daniel',
                             style: TextStyle(
                               fontSize: 18,
@@ -72,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                           Stack(
                             children: [
                               IconButton(
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.notifications,
                                   color: Colors.black,
                                   size: 40,
@@ -85,16 +88,16 @@ class _HomePageState extends State<HomePage> {
                                 right: 8,
                                 top: 8,
                                 child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: const BoxDecoration(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
                                     color: Colors.red,
                                     shape: BoxShape.circle,
                                   ),
-                                  constraints: const BoxConstraints(
+                                  constraints: BoxConstraints(
                                     minWidth: 20,
                                     minHeight: 20,
                                   ),
-                                  child: const Center(
+                                  child: Center(
                                     child: Text(
                                       '5', // Display the number of notifications here
                                       style: TextStyle(
@@ -111,14 +114,14 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      const Text(
+                      Text(
                         "Let's Find Peace For You!",
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       // Search Bar with city dropdown
                       Container(
                         decoration: BoxDecoration(
@@ -127,14 +130,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Row(
                           children: [
-                            const Icon(Icons.search),
-                            const SizedBox(width: 10),
+                            Icon(Icons.search),
+                            SizedBox(width: 10),
                             Expanded(
                               child: DropdownButton<String>(
-                                hint: const Text('Select City'),
+                                hint: Text('Select City'),
                                 value: selectedCity,
                                 isExpanded: true,
-                                icon: const Icon(Icons.arrow_drop_down),
+                                icon: Icon(Icons.arrow_drop_down),
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     selectedCity = newValue;
@@ -167,23 +170,49 @@ class _HomePageState extends State<HomePage> {
                               // First box with image size
                               GestureDetector(
                                 onTap: () {
-                                  _showBottomSheet(context, 'HomemateList');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Scaffold(
+                                              body: HomemateList(),
+                                              appBar: AppBar(
+                                                title: Text("Homemates List"),
+                                              ),
+                                            )),
+                                  );
+                                  // tabCtrl.tabController.index = 0;
+                                  // bottomNavController.setIndex(
+                                  //     2); // For example, to navigate to the 'Saved' screen
+
+                                  // _showBottomSheet(context, 'HomemateList');
                                 },
                                 child: _buildServiceCard(
                                   'assets/images/look_roommate.png',
                                   180.0, // Width of the box
-                                  120.0, // Height of the image
+                                  180.0, // Height of the image
                                 ),
                               ),
                               // Second box with image size
                               GestureDetector(
                                 onTap: () {
-                                  _showBottomSheet(context, 'RoomList');
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Scaffold(
+                                              body: RoomList(),
+                                              appBar: AppBar(
+                                                title: Text("Rooms List"),
+                                              ),
+                                            )),
+                                  );
+                                  // bottomNavController.setIndex(2);
+                                  // tabCtrl.tabController.index = 1;
+                                  // _showBottomSheet(context, 'RoomList');
                                 },
                                 child: _buildServiceCard(
                                   'assets/images/look_room.png',
                                   180.0, // Width of the box
-                                  120.0, // Height of the image
+                                  180.0, // Height of the image
                                 ),
                               ),
                             ],
@@ -200,8 +229,8 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: _buildServiceCard(
                               'assets/images/list_room.png',
-                              180.0, // Width of the box
-                              120.0, // Height of the image
+                              190.0, // Width of the box
+                              190.0, // Height of the image
                             ),
                           ),
                         ],
@@ -222,7 +251,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       isScrollControlled: true, // Allows flexible height
       backgroundColor: Colors.transparent, // To make the background transparent
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0), // Adjust left curve
           topRight: Radius.circular(30.0), // Adjust right curve
@@ -230,7 +259,7 @@ class _HomePageState extends State<HomePage> {
       ),
       builder: (context) {
         return ClipRRect(
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
             topLeft: Radius.circular(
                 30.0), // Match the same radius for the container
             topRight: Radius.circular(
@@ -259,7 +288,7 @@ class _HomePageState extends State<HomePage> {
       String imagePath, double boxWidth, double imageHeight) {
     return Container(
       width: boxWidth, // Width of the box
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
       child: Column(
         children: [
           Image.asset(

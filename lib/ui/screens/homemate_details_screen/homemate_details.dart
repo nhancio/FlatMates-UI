@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../res/bottom/bottom_bar.dart';
+
 class HomeMateDetailsScreen extends StatelessWidget {
   final String name = 'Daniel';
   final int age = 26;
   final String profession = 'Artist';
   final String matchPercentage = '80%';
-
-  const HomeMateDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,18 @@ class HomeMateDetailsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+                  (route) => false,
+            );
+          },
         ),
-        title: const Text(
+        title: Text(
           'HomeMate Details',
-          style: TextStyle(
-              color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
       backgroundColor: Colors.white,
@@ -41,7 +46,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  SizedBox(
+                  Container(
                     width: double.infinity,
                     height: screenWidth < 600
                         ? screenWidth * 0.6
@@ -50,8 +55,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       child: Image.asset(
                         'assets/images/daniel.png',
-                        fit:
-                            BoxFit.contain, // Ensure the image is fully visible
+                        fit: BoxFit.contain, // Ensure the image is fully visible
                       ),
                     ),
                   ),
@@ -63,7 +67,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
                       children: [
                         Text(
                           '$name, $age',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -71,7 +75,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
                         ),
                         Text(
                           profession,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             color: Colors.white,
                           ),
@@ -83,18 +87,18 @@ class HomeMateDetailsScreen extends StatelessWidget {
                     right: 16,
                     bottom: 16,
                     child: Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.purple.withOpacity(0.8),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Text(
                         '$matchPercentage Matched',
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     right: 16,
                     top: 16,
                     child: Icon(
@@ -105,7 +109,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // Basics Section
             _buildSectionTitle('Basics'),
@@ -115,41 +119,30 @@ class HomeMateDetailsScreen extends StatelessWidget {
 
             // Interest Section
             _buildSectionTitle('Interest'),
-            _buildChipRow([
-              'Street Food',
-              'Live Music',
-              'Travel',
-              'Reading',
-              'Festivals'
-            ]),
+            _buildChipRow(['Street Food', 'Live Music', 'Travel', 'Reading', 'Festivals']),
 
             // Lifestyle Section
             _buildSectionTitle('Lifestyle'),
-            _buildChipRow(
-                ['Non-smoker', 'Cat', 'Vegan', 'On special occasions']),
+            _buildChipRow(['Non-smoker', 'Cat', 'Vegan', 'On special occasions']),
 
             // Preferences Section
             _buildSectionTitle('Preference'),
             _buildPreferenceRow(),
 
             // Message Button
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   // Handle message action
                 },
+                child: Text('Message',style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFB60F6E),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                  backgroundColor: Color(0xFFB60F6E),
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                ),
-                child: Text(
-                  'Message',
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
@@ -164,7 +157,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -175,10 +168,10 @@ class HomeMateDetailsScreen extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: Colors.black54),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(
             info,
-            style: const TextStyle(fontSize: 16, color: Colors.black54),
+            style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
         ],
       ),
@@ -192,10 +185,10 @@ class HomeMateDetailsScreen extends StatelessWidget {
       children: items
           .map(
             (item) => Chip(
-              label: Text(item),
-              backgroundColor: Colors.grey[200],
-            ),
-          )
+          label: Text(item),
+          backgroundColor: Colors.grey[200],
+        ),
+      )
           .toList(),
     );
   }
@@ -221,10 +214,10 @@ class HomeMateDetailsScreen extends StatelessWidget {
               height: 60,
               width: 60,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               pref['title']!,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ],
         );

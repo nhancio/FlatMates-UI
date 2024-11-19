@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../res/bottom/bottom_bar.dart';
+
 class RoomDetailScreen extends StatelessWidget {
   final String roomName = 'Andrea';
   final String price = '\$2000';
   final String matchPercentage = '80%';
-
-  const RoomDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +14,18 @@ class RoomDetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+                  (route) => false,
+            );
+          },
         ),
-        title: const Text(
+        title: Text(
           'Room Detail',
-          style: TextStyle(
-              color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
       backgroundColor: Colors.white,
@@ -38,8 +43,7 @@ class RoomDetailScreen extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: AspectRatio(
-                  aspectRatio:
-                      16 / 9, // Maintain a 16:9 aspect ratio for the image
+                  aspectRatio: 16 / 9, // Maintain a 16:9 aspect ratio for the image
                   child: Image.asset(
                     'assets/images/room.png',
                     fit: BoxFit.cover,
@@ -47,12 +51,12 @@ class RoomDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
 
             // Room Details
             Text(
               roomName,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -60,21 +64,21 @@ class RoomDetailScreen extends StatelessWidget {
             ),
             Text(
               price,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 color: Colors.black,
               ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 16),
-              padding: const EdgeInsets.all(8),
+              margin: EdgeInsets.symmetric(vertical: 16),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: Colors.purple.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
                 '$matchPercentage Matched',
-                style: const TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white),
               ),
             ),
 
@@ -90,27 +94,22 @@ class RoomDetailScreen extends StatelessWidget {
 
             // Lifestyle Section
             _buildSectionTitle('Lifestyle'),
-            _buildChipRow(
-                ['Non-smoker', 'Cat', 'Vegan', 'On special occasions']),
+            _buildChipRow(['Non-smoker', 'Cat', 'Vegan', 'On special occasions']),
 
             // Message Button
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   // Handle message action
                 },
+                child: Text('Message',style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFB60F6E),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                  backgroundColor: Color(0xFFB60F6E),
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                ),
-                child: Text(
-                  'Message',
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
@@ -125,7 +124,7 @@ class RoomDetailScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -136,10 +135,10 @@ class RoomDetailScreen extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: Colors.black54),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(
             info,
-            style: const TextStyle(fontSize: 16, color: Colors.black54),
+            style: TextStyle(fontSize: 16, color: Colors.black54),
           ),
         ],
       ),
@@ -153,10 +152,10 @@ class RoomDetailScreen extends StatelessWidget {
       children: items
           .map(
             (item) => Chip(
-              label: Text(item),
-              backgroundColor: Colors.grey[200],
-            ),
-          )
+          label: Text(item),
+          backgroundColor: Colors.grey[200],
+        ),
+      )
           .toList(),
     );
   }

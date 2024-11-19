@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,15 +10,13 @@ import '../../../res/font/text_style.dart';
 import '../../../widgets/custom_button/custom_button.dart';
 
 class VerificationScreen extends StatefulWidget {
-  const VerificationScreen({super.key});
-
   @override
   _VerificationScreenState createState() => _VerificationScreenState();
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
   final List<TextEditingController> _controllers =
-      List.generate(4, (index) => TextEditingController());
+  List.generate(4, (index) => TextEditingController());
   final List<FocusNode> _focusNodes = List.generate(4, (index) => FocusNode());
   final AuthController authController = Get.put(AuthController());
 
@@ -96,7 +95,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppDimensions.small),
+              SizedBox(height: AppDimensions.small),
               Text(
                 'We have already sent the 4-digit code to +91 ${authController.phone ?? 'your phone number'}, please fill it in below',
                 style: AppTextStyles.bodyStyle(context).copyWith(
@@ -104,13 +103,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 ),
                 textAlign: TextAlign.start,
               ),
-              const SizedBox(height: AppDimensions.extraLarge),
+              SizedBox(height: AppDimensions.extraLarge),
               Center(
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 10,
-                  children:
-                      List.generate(4, (index) => _buildOTPBox(context, index)),
+                  children: List.generate(4, (index) => _buildOTPBox(context, index)),
                 ),
               ),
               const SizedBox(height: 20),
@@ -167,12 +165,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
       height: 60,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color:
-            _focusNodes[index].hasFocus ? Colors.grey[200] : Colors.transparent,
+        color: _focusNodes[index].hasFocus ? Colors.grey[200] : Colors.transparent,
         border: Border.all(
-          color: _focusNodes[index].hasFocus
-              ? AppColors.primaryColor
-              : Colors.grey,
+          color: _focusNodes[index].hasFocus ? AppColors.primaryColor : Colors.grey,
         ),
         borderRadius: BorderRadius.circular(12),
       ),
@@ -195,3 +190,4 @@ class _VerificationScreenState extends State<VerificationScreen> {
     );
   }
 }
+

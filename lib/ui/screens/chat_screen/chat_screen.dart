@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../res/bottom/bottom_bar.dart';
+
 class ChatListScreen extends StatelessWidget {
   final List<Map<String, dynamic>> chats = [
     {
@@ -53,32 +55,34 @@ class ChatListScreen extends StatelessWidget {
     },
   ];
 
-  const ChatListScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Message',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Color(0xFFB60F6E),
+            color:Color(0xFFB60F6E),
           ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+                  (route) => false,
+            );
           },
         ),
       ),
       body: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         itemCount: chats.length,
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -90,33 +94,32 @@ class ChatListScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              margin: const EdgeInsets.symmetric(vertical: 8),
+              margin: EdgeInsets.symmetric(vertical: 8),
               color: Colors.white60,
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Row(
                   children: [
                     CircleAvatar(
                       backgroundImage: AssetImage(chats[index]['profilePic']),
                       radius: 30,
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             chats[index]['name'],
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text(
                             chats[index]['message'],
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.grey,
                               fontSize: 14,
                             ),
@@ -131,8 +134,7 @@ class ChatListScreen extends StatelessWidget {
                       children: [
                         Text(
                           chats[index]['time'],
-                          style:
-                              const TextStyle(fontSize: 12, color: Colors.grey),
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                         if (chats[index]['unreadCount'] > 0)
                           Container(
@@ -147,8 +149,7 @@ class ChatListScreen extends StatelessWidget {
                             ),
                             child: Text(
                               chats[index]['unreadCount'].toString(),
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 12),
+                              style: TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ),
                       ],

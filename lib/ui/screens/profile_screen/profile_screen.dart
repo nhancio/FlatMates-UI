@@ -1,11 +1,12 @@
+
 import 'package:flatemates_ui/ui/screens/profile_screen/contact_us.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/profile_intro.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/term_condition.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+import '../../../res/bottom/bottom_bar.dart';
 
+class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,8 +14,14 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+                  (route) => false,
+            );
+          },
         ),
       ),
       backgroundColor: Colors.white,
@@ -36,15 +43,16 @@ class ProfileScreen extends StatelessWidget {
                     padding: EdgeInsets.all(cardPadding),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border:
-                          Border.all(color: const Color(0xFFB60F6E), width: 2),
+                      border: Border.all( color:Color(0xFFB60F6E), width: 2),
                     ),
                     child: InkWell(
+
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ProfileIntroScreen()));
+
                       },
                       child: Row(
                         children: [
@@ -57,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          const SizedBox(width: 16),
+                          SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,10 +75,10 @@ class ProfileScreen extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: fontSize,
                                     fontWeight: FontWeight.bold,
-                                    color: const Color(0xFFB60F6E),
+                                    color:Color(0xFFB60F6E),
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: 4),
                                 Text(
                                   'Male | 0987654321',
                                   style: TextStyle(
@@ -85,7 +93,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
 
                   // More Options
                   _buildSectionTitle('More', fontSize),
@@ -100,6 +108,7 @@ class ProfileScreen extends StatelessWidget {
                   _buildOptionItem(context, 'Feedback', Icons.feedback_outlined,
                       subtitle: 'Help Us To Improve More', onTap: () {}),
 
+
                   _buildOptionItem(
                     context,
                     'Contact Us',
@@ -107,8 +116,10 @@ class ProfileScreen extends StatelessWidget {
                     subtitle: 'We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
+
                       MaterialPageRoute(
                           builder: (context) => ContactUsScreen()),
+
                     ),
                   ),
 
@@ -116,6 +127,7 @@ class ProfileScreen extends StatelessWidget {
                     context,
                     'Terms and Conditions',
                     Icons.article_outlined,
+
                     subtitle: ' We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
@@ -123,7 +135,7 @@ class ProfileScreen extends StatelessWidget {
                           builder: (context) => TermsConditionsScreen()),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   // _buildOptionItem(
                   //   context,
                   //   'Rental Agreement',
@@ -155,6 +167,7 @@ class ProfileScreen extends StatelessWidget {
 
                   _buildOptionItem(context, 'Logout', Icons.logout,
                       subtitle: 'You can log in anytime.', onTap: () {}),
+
                 ],
               ),
             ),
@@ -180,22 +193,24 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildOptionItem(BuildContext context, String title, IconData icon,
       {String? subtitle, required VoidCallback onTap}) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+      contentPadding: EdgeInsets.symmetric(vertical: 8),
       title: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
       ),
       subtitle: subtitle != null
           ? Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            )
+
+        subtitle,
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.grey,
+        ),
+      )
+
           : null,
       trailing: Icon(icon, color: Colors.grey),
       onTap: onTap,
@@ -203,16 +218,17 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
+
 void _showLogoutDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Log Out'),
-        content: const Text('Are you sure you want to log out?'),
+        title: Text('Log Out'),
+        content: Text('Are you sure you want to log out?'),
         actions: [
           TextButton(
-            child: const Text(
+            child: Text(
               'Cancel',
               style: TextStyle(color: Colors.grey),
             ),
@@ -221,6 +237,7 @@ void _showLogoutDialog(BuildContext context) {
             },
           ),
           ElevatedButton(
+            child: Text('Yes'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.purple,
             ),
@@ -228,13 +245,13 @@ void _showLogoutDialog(BuildContext context) {
               Navigator.of(context).pop(); // Close the dialog
               // Perform the logout action here
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('You have been logged out.')),
+                SnackBar(content: Text('You have been logged out.')),
               );
             },
-            child: Text('Yes'),
           ),
         ],
       );
     },
   );
 }
+

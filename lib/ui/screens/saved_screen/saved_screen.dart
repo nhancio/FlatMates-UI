@@ -1,42 +1,53 @@
+import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/ui/screens/homemate_details_screen/homemate_details.dart';
 import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flutter/material.dart';
 
-class HomemateRoomScreen extends StatelessWidget {
-  const HomemateRoomScreen({super.key});
+import '../../../res/bottom/bottom_bar.dart';
 
+import 'package:get/get.dart';
+
+class HomemateRoomScreen extends StatelessWidget {
+  final TabControllerState tabControllerState = Get.put(TabControllerState());
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: const Text(
-            "Homemate & Room",
-            style: TextStyle(color: Colors.purple),
-          ),
-          bottom: const TabBar(
-            indicatorColor: Colors.purple,
-            labelColor: Colors.purple,
-            unselectedLabelColor: Colors.grey,
-            tabs: [
-              Tab(text: 'Homemate'),
-              Tab(text: 'Room'),
-            ],
-          ),
+    // Initialize the GetX TabController
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+              (route) => false,
+            );
+          },
         ),
-        body: TabBarView(
-          children: [
-            HomemateList(),
-            RoomList(),
+        title: Text(
+          "Homemate & Room",
+          style: TextStyle(color: Colors.purple),
+        ),
+        bottom: TabBar(
+          controller: tabControllerState.tabController, // Assign TabController
+          indicatorColor: Colors.purple,
+          labelColor: Colors.purple,
+          unselectedLabelColor: Colors.grey,
+          tabs: [
+            Tab(text: 'Homemate'),
+            Tab(text: 'Room'),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: tabControllerState.tabController, // Assign TabController
+        children: [
+          HomemateList(),
+          RoomList(),
+        ],
       ),
     );
   }
@@ -74,8 +85,6 @@ class HomemateList extends StatelessWidget {
     },
   ];
 
-  const HomemateList({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -95,9 +104,8 @@ class HomemateList extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 16),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            color: Colors.purple,
             child: Padding(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
                   ClipRRect(
@@ -109,30 +117,31 @@ class HomemateList extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Name: ${homemates[index]['name']}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text('Age: ${homemates[index]['age']}',
-                            style: TextStyle(color: Colors.white)),
+                            style: const TextStyle(color: Colors.white)),
                         Text('Profession: ${homemates[index]['profession']}',
-                            style: TextStyle(color: Colors.white)),
+                            style: const TextStyle(color: Colors.white)),
                         Text('Location: ${homemates[index]['location']}',
-                            style: TextStyle(color: Colors.white)),
+                            style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
-                  Icon(Icons.bookmark_border, color: Colors.white),
+                  const Icon(Icons.bookmark_border, color: Colors.white),
                 ],
               ),
             ),
+            color: Colors.purple,
           ),
         );
       },
@@ -162,8 +171,6 @@ class RoomList extends StatelessWidget {
     },
   ];
 
-  const RoomList({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -183,9 +190,8 @@ class RoomList extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 16),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            color: Colors.purple,
             child: Padding(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
                   ClipRRect(
@@ -197,28 +203,29 @@ class RoomList extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Rent: ${rooms[index]['rent']}',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text('Furnished: ${rooms[index]['furnished']}',
-                            style: TextStyle(color: Colors.white)),
+                            style: const TextStyle(color: Colors.white)),
                         Text('Location: ${rooms[index]['location']}',
-                            style: TextStyle(color: Colors.white)),
+                            style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
-                  Icon(Icons.bookmark_border, color: Colors.white),
+                  const Icon(Icons.bookmark_border, color: Colors.white),
                 ],
               ),
             ),
+            color: Colors.purple,
           ),
         );
       },

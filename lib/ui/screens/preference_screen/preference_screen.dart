@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PreferenceScreen extends StatefulWidget {
-  const PreferenceScreen({super.key});
-
   @override
   _PreferenceScreenState createState() => _PreferenceScreenState();
 }
@@ -42,6 +40,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               SizedBox(
                 height: MediaQuery.of(context).size.height > 600 ? 60 : 100,
               ),
@@ -79,14 +78,13 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                 itemBuilder: (context, index) {
                   return _buildPreferenceItem(context, preferenceItems[index]);
                 },
-              ),
-              const SizedBox(height: 20),
+              ),    const SizedBox(height: 20),
               if (errorMessage != null) ...[
                 Center(
                   child: Text(
                     errorMessage!,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.red, fontSize: 14),
+                    style: TextStyle(color: Colors.red, fontSize: 14),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -106,14 +104,14 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                         Get.toNamed(AppRoutes.bottomNavBar);
                       } else {
                         setState(() {
-                          errorMessage =
-                              'Please select at least 5 preferences.';
+                          errorMessage = 'Please select at least 5 preferences.';
                         });
                       }
                     },
                   ),
                 ),
               ),
+
               const SizedBox(height: 16),
             ],
           ),
@@ -192,7 +190,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
               Text(
                 item.name,
                 style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ],
