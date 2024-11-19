@@ -7,25 +7,25 @@ class CustomTextField extends StatelessWidget {
   final double height;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.keyboardType,
     required this.hintText,
     this.height = 50.0, // Default height
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: height,
       child: TextField(
-
         controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           hintText: hintText,
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          border: const OutlineInputBorder(),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         ),
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +10,8 @@ import '../../../res/font/text_style.dart';
 import '../../../widgets/custom_button/custom_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -39,8 +40,11 @@ class WelcomeScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(
-                  horizontal: isWideScreen ? AppDimensions.large : AppDimensions.small,
-                  vertical: isWideScreen ? AppDimensions.extraLarge : AppDimensions.medium,
+                  horizontal:
+                      isWideScreen ? AppDimensions.large : AppDimensions.small,
+                  vertical: isWideScreen
+                      ? AppDimensions.extraLarge
+                      : AppDimensions.medium,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -49,10 +53,15 @@ class WelcomeScreen extends StatelessWidget {
                     // Image Section
                     Image.asset(
                       Images.firstScreenIcon,
-                      height: isWideScreen ? AppDimensions.largeImageHeight : AppDimensions.smallImageHeight,
+                      height: isWideScreen
+                          ? AppDimensions.largeImageHeight
+                          : AppDimensions.smallImageHeight,
                       fit: BoxFit.contain,
                     ),
-                    SizedBox(height: isWideScreen ? AppDimensions.medium : AppDimensions.small),
+                    SizedBox(
+                        height: isWideScreen
+                            ? AppDimensions.medium
+                            : AppDimensions.small),
 
                     // Title Section with Gradient Text
                     Row(
@@ -60,38 +69,55 @@ class WelcomeScreen extends StatelessWidget {
                       children: [
                         ShaderMask(
                           shaderCallback: (Rect bounds) {
-                            return LinearGradient(
-                              colors: <Color>[Color(0xFF561583), Color(0xFF561583)],
+                            return const LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF561583),
+                                Color(0xFF561583)
+                              ],
                             ).createShader(bounds);
                           },
                           child: Text(
                             "HOMEMATES",
-                            style: AppTextStyles.largeTitleStyle(context).copyWith(
-                              fontSize: isWideScreen ? 34 : 26, // Responsive font size
+                            style:
+                                AppTextStyles.largeTitleStyle(context).copyWith(
+                              fontSize: isWideScreen
+                                  ? 34
+                                  : 26, // Responsive font size
                               fontFamily: AppFonts.familyPoppins,
-                              color: Colors.white, // White to ensure the shader shows
+                              color: Colors
+                                  .white, // White to ensure the shader shows
                             ),
                           ),
                         ),
                         ShaderMask(
                           shaderCallback: (Rect bounds) {
-                            return LinearGradient(
-                              colors: <Color>[Color(0xFFb60f6e), Color(0xFFb60f6e)],
+                            return const LinearGradient(
+                              colors: <Color>[
+                                Color(0xFFb60f6e),
+                                Color(0xFFb60f6e)
+                              ],
                             ).createShader(bounds);
                           },
                           child: Text(
                             ".AI",
-                            style: AppTextStyles.largeTitleStyle(context).copyWith(
-                              fontSize: isWideScreen ? 34 : 26, // Responsive font size
+                            style:
+                                AppTextStyles.largeTitleStyle(context).copyWith(
+                              fontSize: isWideScreen
+                                  ? 34
+                                  : 26, // Responsive font size
                               fontFamily: AppFonts.familyPoppins,
-                              color: Colors.white, // White to ensure the shader shows
+                              color: Colors
+                                  .white, // White to ensure the shader shows
                             ),
                           ),
                         ),
                       ],
                     ),
 
-                    SizedBox(height: isWideScreen ? AppDimensions.small : AppDimensions.extraSmall),
+                    SizedBox(
+                        height: isWideScreen
+                            ? AppDimensions.small
+                            : AppDimensions.extraSmall),
 
                     // Tagline
                     Text(
@@ -110,7 +136,8 @@ class WelcomeScreen extends StatelessWidget {
                       child: CustomButton(
                         text: 'Login/Sign Up',
                         onPressed: () {
-                          Get.toNamed(AppRoutes.register); // Use GetX for navigation
+                          Get.toNamed(
+                              AppRoutes.register); // Use GetX for navigation
                         },
                       ),
                     ),
@@ -124,4 +151,3 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
-

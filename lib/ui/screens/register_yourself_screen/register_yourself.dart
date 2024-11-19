@@ -12,6 +12,8 @@ import '../../../res/colors/colors.dart';
 import '../../../widgets/custom_button/custom_button.dart'; // For kIsWeb
 
 class RegisterUserScreen extends StatefulWidget {
+  const RegisterUserScreen({super.key});
+
   @override
   _RegisterUserScreenState createState() => _RegisterUserScreenState();
 }
@@ -75,13 +77,20 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
                         ),
-                        _buildProfessionDropdown(
-                          context: context,
-                          labelText: 'Profession',
-                          width: isWideScreen
-                              ? constraints.maxWidth * 0.45
-                              : double.infinity,
-                        ),
+                        // _buildProfessionDropdown(
+                        //   context: context,
+                        //   labelText: 'Profession',
+                        //   width: isWideScreen
+                        //       ? constraints.maxWidth * 0.45
+                        //       : double.infinity,
+                        // ),
+                        // _buildProfessionDropdown(
+                        //   context: context,
+                        //   labelText: 'Profession',
+                        //   width: isWideScreen
+                        //       ? constraints.maxWidth * 0.45
+                        //       : double.infinity,
+                        // ),
                         _buildDropdown(
                           context: context,
                           labelText: 'Your gender*',
@@ -159,7 +168,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               decoration: TextDecoration.underline,
                             ),
                           ),
-                          TextSpan(text: ', '),
+                          const TextSpan(text: ', '),
                           TextSpan(
                             text: 'Privacy Policy',
                             style: AppTextStyles.bodyStyle(context).copyWith(
@@ -196,7 +205,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: labelText,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
         onChanged: (value) {
           if (isAgeField && value.length > 2) {
@@ -218,7 +227,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
       width: width,
       child: DropdownButtonFormField<String>(
         value: registerCtrl.selectedGender,
-        hint: Text('Gender'),
+        hint: const Text('Gender'),
         items: ['Male', 'Female', 'Other']
             .map((gender) => DropdownMenuItem(
                   value: gender,
@@ -232,7 +241,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         },
         decoration: InputDecoration(
           labelText: labelText,
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
         ),
       ),
     );
@@ -274,41 +283,41 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   //   );
   // }
 
-  Widget _buildProfessionDropdown({
-    required BuildContext context,
-    required String labelText,
-    required double width,
-  }) {
-    return SizedBox(
-      width: width,
-      child: DropdownButtonFormField<String>(
-        value: registerCtrl.selectedProfession,
-        hint: Text('Select Profession'),
-        items: [
-          'IT',
-          'Medicine',
-          'Student',
-          'Seeking Job',
-          'Content Creator',
-          'Others'
-        ]
-            .map((profession) => DropdownMenuItem(
-                  value: profession,
-                  child: Text(profession),
-                ))
-            .toList(),
-        onChanged: (value) {
-          setState(() {
-            registerCtrl.selectedProfession = value;
-          });
-        },
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: OutlineInputBorder(),
-        ),
-      ),
-    );
-  }
+  // Widget _buildProfessionDropdown({
+  //   required BuildContext context,
+  //   required String labelText,
+  //   required double width,
+  // }) {
+  //   return SizedBox(
+  //     width: width,
+  //     child: DropdownButtonFormField<String>(
+  //       value: registerCtrl.selectedProfession,
+  //       hint: Text('Select Profession'),
+  //       items: [
+  //         'IT',
+  //         'Medicine',
+  //         'Student',
+  //         'Seeking Job',
+  //         'Content Creator',
+  //         'Others'
+  //       ]
+  //           .map((profession) => DropdownMenuItem(
+  //                 value: profession,
+  //                 child: Text(profession),
+  //               ))
+  //           .toList(),
+  //       onChanged: (value) {
+  //         setState(() {
+  //           selectedProfession = value;
+  //         });
+  //       },
+  //       decoration: InputDecoration(
+  //         labelText: labelText,
+  //         border: OutlineInputBorder(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   bool _validateForm() {
     if (registerCtrl.nameController.text.isEmpty ||

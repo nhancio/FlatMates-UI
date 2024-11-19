@@ -1,5 +1,3 @@
-
-
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,8 @@ import '../../../res/colors/colors.dart';
 
 class HomePage extends StatefulWidget {
   static const String firstScreen = "assets/images/first_page.png";
+
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isWideScreen = constraints.maxWidth > 600;
@@ -34,19 +33,17 @@ class _HomePageState extends State<HomePage> {
             children: [
               // Background Image
               Positioned(
-
                 child: Image.asset(
                   Images.firstScreen,
                   fit: BoxFit.cover,
-                  height: MediaQuery.of(context).size.height, // Full screen height
-                  width: MediaQuery.of(context).size.width,  // Full screen width
+                  height:
+                      MediaQuery.of(context).size.height, // Full screen height
+                  width: MediaQuery.of(context).size.width, // Full screen width
                 ),
               ),
               // Foreground Content with Gradient Overlay for better readability
               Positioned.fill(
                 child: Container(
-
-
                   color: AppColors.backgroundOpacity.withOpacity(0.5),
                 ),
               ),
@@ -60,22 +57,26 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 60),
+                      const SizedBox(height: 60),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Hi Daniel',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color:Color(0xFFB60F6E),
+                              color: Color(0xFFB60F6E),
                             ),
                           ),
                           Stack(
                             children: [
                               IconButton(
-                                icon: Icon(Icons.notifications, color: Colors.black,size: 40,),
+                                icon: const Icon(
+                                  Icons.notifications,
+                                  color: Colors.black,
+                                  size: 40,
+                                ),
                                 onPressed: () {
                                   // Handle notifications button press
                                 },
@@ -84,16 +85,16 @@ class _HomePageState extends State<HomePage> {
                                 right: 8,
                                 top: 8,
                                 child: Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
                                     color: Colors.red,
                                     shape: BoxShape.circle,
                                   ),
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                     minWidth: 20,
                                     minHeight: 20,
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Text(
                                       '5', // Display the number of notifications here
                                       style: TextStyle(
@@ -110,14 +111,14 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      Text(
+                      const Text(
                         "Let's Find Peace For You!",
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Search Bar with city dropdown
                       Container(
                         decoration: BoxDecoration(
@@ -126,20 +127,21 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.search),
-                            SizedBox(width: 10),
+                            const Icon(Icons.search),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: DropdownButton<String>(
-                                hint: Text('Select City'),
+                                hint: const Text('Select City'),
                                 value: selectedCity,
                                 isExpanded: true,
-                                icon: Icon(Icons.arrow_drop_down),
+                                icon: const Icon(Icons.arrow_drop_down),
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     selectedCity = newValue;
                                   });
                                 },
-                                items: cities.map<DropdownMenuItem<String>>((String city) {
+                                items: cities.map<DropdownMenuItem<String>>(
+                                    (String city) {
                                   return DropdownMenuItem<String>(
                                     value: city,
                                     child: Text(city),
@@ -152,7 +154,8 @@ class _HomePageState extends State<HomePage> {
                       ),
 
                       SizedBox(
-                        height: MediaQuery.of(context).size.height > 600 ? 60 : 100,
+                        height:
+                            MediaQuery.of(context).size.height > 600 ? 60 : 100,
                       ),
                       Column(
                         children: [
@@ -168,8 +171,8 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 child: _buildServiceCard(
                                   'assets/images/look_roommate.png',
-                                  180.0,  // Width of the box
-                                  120.0,  // Height of the image
+                                  180.0, // Width of the box
+                                  120.0, // Height of the image
                                 ),
                               ),
                               // Second box with image size
@@ -179,11 +182,10 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 child: _buildServiceCard(
                                   'assets/images/look_room.png',
-                                  180.0,  // Width of the box
-                                  120.0,  // Height of the image
+                                  180.0, // Width of the box
+                                  120.0, // Height of the image
                                 ),
                               ),
-
                             ],
                           ),
                           // Third box with image size (in a separate column to avoid overflow)
@@ -198,8 +200,8 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: _buildServiceCard(
                               'assets/images/list_room.png',
-                              180.0,  // Width of the box
-                              120.0,  // Height of the image
+                              180.0, // Width of the box
+                              120.0, // Height of the image
                             ),
                           ),
                         ],
@@ -220,17 +222,19 @@ class _HomePageState extends State<HomePage> {
       context: context,
       isScrollControlled: true, // Allows flexible height
       backgroundColor: Colors.transparent, // To make the background transparent
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),  // Adjust left curve
+          topLeft: Radius.circular(30.0), // Adjust left curve
           topRight: Radius.circular(30.0), // Adjust right curve
         ),
       ),
       builder: (context) {
         return ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0), // Match the same radius for the container
-            topRight: Radius.circular(30.0), // Match the same radius for the container
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(
+                30.0), // Match the same radius for the container
+            topRight: Radius.circular(
+                30.0), // Match the same radius for the container
           ),
           child: Container(
             height: 700, // Increased height
@@ -241,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: listType == 'HomemateList'
                       ? HomemateList() // Show HomemateRoomScreen content
-                      : RoomList(),  // Show RoomListingPage content
+                      : RoomList(), // Show RoomListingPage content
                 ),
               ],
             ),
@@ -251,15 +255,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildServiceCard(String imagePath, double boxWidth, double imageHeight) {
+  Widget _buildServiceCard(
+      String imagePath, double boxWidth, double imageHeight) {
     return Container(
-      width: boxWidth,  // Width of the box
-      padding: EdgeInsets.all(10),
+      width: boxWidth, // Width of the box
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Image.asset(
             imagePath,
-            height: imageHeight,  // Height of the image, dynamic size
+            height: imageHeight, // Height of the image, dynamic size
             fit: BoxFit.contain,
           ),
           // Optionally, you can add a title or other content here
@@ -267,9 +272,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
-
-
-
-

@@ -36,7 +36,7 @@ Dio getDio() {
       print('Response: ${response.data}');
       return handler.next(response);
     },
-    onError: (DioError e, handler) {
+    onError: (DioException e, handler) {
       print('Error: ${e.response?.data}');
       return handler.next(e);
     },

@@ -9,6 +9,8 @@ class ProfileIntroScreen extends StatelessWidget {
   final TextEditingController smokingController = TextEditingController();
   final TextEditingController petController = TextEditingController();
 
+  ProfileIntroScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,12 +18,13 @@ class ProfileIntroScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
+        title: const Text(
           'Profile',
-          style: TextStyle(color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
       backgroundColor: Colors.white,
@@ -33,7 +36,7 @@ class ProfileIntroScreen extends StatelessWidget {
             children: [
               // Profile Card
               Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: Colors.purple, width: 2),
@@ -49,8 +52,8 @@ class ProfileIntroScreen extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    SizedBox(width: 16),
-                    Column(
+                    const SizedBox(width: 16),
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -74,7 +77,7 @@ class ProfileIntroScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // About You Section
               _buildTextField('Gender', genderController),
@@ -85,16 +88,16 @@ class ProfileIntroScreen extends StatelessWidget {
               _buildTextField('Smoking', smokingController),
               _buildTextField('Pet', petController),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Preferences Section
-              Text(
+              const Text(
                 'Preference',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildPreferenceRow(),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Save Button
               Center(
@@ -102,14 +105,15 @@ class ProfileIntroScreen extends StatelessWidget {
                   onPressed: () {
                     // Handle save action, like saving the user's input data
                   },
-                  child: Text('Save'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
+                  child: Text('Save'),
                 ),
               ),
             ],
@@ -155,10 +159,10 @@ class ProfileIntroScreen extends StatelessWidget {
               height: 60,
               width: 60,
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               pref['title']!,
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ],
         );

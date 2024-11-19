@@ -17,6 +17,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'HomeMates App',
       theme: ThemeData(
         fontFamily: AppFonts.familyPoppins,
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           displayLarge: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
           bodyLarge: TextStyle(fontSize: 16.0, color: Colors.black),
         ),

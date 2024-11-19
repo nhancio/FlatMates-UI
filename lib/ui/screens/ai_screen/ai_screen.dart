@@ -7,6 +7,8 @@ class VoiceInputScreen extends StatelessWidget {
   static const String pause = "assets/icons/pause.png";
   static const String delete = "assets/icons/delete.png";
 
+  const VoiceInputScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +16,7 @@ class VoiceInputScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -25,13 +27,13 @@ class VoiceInputScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Robot image and Title
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(
+                  const Flexible(
                     child: Text(
                       'Tell Us More\nAbout Your Requirements',
                       style: TextStyle(
@@ -43,7 +45,7 @@ class VoiceInputScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Image.asset(
                     robot,
                     height: 80,
@@ -51,7 +53,7 @@ class VoiceInputScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Mic button with ripple animation
               GestureDetector(
@@ -59,7 +61,7 @@ class VoiceInputScreen extends StatelessWidget {
                   // Handle voice recording
                 },
                 child: Container(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Image.asset(
                     mic,
                     height: 250,
@@ -67,9 +69,9 @@ class VoiceInputScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-              Text(
+              const Text(
                 'TAP & SPEAK',
                 style: TextStyle(
                   fontSize: 18,
@@ -77,7 +79,7 @@ class VoiceInputScreen extends StatelessWidget {
                   color: Colors.purple,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Control buttons: Reload, Pause, Delete
               Row(
@@ -103,23 +105,27 @@ class VoiceInputScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Done button
               ElevatedButton(
                 onPressed: () {
                   // Handle Done action
                 },
-                child: Text('Done',style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFB60F6E),
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                  backgroundColor: const Color(0xFFB60F6E),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
+                child: Text(
+                  'Done',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
             ],
           ),
         ),

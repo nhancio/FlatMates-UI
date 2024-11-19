@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class RoomListingPage extends StatelessWidget {
+  const RoomListingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Your Room Details'),
+        title: const Text('Add Your Room Details'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -18,47 +20,49 @@ class RoomListingPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTextField(label: "Your Name*", hintText: "Enter your name"),
-            SizedBox(height: 20),
-            CustomDropdownField(
+            const CustomTextField(
+                label: "Your Name*", hintText: "Enter your name"),
+            const SizedBox(height: 20),
+            const CustomDropdownField(
               label: "Room Type*",
               hintText: "Select Room Type",
               options: ["1BHK", "2BHK", "3BHK"],
             ),
-            SizedBox(height: 20),
-            CustomTextField(label: "Address*", hintText: "Write your address..."),
-            SizedBox(height: 20),
-            CustomTextField(label: "Room Rent*", hintText: "e.g. \$5000"),
-            SizedBox(height: 20),
-            CustomDropdownField(
+            const SizedBox(height: 20),
+            const CustomTextField(
+                label: "Address*", hintText: "Write your address..."),
+            const SizedBox(height: 20),
+            const CustomTextField(label: "Room Rent*", hintText: "e.g. \$5000"),
+            const SizedBox(height: 20),
+            const CustomDropdownField(
               label: "Move in Date",
               hintText: "Select an option",
               options: ["Immediately", "1 Month", "3 Months"],
             ),
-            SizedBox(height: 20),
-            CustomDropdownField(
+            const SizedBox(height: 20),
+            const CustomDropdownField(
               label: "Occupation per room",
               hintText: "Select an option",
               options: ["1 Person", "2 Persons", "3 Persons"],
             ),
-            SizedBox(height: 20),
-            CustomDropdownField(
+            const SizedBox(height: 20),
+            const CustomDropdownField(
               label: "Looking For",
               hintText: "Select an option",
               options: ["Roommate", "Room"],
             ),
-            SizedBox(height: 20),
-            CustomDropdownField(
+            const SizedBox(height: 20),
+            const CustomDropdownField(
               label: "Pet",
               hintText: "Select an option",
               options: ["Yes", "No"],
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               "Upload at least 3 images*",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(3, (index) {
@@ -73,17 +77,19 @@ class RoomListingPage extends StatelessWidget {
                 );
               }),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Center(
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80), backgroundColor: Colors.pink, // Button color
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 80),
+                  backgroundColor: Colors.pink, // Button color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Done',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
@@ -100,10 +106,10 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.label,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +118,9 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         TextField(
           decoration: InputDecoration(
             hintText: hintText,
@@ -136,11 +142,11 @@ class CustomDropdownField extends StatelessWidget {
   final List<String> options;
 
   const CustomDropdownField({
-    Key? key,
+    super.key,
     required this.label,
     required this.hintText,
     required this.options,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -149,9 +155,9 @@ class CustomDropdownField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         DropdownButtonFormField(
           decoration: InputDecoration(
             filled: true,

@@ -4,17 +4,17 @@ class CustomButton1 extends StatelessWidget {
   final VoidCallback? onTap;
   final String title;
 
-  CustomButton1({required this.onTap, required this.title});
+  const CustomButton1({super.key, required this.onTap, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onTap,
-      child: Text(title),
       style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        textStyle: TextStyle(fontSize: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        textStyle: const TextStyle(fontSize: 16),
       ),
+      child: Text(title),
     );
   }
 }

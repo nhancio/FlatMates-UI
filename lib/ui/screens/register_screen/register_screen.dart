@@ -14,6 +14,8 @@ class RegisterScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
   final phoneController = TextEditingController();
 
+  RegisterScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +73,7 @@ class RegisterScreen extends StatelessWidget {
                         : constraints.maxWidth * 0.85;
 
                     return Center(
-                      child: Container(
+                      child: SizedBox(
                         width: inputWidth,
                         child: TextField(
                           controller: phoneController,

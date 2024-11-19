@@ -3,6 +3,8 @@ import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flutter/material.dart';
 
 class HomemateRoomScreen extends StatelessWidget {
+  const HomemateRoomScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -12,14 +14,14 @@ class HomemateRoomScreen extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text(
+          title: const Text(
             "Homemate & Room",
             style: TextStyle(color: Colors.purple),
           ),
-          bottom: TabBar(
+          bottom: const TabBar(
             indicatorColor: Colors.purple,
             labelColor: Colors.purple,
             unselectedLabelColor: Colors.grey,
@@ -72,10 +74,12 @@ class HomemateList extends StatelessWidget {
     },
   ];
 
+  const HomemateList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemCount: homemates.length,
       itemBuilder: (context, index) {
         return GestureDetector(
@@ -88,9 +92,10 @@ class HomemateList extends StatelessWidget {
             );
           },
           child: Card(
-            margin: EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: 16),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            color: Colors.purple,
             child: Padding(
               padding: EdgeInsets.all(12),
               child: Row(
@@ -128,7 +133,6 @@ class HomemateList extends StatelessWidget {
                 ],
               ),
             ),
-            color: Colors.purple,
           ),
         );
       },
@@ -158,10 +162,12 @@ class RoomList extends StatelessWidget {
     },
   ];
 
+  const RoomList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemCount: rooms.length,
       itemBuilder: (context, index) {
         return GestureDetector(
@@ -174,9 +180,10 @@ class RoomList extends StatelessWidget {
             );
           },
           child: Card(
-            margin: EdgeInsets.only(bottom: 16),
+            margin: const EdgeInsets.only(bottom: 16),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            color: Colors.purple,
             child: Padding(
               padding: EdgeInsets.all(12),
               child: Row(
@@ -212,7 +219,6 @@ class RoomList extends StatelessWidget {
                 ],
               ),
             ),
-            color: Colors.purple,
           ),
         );
       },
