@@ -1,11 +1,11 @@
 import 'dart:io';
+
 import 'package:flatemates_ui/res/font/text_style.dart';
 import 'package:flatemates_ui/ui/screens/register_yourself_screen/registration_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'package:flutter/foundation.dart';
 
 import '../../../navigation/app_routes/routes.dart';
 import '../../../res/colors/colors.dart';
@@ -75,13 +75,13 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
                         ),
-                        // _buildProfessionDropdown(
-                        //   context: context,
-                        //   labelText: 'Profession',
-                        //   width: isWideScreen
-                        //       ? constraints.maxWidth * 0.45
-                        //       : double.infinity,
-                        // ),
+                        _buildProfessionDropdown(
+                          context: context,
+                          labelText: 'Profession',
+                          width: isWideScreen
+                              ? constraints.maxWidth * 0.45
+                              : double.infinity,
+                        ),
                         _buildDropdown(
                           context: context,
                           labelText: 'Your gender*',
@@ -136,6 +136,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       text: 'Register Your Account',
                       onPressed: () {
                         if (_validateForm()) {
+                          registerCtrl.registerUser();
                           // Navigate to preferences screen only if validation passes
                           Get.toNamed(AppRoutes.preferences);
                         }
@@ -273,41 +274,41 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   //   );
   // }
 
-  // Widget _buildProfessionDropdown({
-  //   required BuildContext context,
-  //   required String labelText,
-  //   required double width,
-  // }) {
-  //   return SizedBox(
-  //     width: width,
-  //     child: DropdownButtonFormField<String>(
-  //       value: registerCtrl.selectedProfession,
-  //       hint: Text('Select Profession'),
-  //       items: [
-  //         'IT',
-  //         'Medicine',
-  //         'Student',
-  //         'Seeking Job',
-  //         'Content Creator',
-  //         'Others'
-  //       ]
-  //           .map((profession) => DropdownMenuItem(
-  //                 value: profession,
-  //                 child: Text(profession),
-  //               ))
-  //           .toList(),
-  //       onChanged: (value) {
-  //         setState(() {
-  //           selectedProfession = value;
-  //         });
-  //       },
-  //       decoration: InputDecoration(
-  //         labelText: labelText,
-  //         border: OutlineInputBorder(),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _buildProfessionDropdown({
+    required BuildContext context,
+    required String labelText,
+    required double width,
+  }) {
+    return SizedBox(
+      width: width,
+      child: DropdownButtonFormField<String>(
+        value: registerCtrl.selectedProfession,
+        hint: Text('Select Profession'),
+        items: [
+          'IT',
+          'Medicine',
+          'Student',
+          'Seeking Job',
+          'Content Creator',
+          'Others'
+        ]
+            .map((profession) => DropdownMenuItem(
+                  value: profession,
+                  child: Text(profession),
+                ))
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            registerCtrl.selectedProfession = value;
+          });
+        },
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
 
   bool _validateForm() {
     if (registerCtrl.nameController.text.isEmpty ||

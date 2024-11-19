@@ -20,15 +20,15 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
-  String get phoneNumber => throw _privateConstructorUsedError;
+  String get phone_number => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get gender => throw _privateConstructorUsedError;
   int? get age => throw _privateConstructorUsedError;
-  String get location => throw _privateConstructorUsedError;
-  String get foodChoice => throw _privateConstructorUsedError;
-  bool get drinking => throw _privateConstructorUsedError;
-  bool get smoking => throw _privateConstructorUsedError;
-  bool get pet => throw _privateConstructorUsedError;
+  String? get location => throw _privateConstructorUsedError;
+  String? get foodChoice => throw _privateConstructorUsedError;
+  bool? get drinking => throw _privateConstructorUsedError;
+  bool? get smoking => throw _privateConstructorUsedError;
+  bool? get pet => throw _privateConstructorUsedError;
 
   /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,15 +45,15 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
-      {String phoneNumber,
+      {String phone_number,
       String name,
       String gender,
       int? age,
-      String location,
-      String foodChoice,
-      bool drinking,
-      bool smoking,
-      bool pet});
+      String? location,
+      String? foodChoice,
+      bool? drinking,
+      bool? smoking,
+      bool? pet});
 }
 
 /// @nodoc
@@ -71,20 +71,20 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? phoneNumber = null,
+    Object? phone_number = null,
     Object? name = null,
     Object? gender = null,
     Object? age = freezed,
-    Object? location = null,
-    Object? foodChoice = null,
-    Object? drinking = null,
-    Object? smoking = null,
-    Object? pet = null,
+    Object? location = freezed,
+    Object? foodChoice = freezed,
+    Object? drinking = freezed,
+    Object? smoking = freezed,
+    Object? pet = freezed,
   }) {
     return _then(_value.copyWith(
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      phone_number: null == phone_number
+          ? _value.phone_number
+          : phone_number // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -98,26 +98,26 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.age
           : age // ignore: cast_nullable_to_non_nullable
               as int?,
-      location: null == location
+      location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
-      foodChoice: null == foodChoice
+              as String?,
+      foodChoice: freezed == foodChoice
           ? _value.foodChoice
           : foodChoice // ignore: cast_nullable_to_non_nullable
-              as String,
-      drinking: null == drinking
+              as String?,
+      drinking: freezed == drinking
           ? _value.drinking
           : drinking // ignore: cast_nullable_to_non_nullable
-              as bool,
-      smoking: null == smoking
+              as bool?,
+      smoking: freezed == smoking
           ? _value.smoking
           : smoking // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pet: null == pet
+              as bool?,
+      pet: freezed == pet
           ? _value.pet
           : pet // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ) as $Val);
   }
 }
@@ -130,15 +130,15 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String phoneNumber,
+      {String phone_number,
       String name,
       String gender,
       int? age,
-      String location,
-      String foodChoice,
-      bool drinking,
-      bool smoking,
-      bool pet});
+      String? location,
+      String? foodChoice,
+      bool? drinking,
+      bool? smoking,
+      bool? pet});
 }
 
 /// @nodoc
@@ -153,20 +153,20 @@ class __$$UserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? phoneNumber = null,
+    Object? phone_number = null,
     Object? name = null,
     Object? gender = null,
     Object? age = freezed,
-    Object? location = null,
-    Object? foodChoice = null,
-    Object? drinking = null,
-    Object? smoking = null,
-    Object? pet = null,
+    Object? location = freezed,
+    Object? foodChoice = freezed,
+    Object? drinking = freezed,
+    Object? smoking = freezed,
+    Object? pet = freezed,
   }) {
     return _then(_$UserImpl(
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
+      phone_number: null == phone_number
+          ? _value.phone_number
+          : phone_number // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -180,26 +180,26 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.age
           : age // ignore: cast_nullable_to_non_nullable
               as int?,
-      location: null == location
+      location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
-              as String,
-      foodChoice: null == foodChoice
+              as String?,
+      foodChoice: freezed == foodChoice
           ? _value.foodChoice
           : foodChoice // ignore: cast_nullable_to_non_nullable
-              as String,
-      drinking: null == drinking
+              as String?,
+      drinking: freezed == drinking
           ? _value.drinking
           : drinking // ignore: cast_nullable_to_non_nullable
-              as bool,
-      smoking: null == smoking
+              as bool?,
+      smoking: freezed == smoking
           ? _value.smoking
           : smoking // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pet: null == pet
+              as bool?,
+      pet: freezed == pet
           ? _value.pet
           : pet // ignore: cast_nullable_to_non_nullable
-              as bool,
+              as bool?,
     ));
   }
 }
@@ -208,21 +208,21 @@ class __$$UserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserImpl implements _User {
   _$UserImpl(
-      {required this.phoneNumber,
+      {required this.phone_number,
       required this.name,
       required this.gender,
       required this.age,
-      required this.location,
-      required this.foodChoice,
-      required this.drinking,
-      required this.smoking,
-      required this.pet});
+      this.location,
+      this.foodChoice,
+      this.drinking,
+      this.smoking,
+      this.pet});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
 
   @override
-  final String phoneNumber;
+  final String phone_number;
   @override
   final String name;
   @override
@@ -230,19 +230,19 @@ class _$UserImpl implements _User {
   @override
   final int? age;
   @override
-  final String location;
+  final String? location;
   @override
-  final String foodChoice;
+  final String? foodChoice;
   @override
-  final bool drinking;
+  final bool? drinking;
   @override
-  final bool smoking;
+  final bool? smoking;
   @override
-  final bool pet;
+  final bool? pet;
 
   @override
   String toString() {
-    return 'User(phoneNumber: $phoneNumber, name: $name, gender: $gender, age: $age, location: $location, foodChoice: $foodChoice, drinking: $drinking, smoking: $smoking, pet: $pet)';
+    return 'User(phone_number: $phone_number, name: $name, gender: $gender, age: $age, location: $location, foodChoice: $foodChoice, drinking: $drinking, smoking: $smoking, pet: $pet)';
   }
 
   @override
@@ -250,8 +250,8 @@ class _$UserImpl implements _User {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
+            (identical(other.phone_number, phone_number) ||
+                other.phone_number == phone_number) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.gender, gender) || other.gender == gender) &&
             (identical(other.age, age) || other.age == age) &&
@@ -267,7 +267,7 @@ class _$UserImpl implements _User {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, phoneNumber, name, gender, age,
+  int get hashCode => Object.hash(runtimeType, phone_number, name, gender, age,
       location, foodChoice, drinking, smoking, pet);
 
   /// Create a copy of User
@@ -288,20 +288,20 @@ class _$UserImpl implements _User {
 
 abstract class _User implements User {
   factory _User(
-      {required final String phoneNumber,
+      {required final String phone_number,
       required final String name,
       required final String gender,
       required final int? age,
-      required final String location,
-      required final String foodChoice,
-      required final bool drinking,
-      required final bool smoking,
-      required final bool pet}) = _$UserImpl;
+      final String? location,
+      final String? foodChoice,
+      final bool? drinking,
+      final bool? smoking,
+      final bool? pet}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
   @override
-  String get phoneNumber;
+  String get phone_number;
   @override
   String get name;
   @override
@@ -309,15 +309,15 @@ abstract class _User implements User {
   @override
   int? get age;
   @override
-  String get location;
+  String? get location;
   @override
-  String get foodChoice;
+  String? get foodChoice;
   @override
-  bool get drinking;
+  bool? get drinking;
   @override
-  bool get smoking;
+  bool? get smoking;
   @override
-  bool get pet;
+  bool? get pet;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.

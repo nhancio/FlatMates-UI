@@ -7,20 +7,20 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
-      phoneNumber: json['phoneNumber'] as String,
+      phone_number: json['phone_number'] as String,
       name: json['name'] as String,
       gender: json['gender'] as String,
       age: (json['age'] as num?)?.toInt(),
-      location: json['location'] as String,
-      foodChoice: json['foodChoice'] as String,
-      drinking: json['drinking'] as bool,
-      smoking: json['smoking'] as bool,
-      pet: json['pet'] as bool,
+      location: json['location'] as String?,
+      foodChoice: json['foodChoice'] as String?,
+      drinking: json['drinking'] as bool?,
+      smoking: json['smoking'] as bool?,
+      pet: json['pet'] as bool?,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
     <String, dynamic>{
-      'phoneNumber': instance.phoneNumber,
+      'phone_number': instance.phone_number,
       'name': instance.name,
       'gender': instance.gender,
       'age': instance.age,

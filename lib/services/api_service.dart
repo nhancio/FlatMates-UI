@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flatemates_ui/models/user_model.dart';
 import 'package:retrofit/retrofit.dart';
+
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "http://20.193.152.22:8000/api/")
+@RestApi(
+    baseUrl:
+        "https://c1c4-2401-4900-1c0e-3c54-e010-7053-9383-6694.ngrok-free.app/api/")
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
@@ -13,6 +16,17 @@ abstract class ApiService {
 
 Dio getDio() {
   final dio = Dio();
+  dio.options = BaseOptions(
+    baseUrl:
+        'https://c1c4-2401-4900-1c0e-3c54-e010-7053-9383-6694.ngrok-free.app/api/',
+    validateStatus: (status) {
+      // Accept any status code between 200 and 299 as a valid response
+      return status != null && status >= 200 && status < 300;
+    },
+  );
+  dio.options.headers = {
+    'Content-Type': 'application/json',
+  };
   dio.interceptors.add(InterceptorsWrapper(
     onRequest: (options, handler) {
       print('Request: ${options.method} ${options.path}');
