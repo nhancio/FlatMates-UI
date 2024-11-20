@@ -23,17 +23,17 @@ class TermsConditionsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Context',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple,
-                ),
-              ),
+              // Text(
+              //   'Context',
+              //   style: TextStyle(
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.purple,
+              //   ),
+              // ),
               SizedBox(height: 16),
               Text(
-                'Privacy policy',
+                'Data Privacy policy for Nhancio',
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
             ],

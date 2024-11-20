@@ -28,7 +28,7 @@ class HomemateRoomScreen extends StatelessWidget {
           },
         ),
         title: Text(
-          "Homemate & Room",
+          "Homemates & Rooms",
           style: TextStyle(color: Colors.purple),
         ),
         bottom: TabBar(
@@ -137,7 +137,7 @@ class HomemateList extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Icon(Icons.bookmark_border, color: Colors.white),
+                  // const Icon(Icons.bookmark_border, color: Colors.white),
                 ],
               ),
             ),
@@ -221,7 +221,7 @@ class RoomList extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Icon(Icons.bookmark_border, color: Colors.white),
+                  // const Icon(Icons.bookmark_border, color: Colors.white),
                 ],
               ),
             ),

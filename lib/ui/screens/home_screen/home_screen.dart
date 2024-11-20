@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
               // Foreground Content with Gradient Overlay for better readability
               Positioned.fill(
                 child: Container(
-                  color: AppColors.backgroundOpacity.withOpacity(0.5),
+                  color: AppColors.backgroundOpacity.withOpacity(1),
                 ),
               ),
               // Main Content
@@ -176,7 +176,8 @@ class _HomePageState extends State<HomePage> {
                                         builder: (context) => Scaffold(
                                               body: HomemateList(),
                                               appBar: AppBar(
-                                                title: Text("Homemates List"),
+                                                title:
+                                                    Text("Homemates for you"),
                                               ),
                                             )),
                                   );
@@ -188,8 +189,8 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 child: _buildServiceCard(
                                   'assets/images/look_roommate.png',
-                                  180.0, // Width of the box
-                                  180.0, // Height of the image
+                                  160.0, // Width of the box
+                                  160.0, // Height of the image
                                 ),
                               ),
                               // Second box with image size
@@ -201,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                                         builder: (context) => Scaffold(
                                               body: RoomList(),
                                               appBar: AppBar(
-                                                title: Text("Rooms List"),
+                                                title: Text("Rooms for you"),
                                               ),
                                             )),
                                   );
@@ -211,8 +212,8 @@ class _HomePageState extends State<HomePage> {
                                 },
                                 child: _buildServiceCard(
                                   'assets/images/look_room.png',
-                                  180.0, // Width of the box
-                                  180.0, // Height of the image
+                                  160.0, // Width of the box
+                                  160.0, // Height of the image
                                 ),
                               ),
                             ],
@@ -229,8 +230,8 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: _buildServiceCard(
                               'assets/images/list_room.png',
-                              190.0, // Width of the box
-                              190.0, // Height of the image
+                              160.0, // Width of the box
+                              160.0, // Height of the image
                             ),
                           ),
                         ],

@@ -20,7 +20,7 @@ class VoiceInputScreen extends StatelessWidget {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-                  (route) => false,
+              (route) => false,
             );
           },
         ),
@@ -66,15 +66,15 @@ class VoiceInputScreen extends StatelessWidget {
                   // Handle voice recording
                 },
                 child: Container(
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.all(10),
                   child: Image.asset(
                     mic,
-                    height: 250,
-                    width: 250,
+                    height: 200,
+                    width: 200,
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 2),
 
               Text(
                 'TAP & SPEAK',
@@ -117,7 +117,10 @@ class VoiceInputScreen extends StatelessWidget {
                 onPressed: () {
                   // Handle Done action
                 },
-                child: Text('Done',style: TextStyle(color: Colors.white),),
+                child: Text(
+                  'Done',
+                  style: TextStyle(color: Colors.white),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFB60F6E),
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),

@@ -1,4 +1,3 @@
-
 import 'package:flatemates_ui/ui/screens/profile_screen/contact_us.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/profile_intro.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/term_condition.dart';
@@ -19,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-                  (route) => false,
+              (route) => false,
             );
           },
         ),
@@ -43,16 +42,14 @@ class ProfileScreen extends StatelessWidget {
                     padding: EdgeInsets.all(cardPadding),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all( color:Color(0xFFB60F6E), width: 2),
+                      border: Border.all(color: Color(0xFFB60F6E), width: 2),
                     ),
                     child: InkWell(
-
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ProfileIntroScreen()));
-
                       },
                       child: Row(
                         children: [
@@ -75,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: fontSize,
                                     fontWeight: FontWeight.bold,
-                                    color:Color(0xFFB60F6E),
+                                    color: Color(0xFFB60F6E),
                                   ),
                                 ),
                                 SizedBox(height: 4),
@@ -101,13 +98,9 @@ class ProfileScreen extends StatelessWidget {
                   _buildOptionItem(
                       context, 'Manage your Listing', Icons.arrow_forward_ios,
                       onTap: () {}),
-                  _buildOptionItem(context, 'About Us', Icons.info_outline,
-                      subtitle: 'Know who we are and what we are doing.',
-                      onTap: () {}),
 
                   _buildOptionItem(context, 'Feedback', Icons.feedback_outlined,
                       subtitle: 'Help Us To Improve More', onTap: () {}),
-
 
                   _buildOptionItem(
                     context,
@@ -116,10 +109,8 @@ class ProfileScreen extends StatelessWidget {
                     subtitle: 'We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
-
                       MaterialPageRoute(
                           builder: (context) => ContactUsScreen()),
-
                     ),
                   ),
 
@@ -127,7 +118,6 @@ class ProfileScreen extends StatelessWidget {
                     context,
                     'Terms and Conditions',
                     Icons.article_outlined,
-
                     subtitle: ' We are always here for you.',
                     onTap: () => Navigator.push(
                       context,
@@ -135,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
                           builder: (context) => TermsConditionsScreen()),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  // SizedBox(height: 20),
                   // _buildOptionItem(
                   //   context,
                   //   'Rental Agreement',
@@ -167,7 +157,6 @@ class ProfileScreen extends StatelessWidget {
 
                   _buildOptionItem(context, 'Logout', Icons.logout,
                       subtitle: 'You can log in anytime.', onTap: () {}),
-
                 ],
               ),
             ),
@@ -203,21 +192,18 @@ class ProfileScreen extends StatelessWidget {
       ),
       subtitle: subtitle != null
           ? Text(
-
-        subtitle,
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.grey,
-        ),
-      )
-
+              subtitle,
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            )
           : null,
       trailing: Icon(icon, color: Colors.grey),
       onTap: onTap,
     );
   }
 }
-
 
 void _showLogoutDialog(BuildContext context) {
   showDialog(
@@ -254,4 +240,3 @@ void _showLogoutDialog(BuildContext context) {
     },
   );
 }
-

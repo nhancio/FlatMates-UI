@@ -23,25 +23,18 @@ class ContactUsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Context',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple,
-                ),
-              ),
+              // Text(
+              //   'Context',
+              //   style: TextStyle(
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.purple,
+              //   ),
+              // ),
               SizedBox(height: 16),
               Text(
-                'The contents of a rental agreement vary from place to place. However, the usual contents of a rental agreement include:\n\n'
-                    '• Names of the landlord and tenant and/or their agents.\n'
-                    '• Description (address) of the property.\n'
-                    '• Amount of rent and due dates for payment, grace period, late charges.\n'
-                    '• The person responsible for the payment of any other amount such as property tax, TDS (if applicable), property repair charges, society flat maintenance charges, water bill, electricity bill, etc.\n'
-                    '• Mode of rent payment.\n'
-                    '• Methods to terminate the agreement prior to the expiration date and charges if any.\n'
-                    '• Amount of security deposit and the account where it is held.\n'
-                    '• Utilities furnished by the landlord and, if the landlord charges for such utilities, how the charge will be determined.',
+                'Phone: +91-8247816401\n'
+                'Email: hello@nhancio.com\n',
                 style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
             ],

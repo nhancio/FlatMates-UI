@@ -18,42 +18,43 @@ class RoomListingPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTextField(label: "Your Name*", hintText: "Enter your name"),
-            SizedBox(height: 20),
+            // CustomTextField(label: "Your Name*", hintText: "Enter your name"),
+            SizedBox(height: 12),
             CustomDropdownField(
               label: "Room Type*",
               hintText: "Select Room Type",
               options: ["1BHK", "2BHK", "3BHK"],
             ),
-            SizedBox(height: 20),
-            CustomTextField(label: "Address*", hintText: "Write your address..."),
-            SizedBox(height: 20),
+            SizedBox(height: 12),
+            CustomTextField(
+                label: "Address*", hintText: "Write your address..."),
+            SizedBox(height: 12),
             CustomTextField(label: "Room Rent*", hintText: "e.g. \$5000"),
-            SizedBox(height: 20),
+            SizedBox(height: 12),
             CustomDropdownField(
               label: "Move in Date",
               hintText: "Select an option",
               options: ["Immediately", "1 Month", "3 Months"],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 12),
             CustomDropdownField(
               label: "Occupation per room",
               hintText: "Select an option",
               options: ["1 Person", "2 Persons", "3 Persons"],
             ),
-            SizedBox(height: 20),
-            CustomDropdownField(
-              label: "Looking For",
-              hintText: "Select an option",
-              options: ["Roommate", "Room"],
-            ),
-            SizedBox(height: 20),
-            CustomDropdownField(
-              label: "Pet",
-              hintText: "Select an option",
-              options: ["Yes", "No"],
-            ),
-            SizedBox(height: 20),
+            // SizedBox(height: 12),
+            // CustomDropdownField(
+            //   label: "Looking For",
+            //   hintText: "Select an option",
+            //   options: ["Roommate", "Room"],
+            // ),
+            // SizedBox(height: 12),
+            // CustomDropdownField(
+            //   label: "Pet",
+            //   hintText: "Select an option",
+            //   options: ["Yes", "No"],
+            // ),
+            SizedBox(height: 12),
             Text(
               "Upload at least 3 images*",
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -78,7 +79,8 @@ class RoomListingPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80), backgroundColor: Colors.pink, // Button color
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
+                  backgroundColor: Colors.pink, // Button color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -114,7 +116,7 @@ class CustomTextField extends StatelessWidget {
           label,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
+        SizedBox(height: 6),
         TextField(
           decoration: InputDecoration(
             hintText: hintText,
