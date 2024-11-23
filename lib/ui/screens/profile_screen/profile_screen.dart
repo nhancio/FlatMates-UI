@@ -1,11 +1,16 @@
+import 'package:flatemates_ui/controllers/google_controller.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/contact_us.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/profile_intro.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/term_condition.dart';
+import 'package:flatemates_ui/ui/screens/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../res/bottom/bottom_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final GoogleController signInController = Get.put(GoogleController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,7 +161,10 @@ class ProfileScreen extends StatelessWidget {
                   // ),
 
                   _buildOptionItem(context, 'Logout', Icons.logout,
-                      subtitle: 'You can log in anytime.', onTap: () {}),
+                      subtitle: 'You can log in anytime.', onTap: () {
+                    signInController.signOut();
+                    Get.offAll(() => WelcomeScreen());
+                  }),
                 ],
               ),
             ),
