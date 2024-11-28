@@ -1,3 +1,4 @@
+import 'package:flatemates_ui/controllers/register.controller.dart';
 import 'package:flatemates_ui/res/font/font_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,6 +36,6 @@ class InitialBindings extends Bindings {
   @override
   void dependencies() {
     Get.put(GoogleController()); // Initialize the AuthController
-    // Add more controllers if needed
+    Get.put(RegisterUserController());
   }
 }

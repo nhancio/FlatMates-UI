@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flatemates_ui/controllers/register.controller.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/register_yourself_screen/register_yourself.dart';
 import 'package:flatemates_ui/ui/screens/welcome_screen/welcome_screen.dart';
@@ -12,6 +14,7 @@ class GoogleController extends GetxController {
   var isLoading = false.obs;
   var buttonWidth = 200.0.obs; // Initial width for the button
   var isLoggedIn = false.obs;
+  final RegisterUserController registerCtrl = Get.put(RegisterUserController());
 
   var user = Rx<User?>(null); // Observable user variable
 
@@ -55,7 +58,11 @@ class GoogleController extends GetxController {
           await _auth.signInWithCredential(credential);
       user.value = userCredential.user; // Update the user observable
       await saveLoginStatus(true); // Save the login status to SharedPreferences
-      Get.to(RegisterUserScreen());
+      registerCtrl.nameController.text = userCredential.user?.displayName ?? "";
+      registerCtrl.emailController.text = userCredential.user?.email ?? "";
+      registerCtrl.phoneController.text =
+          userCredential.user?.phoneNumber ?? "";
+      checkUserAndNavigate();
     } catch (e) {
       print("Error during Google sign-in: $e");
     } finally {
@@ -81,4 +88,33 @@ class GoogleController extends GetxController {
 
   // Check if user is signed in
   User? get currentUser => user.value;
+
+  Future<void> checkUserAndNavigate() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Check if the user is logged in
+    if (user == null) {
+      // If there's no user, navigate to Register Screen
+      Get.to(RegisterUserScreen());
+      return;
+    }
+
+    // User is logged in, now check if the user profile exists in Firestore
+    try {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users') // Your Firestore collection name
+          .doc(user.uid) // Use the current user's UID to check
+          .get();
+
+      if (!userDoc.exists) {
+        // User doesn't exist in the Firestore collection, navigate to Register Screen
+        Get.to(RegisterUserScreen());
+      } else {
+        // User exists in Firestore, navigate to Home Screen
+        Get.to(BottomNavBarScreen());
+      }
+    } catch (e) {
+      print('Error checking user: $e');
+    }
+  }
 }

@@ -113,14 +113,14 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 100),
+                    const SizedBox(height: 100),
                     Obx(() {
                       return AnimatedContainer(
                         duration: const Duration(
                             milliseconds: 300), // Animation duration
                         width: signInController
                             .buttonWidth.value, // Dynamically change width
-                        height: 50, // Fixed height
+                        height: 55, // Fixed height
                         curve: Curves.easeInOut, // Animation curve
                         child: ElevatedButton(
                           onPressed: signInController.isLoading.value
@@ -140,7 +140,7 @@ class WelcomeScreen extends StatelessWidget {
                                       Colors.white),
                                 )
                               : const Text(
-                                  'Click Me',
+                                  'Login In',
                                   style: TextStyle(
                                     fontFamily: 'Poppins', // Your font
                                     fontSize: 16,
