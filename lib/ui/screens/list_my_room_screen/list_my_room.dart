@@ -2,13 +2,13 @@ import 'package:flatemates_ui/controllers/room.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RoomListingPage extends StatelessWidget {
-  const RoomListingPage({super.key});
+class AddRoomPage extends StatelessWidget {
+  const AddRoomPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Initialize controller
-    final controller = Get.put(RoomListingController());
+    final controller = Get.put(RoomController());
 
     var screenWidth = MediaQuery.of(context).size.width;
 
@@ -146,12 +146,14 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
   final ValueChanged<String> onChanged;
+  final String? initialValue; // Added for autofill functionality
 
   const CustomTextField({
     super.key,
     required this.label,
     required this.hintText,
     required this.onChanged,
+    this.initialValue, // Accept initial value for autofill
   });
 
   @override
@@ -165,6 +167,8 @@ class CustomTextField extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         TextField(
+          controller:
+              TextEditingController(text: initialValue), // Set initial value
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hintText,
@@ -185,6 +189,7 @@ class CustomDropdownField extends StatelessWidget {
   final String hintText;
   final List<String> options;
   final ValueChanged<String> onChanged;
+  final String? selectedValue; // Added for pre-select functionality
 
   const CustomDropdownField({
     Key? key,
@@ -192,6 +197,7 @@ class CustomDropdownField extends StatelessWidget {
     required this.hintText,
     required this.options,
     required this.onChanged,
+    this.selectedValue, // Accept selected value for autofill
   }) : super(key: key);
 
   @override
@@ -204,7 +210,8 @@ class CustomDropdownField extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        DropdownButtonFormField(
+        DropdownButtonFormField<String>(
+          value: selectedValue, // Bind the selected value here
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.grey[200],
@@ -214,7 +221,7 @@ class CustomDropdownField extends StatelessWidget {
             hintText: hintText,
           ),
           items: options.map((option) {
-            return DropdownMenuItem(
+            return DropdownMenuItem<String>(
               value: option,
               child: Text(option),
             );

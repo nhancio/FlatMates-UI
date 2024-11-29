@@ -60,11 +60,11 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 60),
+                      const SizedBox(height: 60),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Hi Daniel',
                             style: TextStyle(
                               fontSize: 18,
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                           Stack(
                             children: [
                               IconButton(
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.notifications,
                                   color: Colors.black,
                                   size: 40,
@@ -88,16 +88,16 @@ class _HomePageState extends State<HomePage> {
                                 right: 8,
                                 top: 8,
                                 child: Container(
-                                  padding: EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
                                     color: Colors.red,
                                     shape: BoxShape.circle,
                                   ),
-                                  constraints: BoxConstraints(
+                                  constraints: const BoxConstraints(
                                     minWidth: 20,
                                     minHeight: 20,
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Text(
                                       '5', // Display the number of notifications here
                                       style: TextStyle(
@@ -114,14 +114,14 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      Text(
+                      const Text(
                         "Let's Find Peace For You!",
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Search Bar with city dropdown
                       Container(
                         decoration: BoxDecoration(
@@ -130,14 +130,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.search),
-                            SizedBox(width: 10),
+                            const Icon(Icons.search),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: DropdownButton<String>(
-                                hint: Text('Select City'),
+                                hint: const Text('Select City'),
                                 value: selectedCity,
                                 isExpanded: true,
-                                icon: Icon(Icons.arrow_drop_down),
+                                icon: const Icon(Icons.arrow_drop_down),
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     selectedCity = newValue;
@@ -176,8 +176,8 @@ class _HomePageState extends State<HomePage> {
                                         builder: (context) => Scaffold(
                                               body: HomemateList(),
                                               appBar: AppBar(
-                                                title:
-                                                    Text("Homemates for you"),
+                                                title: const Text(
+                                                    "Homemates for you"),
                                               ),
                                             )),
                                   );
@@ -202,7 +202,8 @@ class _HomePageState extends State<HomePage> {
                                         builder: (context) => Scaffold(
                                               body: RoomList(),
                                               appBar: AppBar(
-                                                title: Text("Rooms for you"),
+                                                title:
+                                                    const Text("Rooms for you"),
                                               ),
                                             )),
                                   );
@@ -224,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RoomListingPage(),
+                                  builder: (context) => const AddRoomPage(),
                                 ),
                               );
                             },
@@ -252,7 +253,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       isScrollControlled: true, // Allows flexible height
       backgroundColor: Colors.transparent, // To make the background transparent
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0), // Adjust left curve
           topRight: Radius.circular(30.0), // Adjust right curve
@@ -260,7 +261,7 @@ class _HomePageState extends State<HomePage> {
       ),
       builder: (context) {
         return ClipRRect(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(
                 30.0), // Match the same radius for the container
             topRight: Radius.circular(
@@ -289,7 +290,7 @@ class _HomePageState extends State<HomePage> {
       String imagePath, double boxWidth, double imageHeight) {
     return Container(
       width: boxWidth, // Width of the box
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Image.asset(

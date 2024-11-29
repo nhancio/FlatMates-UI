@@ -1,4 +1,5 @@
 import 'package:flatemates_ui/controllers/google_controller.dart';
+import 'package:flatemates_ui/ui/screens/list_my_room_screen/rooms_listing.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/contact_us.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/profile_intro.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/term_condition.dart';
@@ -102,7 +103,9 @@ class ProfileScreen extends StatelessWidget {
 
                   _buildOptionItem(
                       context, 'Manage your Listing', Icons.arrow_forward_ios,
-                      onTap: () {}),
+                      onTap: () {
+                    Get.to(RoomListingPage());
+                  }),
 
                   _buildOptionItem(context, 'Feedback', Icons.feedback_outlined,
                       subtitle: 'Help Us To Improve More', onTap: () {}),

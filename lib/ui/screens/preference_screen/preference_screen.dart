@@ -1,120 +1,118 @@
-import 'package:flatemates_ui/navigation/app_routes/routes.dart';
-import 'package:flatemates_ui/res/assets/icons/icons.dart';
-import 'package:flatemates_ui/res/colors/colors.dart';
-import 'package:flatemates_ui/res/font/text_style.dart';
-import 'package:flatemates_ui/widgets/custom_button/custom_button.dart';
+import 'package:flatemates_ui/controllers/preference_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PreferenceScreen extends StatefulWidget {
+  const PreferenceScreen({super.key});
+
   @override
   _PreferenceScreenState createState() => _PreferenceScreenState();
 }
 
 class _PreferenceScreenState extends State<PreferenceScreen> {
   final List<PreferenceItem> preferenceItems = [
-    PreferenceItem(name: 'Pet Lover', iconPath: AppIcons.pet),
-    PreferenceItem(name: 'Gym Person', iconPath: AppIcons.gym),
-    PreferenceItem(name: 'Travel Person', iconPath: AppIcons.travel),
-    PreferenceItem(name: 'Party Person', iconPath: AppIcons.party),
-    PreferenceItem(name: 'Music Person', iconPath: AppIcons.music),
-    PreferenceItem(name: 'Vegan Person', iconPath: AppIcons.vegan),
-    PreferenceItem(name: 'Sports Person', iconPath: AppIcons.sport),
-    PreferenceItem(name: 'Yoga Person', iconPath: AppIcons.yoga),
-    PreferenceItem(name: 'Non-Alcoholic', iconPath: AppIcons.nonSmoker),
-    PreferenceItem(name: 'Shopping Person', iconPath: AppIcons.shopping),
-    PreferenceItem(name: 'Friendly Person', iconPath: AppIcons.friends),
-    PreferenceItem(name: 'Studious', iconPath: AppIcons.studious),
-    PreferenceItem(name: 'Growth', iconPath: AppIcons.growth),
-    PreferenceItem(name: 'Non-Smoker', iconPath: AppIcons.nonSmoker),
+    PreferenceItem(name: 'Pet Lover', iconPath: 'assets/icons/pet.png'),
+    PreferenceItem(name: 'Gym Person', iconPath: 'assets/icons/gym.png'),
+    PreferenceItem(name: 'Travel Person', iconPath: 'assets/icons/travel.png'),
+    PreferenceItem(name: 'Party Person', iconPath: 'assets/icons/party.png'),
+    PreferenceItem(name: 'Music Person', iconPath: 'assets/icons/music.png'),
+    PreferenceItem(name: 'Vegan Person', iconPath: 'assets/icons/vegan.png'),
+    PreferenceItem(name: 'Sports Person', iconPath: 'assets/icons/sport.png'),
+    PreferenceItem(name: 'Yoga Person', iconPath: 'assets/icons/yoga.png'),
+    PreferenceItem(
+        name: 'Non-Alcoholic', iconPath: 'assets/icons/non_alcoholic.png'),
+    PreferenceItem(
+        name: 'Shopping Person', iconPath: 'assets/icons/shopping.png'),
+    PreferenceItem(
+        name: 'Friendly Person', iconPath: 'assets/icons/friends.png'),
+    PreferenceItem(name: 'Studious', iconPath: 'assets/icons/studious.png'),
+    PreferenceItem(name: 'Growth', iconPath: 'assets/icons/growth.png'),
+    PreferenceItem(name: 'Non-Smoker', iconPath: 'assets/icons/non_smoker.png'),
   ];
+
   List<String> selectedPreferences = [];
   String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
+      appBar: AppBar(title: const Text("Choose Your Preferences")),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              SizedBox(
-                height: MediaQuery.of(context).size.height > 600 ? 60 : 100,
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: screenWidth > 800 ? 60 : 100),
+            Center(
+              child: Text(
+                'Choose your preferences',
+                style: TextStyle(
+                    fontSize: screenWidth > 800 ? 28 : 24,
+                    fontWeight: FontWeight.bold),
               ),
+            ),
+            const SizedBox(height: 10),
+            Center(
+              child: Text(
+                'Choose at least 5 preferences for better results',
+                style: TextStyle(
+                    fontSize: screenWidth > 800 ? 18 : 16,
+                    color: Colors.grey[600]),
+              ),
+            ),
+            const SizedBox(height: 20),
+            GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: _getCrossAxisCount(context),
+                mainAxisSpacing: _getSpacing(context),
+                crossAxisSpacing: _getSpacing(context),
+                childAspectRatio: 1,
+              ),
+              itemCount: preferenceItems.length,
+              itemBuilder: (context, index) {
+                return _buildPreferenceItem(context, preferenceItems[index]);
+              },
+            ),
+            const SizedBox(height: 20),
+            if (errorMessage != null) ...[
               Center(
                 child: Text(
-                  'Choose your preferences',
+                  errorMessage!,
                   textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyStyle(context).copyWith(
-                    fontSize: 24,
-                    color: Colors.black,
-                  ),
+                  style: const TextStyle(color: Colors.red, fontSize: 14),
                 ),
               ),
-              Center(
-                child: Text(
-                  'Choose at least 5 preferences for better results',
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.bodyStyle(context).copyWith(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: _getCrossAxisCount(context),
-                  mainAxisSpacing: _getSpacing(context),
-                  crossAxisSpacing: _getSpacing(context),
-                  childAspectRatio: 1,
-                ),
-                itemCount: preferenceItems.length,
-                itemBuilder: (context, index) {
-                  return _buildPreferenceItem(context, preferenceItems[index]);
-                },
-              ),    const SizedBox(height: 20),
-              if (errorMessage != null) ...[
-                Center(
-                  child: Text(
-                    errorMessage!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.red, fontSize: 14),
-                  ),
-                ),
-                const SizedBox(height: 10),
-              ],
-              const SizedBox(height: 20),
-              Center(
-                child: SizedBox(
-                  width: 200, // Increase the width of the button
-                  height: 60, // Increase the height of the button
-                  child: CustomButton(
-                    text: 'Next',
-                    onPressed: () {
-                      if (selectedPreferences.length >= 5) {
-                        setState(() {
-                          errorMessage = null;
-                        });
-                        Get.toNamed(AppRoutes.bottomNavBar);
-                      } else {
-                        setState(() {
-                          errorMessage = 'Please select at least 5 preferences.';
-                        });
-                      }
-                    },
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
             ],
-          ),
+            const SizedBox(height: 20),
+            Center(
+              child: SizedBox(
+                width: screenWidth > 600 ? 250 : 200,
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (selectedPreferences.length >= 5) {
+                      setState(() {
+                        errorMessage = null;
+                      });
+                      // Call the GetX controller method to save preferences
+                      final controller = Get.find<PreferenceController>();
+                      controller.savePreferences(selectedPreferences);
+                    } else {
+                      setState(() {
+                        errorMessage = 'Please select at least 5 preferences.';
+                      });
+                    }
+                  },
+                  child: const Text('Next', style: TextStyle(fontSize: 18)),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -122,11 +120,10 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
 
   int _getCrossAxisCount(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
     if (screenWidth > 800) {
-      return 5; // For larger screens
+      return 5; // For large screens (desktop/tablet)
     } else if (screenWidth > 600) {
-      return 4; // Medium screen
+      return 4; // For medium screens (tablet)
     } else {
       return 3; // For mobile
     }
@@ -134,7 +131,6 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
 
   double _getSpacing(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
     if (screenWidth > 800) {
       return 8.0; // Less spacing on web
     } else if (screenWidth > 600) {
@@ -145,11 +141,6 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
   }
 
   Widget _buildPreferenceItem(BuildContext context, PreferenceItem item) {
-    double iconSize = MediaQuery.of(context).size.width > 800
-        ? 50
-        : 60; // Smaller icon for web
-    double padding = MediaQuery.of(context).size.width > 800 ? 4.0 : 8.0;
-
     bool isSelected = selectedPreferences.contains(item.name);
 
     return GestureDetector(
@@ -162,39 +153,30 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
           }
         });
       },
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          padding: EdgeInsets.all(padding),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: isSelected ? AppColors.primaryColor : Colors.transparent,
-              width: 2,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: isSelected ? Colors.blue : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              item.iconPath,
+              fit: BoxFit.cover,
+              height: 60,
+              width: 60,
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  item.iconPath,
-                  fit: BoxFit.cover,
-                  height: iconSize,
-                  width: iconSize,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                item.name,
+            const SizedBox(height: 8),
+            Text(item.name,
                 style:
-                const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+          ],
         ),
       ),
     );
