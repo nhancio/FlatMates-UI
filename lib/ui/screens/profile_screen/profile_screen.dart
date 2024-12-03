@@ -14,13 +14,16 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Fetch user data when the screen is loaded
+    signInController.fetchUserProfile();
+
     return Scaffold(
       appBar: AppBar(
-title: Text("Profile Screen"),
-        backgroundColor: Color(0xfff8e6f1),
+        title: const Text("Profile Screen"),
+        backgroundColor: const Color(0xfff8e6f1),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
+          icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
@@ -38,141 +41,125 @@ title: Text("Profile Screen"),
           double cardPadding = screenWidth < 600 ? 16 : 24;
           double fontSize = screenWidth < 600 ? 16 : 20;
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: cardPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Profile Card
-                  Container(
-                    padding: EdgeInsets.all(cardPadding),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Color(0xFFB60F6E), width: 2),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfileIntroScreen()));
-                      },
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.asset(
-                              'assets/icons/danile.png',
-                              height: profileImageSize,
-                              width: profileImageSize,
-                              fit: BoxFit.cover,
+          return Obx(() {
+            // Get the user profile from the controller
+            var user = signInController.userProfile;
+
+            // Display a loading spinner while fetching user data
+            // if (user.value) {
+            //   return const Center(child: CircularProgressIndicator());
+            // }
+
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: cardPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 30),
+                    // Profile Card
+                    Container(
+                      padding: EdgeInsets.all(cardPadding),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                            color: const Color(0xFFB60F6E), width: 2),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          signInController.fetchUserProfile();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileIntroScreen()));
+                        },
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.network(
+                                'https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg', // Default image if not present
+                                height: profileImageSize,
+                                width: profileImageSize,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Danial Dan',
-                                  style: TextStyle(
-                                    fontSize: fontSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFFB60F6E),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    user.value.userName,
+                                    style: TextStyle(
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFFB60F6E),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Male | 0987654321',
-                                  style: TextStyle(
-                                    fontSize: fontSize - 2,
-                                    color: Colors.black54,
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    user.value.userEmail,
+                                    style: TextStyle(
+                                      fontSize: fontSize - 2,
+                                      color: Colors.black54,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  // More Options
-                  _buildSectionTitle('More', fontSize),
+                    // More Options
+                    // _buildSectionTitle('More', fontSize),
 
-                  _buildOptionItem(
-                      context, 'Manage your Listing', Icons.arrow_forward_ios,
-                      onTap: () {
-                    Get.to(RoomListingPage());
-                  }),
+                    _buildOptionItem(
+                        context, 'Manage your Listing', Icons.arrow_forward_ios,
+                        onTap: () {
+                      Get.to(RoomListingPage());
+                    }),
 
-                  _buildOptionItem(context, 'Feedback', Icons.feedback_outlined,
-                      subtitle: 'Help Us To Improve More', onTap: () {}),
+                    _buildOptionItem(
+                        context, 'Feedback', Icons.feedback_outlined,
+                        subtitle: 'Help Us To Improve More', onTap: () {}),
 
-                  _buildOptionItem(
-                    context,
-                    'Contact Us',
-                    Icons.info,
-                    subtitle: 'We are always here for you.',
-                    onTap: () => Navigator.push(
+                    _buildOptionItem(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => ContactUsScreen()),
+                      'Contact Us',
+                      Icons.info,
+                      subtitle: 'We are always here for you.',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ContactUsScreen()),
+                      ),
                     ),
-                  ),
 
-                  _buildOptionItem(
-                    context,
-                    'Terms and Conditions',
-                    Icons.article_outlined,
-                    subtitle: ' We are always here for you.',
-                    onTap: () => Navigator.push(
+                    _buildOptionItem(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => TermsConditionsScreen()),
+                      'Terms and Conditions',
+                      Icons.article_outlined,
+                      subtitle: ' We are always here for you.',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TermsConditionsScreen()),
+                      ),
                     ),
-                  ),
-                  // SizedBox(height: 20),
-                  // _buildOptionItem(
-                  //   context,
-                  //   'Rental Agreement',
-                  //   Icons.description_outlined,
-                  //   onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => RentalAgreementScreen()),
-                  //   ),
-                  // ),
-                  // _buildOptionItem(
-                  //   context,
-                  //   'Tenant Verification',
-                  //   Icons.check_circle_outline,
-                  //   onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => TenantVerificationScreen()),
-                  //   ),
-                  // ),
-                  // _buildOptionItem(
-                  //   context,
-                  //   'Rental Receipt',
-                  //   Icons.receipt_long,
-                  //   onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => RentalReceiptScreen()),
-                  //   ),
-                  // ),
-
-                  _buildOptionItem(context, 'Logout', Icons.logout,
-                      subtitle: 'You can log in anytime.', onTap: () {
-                    signInController.signOut();
-                    Get.offAll(() => WelcomeScreen());
-                  }),
-                ],
+                    _buildOptionItem(context, 'Logout', Icons.logout,
+                        subtitle: 'You can log in anytime.', onTap: () {
+                      signInController.signOut();
+                      Get.offAll(() => WelcomeScreen());
+                    }),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          });
         },
       ),
     );
@@ -194,10 +181,10 @@ title: Text("Profile Screen"),
   Widget _buildOptionItem(BuildContext context, String title, IconData icon,
       {String? subtitle, required VoidCallback onTap}) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 8),
+      contentPadding: const EdgeInsets.symmetric(vertical: 8),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -205,7 +192,7 @@ title: Text("Profile Screen"),
       subtitle: subtitle != null
           ? Text(
               subtitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
@@ -215,40 +202,4 @@ title: Text("Profile Screen"),
       onTap: onTap,
     );
   }
-}
-
-void _showLogoutDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: Text('Log Out'),
-        content: Text('Are you sure you want to log out?'),
-        actions: [
-          TextButton(
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: Colors.grey),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-          ),
-          ElevatedButton(
-            child: Text('Yes'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.purple,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-              // Perform the logout action here
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('You have been logged out.')),
-              );
-            },
-          ),
-        ],
-      );
-    },
-  );
 }

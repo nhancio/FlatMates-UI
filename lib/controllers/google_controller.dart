@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/register.controller.dart';
+import 'package:flatemates_ui/models/userprofile.model.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/register_yourself_screen/register_yourself.dart';
 import 'package:flatemates_ui/ui/screens/welcome_screen/welcome_screen.dart';
@@ -15,8 +16,9 @@ class GoogleController extends GetxController {
   var buttonWidth = 200.0.obs; // Initial width for the button
   var isLoggedIn = false.obs;
   final RegisterUserController registerCtrl = Get.put(RegisterUserController());
-
+  // Rx<UserProfile> userProfile = UserProfile().obs;
   var user = Rx<User?>(null); // Observable user variable
+  Rx<UserProfile> userProfile = UserProfile().obs;
 
   @override
   void onInit() {
@@ -86,6 +88,46 @@ class GoogleController extends GetxController {
     await prefs.setBool('isLoggedIn', status);
   }
 
+  Future<void> saveProfile({
+    required String gender,
+    required int age,
+    required String location,
+    required String foodChoice,
+    required String drinking,
+    required String smoking,
+    required String pet,
+    required List<String> preferences,
+  }) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        Map<String, dynamic> updatedData = {
+          'gender': gender,
+          'age': age,
+          'location': location,
+          'foodChoice': foodChoice,
+          'drinking': drinking,
+          'smoking': smoking,
+          'pet': pet,
+          'preferences': preferences,
+          'updatedAt': FieldValue.serverTimestamp(),
+        };
+
+        // Save the updated profile to Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update(updatedData);
+        Get.back();
+        Get.snackbar('Success', 'Profile updated successfully!');
+      } else {
+        Get.snackbar('Error', 'No user is logged in.');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update profile: $e');
+    }
+  }
+
   // Check if user is signed in
   User? get currentUser => user.value;
 
@@ -115,6 +157,28 @@ class GoogleController extends GetxController {
       }
     } catch (e) {
       print('Error checking user: $e');
+    }
+  }
+
+  Future<void> fetchUserProfile() async {
+    try {
+      // Get the current user UID
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
+      // Fetch user data from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users') // Assuming you have a 'users' collection
+          .doc(userId)
+          .get();
+
+      // Check if user data exists
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        userProfile.value = UserProfile.fromMap(
+            data); // Convert the map to a UserProfile object
+      }
+    } catch (e) {
+      print("Error fetching user data: $e");
     }
   }
 }

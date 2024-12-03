@@ -1,3 +1,4 @@
+import 'package:flatemates_ui/controllers/homemates.controller.dart';
 import 'package:flatemates_ui/controllers/preference_controller.dart';
 import 'package:flatemates_ui/controllers/register.controller.dart';
 import 'package:flatemates_ui/res/font/font_size.dart';
@@ -39,5 +40,6 @@ class InitialBindings extends Bindings {
     Get.put(GoogleController()); // Initialize the AuthController
     Get.put(RegisterUserController());
     Get.put(PreferenceController());
+    Get.put(HomemateController());
   }
 }

@@ -11,7 +11,7 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(width: 16),
+                          const SizedBox(width: 16),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
                                     color: Colors.purple,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
                                   'Male | 0987654321',
                                   style: TextStyle(
@@ -82,7 +82,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // More Options
                   _buildSectionTitle('More', fontSize),
@@ -120,36 +120,7 @@ class ProfileScreen extends StatelessWidget {
                           builder: (context) => TermsConditionsScreen()),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  // _buildOptionItem(
-                  //   context,
-                  //   'Rental Agreement',
-                  //   Icons.description_outlined,
-                  //   onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => RentalAgreementScreen()),
-                  //   ),
-                  // ),
-                  // _buildOptionItem(
-                  //   context,
-                  //   'Tenant Verification',
-                  //   Icons.check_circle_outline,
-                  //   onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => TenantVerificationScreen()),
-                  //   ),
-                  // ),
-                  // _buildOptionItem(
-                  //   context,
-                  //   'Rental Receipt',
-                  //   Icons.receipt_long,
-                  //   onTap: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => RentalReceiptScreen()),
-                  //   ),
-                  // ),
-
+                  const SizedBox(height: 20),
                   _buildOptionItem(context, 'Logout', Icons.logout,
                       subtitle: 'You can log in anytime.', onTap: () {}),
                 ],
@@ -177,10 +148,10 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildOptionItem(BuildContext context, String title, IconData icon,
       {String? subtitle, required VoidCallback onTap}) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 8),
+      contentPadding: const EdgeInsets.symmetric(vertical: 8),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -188,7 +159,7 @@ class ProfileScreen extends StatelessWidget {
       subtitle: subtitle != null
           ? Text(
               subtitle,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
               ),
@@ -205,11 +176,11 @@ void _showLogoutDialog(BuildContext context) {
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text('Log Out'),
-        content: Text('Are you sure you want to log out?'),
+        title: const Text('Log Out'),
+        content: const Text('Are you sure you want to log out?'),
         actions: [
           TextButton(
-            child: Text(
+            child: const Text(
               'Cancel',
               style: TextStyle(color: Colors.grey),
             ),
@@ -218,7 +189,7 @@ void _showLogoutDialog(BuildContext context) {
             },
           ),
           ElevatedButton(
-            child: Text('Yes'),
+            child: const Text('Yes'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.purple,
             ),
@@ -226,7 +197,7 @@ void _showLogoutDialog(BuildContext context) {
               Navigator.of(context).pop(); // Close the dialog
               // Perform the logout action here
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('You have been logged out.')),
+                const SnackBar(content: Text('You have been logged out.')),
               );
             },
           ),

@@ -14,7 +14,7 @@ class _RoomListingPageState extends State<RoomListingPage> {
   @override
   void initState() {
     super.initState();
-    roomController.loadRooms();
+    roomController.loadMyRooms();
   }
 
   @override

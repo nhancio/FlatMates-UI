@@ -116,16 +116,34 @@ class RoomController extends GetxController {
   var rooms = <Room>[].obs;
 
   // Load rooms from Firestore
-  Future<void> loadRooms() async {
+  Future<void> loadMyRooms() async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      var roomCollection = await firestore.collection('rooms').get();
+      FirebaseAuth auth = FirebaseAuth.instance;
 
+      // Get the current user's UID
+      String currentUserId = auth.currentUser?.uid ?? '';
+
+      // If the user is not authenticated, return early
+      if (currentUserId.isEmpty) {
+        print('No user is signed in');
+        return;
+      }
+
+      // Fetch rooms where the userId matches the current user's ID
+      var roomCollection = await firestore
+          .collection('rooms')
+          .where('userId', isEqualTo: currentUserId)
+          .get();
+
+      // Map the fetched documents to Room objects
       rooms.value = roomCollection.docs
           .map((doc) => Room.fromMap(doc.id, doc.data()))
           .toList();
+
+      print('Rooms loaded successfully');
     } catch (e) {
-      print(e.toString());
+      print('Error loading rooms: ${e.toString()}');
     }
   }
 
