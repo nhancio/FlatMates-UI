@@ -2,6 +2,7 @@ import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/ui/screens/homemate_details_screen/homemate_details.dart';
 import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../res/bottom/bottom_bar.dart';
 
@@ -15,10 +16,10 @@ class HomemateRoomScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xfff8e6f1),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
@@ -29,7 +30,7 @@ class HomemateRoomScreen extends StatelessWidget {
         ),
         title: Text(
           "Homemates & Rooms",
-          style: TextStyle(color: Colors.purple),
+          style: TextStyle(color: Color(0xFFB60F6E)),
         ),
         bottom: TabBar(
           controller: tabControllerState.tabController, // Assign TabController
@@ -106,42 +107,84 @@ class HomemateList extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: Row(
+              child: Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      homemates[index]['profilePic']!,
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Name: ${homemates[index]['name']}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                  Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          homemates[index]['profilePic']!,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
                         ),
-                        const SizedBox(height: 4),
-                        Text('Age: ${homemates[index]['age']}',
-                            style: const TextStyle(color: Colors.white)),
-                        Text('Profession: ${homemates[index]['profession']}',
-                            style: const TextStyle(color: Colors.white)),
-                        Text('Location: ${homemates[index]['location']}',
-                            style: const TextStyle(color: Colors.white)),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Name: ${homemates[index]['name']}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                            const SizedBox(height: 4),
+                            Text('Age: ${homemates[index]['age']}',
+                                style: const TextStyle(color: Colors.white)),
+                            Text('Profession: ${homemates[index]['profession']}',
+                                style: const TextStyle(color: Colors.white)),
+                            Text('Location: ${homemates[index]['location']}',
+                                style: const TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                      // const Icon(Icons.bookmark_border, color: Colors.white),
+                    ],
                   ),
-                  // const Icon(Icons.bookmark_border, color: Colors.white),
+                  const SizedBox(height: 12),
+
+                  // Save and Call Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Save Button
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          // Implement save action
+                        },
+                        icon:  Icon(Iconsax.save_2),
+                        label: const Text('Save'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green.shade100, // Save button color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        ),
+                      ),
+                      // Call Button
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          // Implement call action
+                        },
+                        icon: const Icon(Iconsax.call),
+                        label: const Text('Call'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue.shade100, // Call button color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
-            color: Colors.purple,
+            color: Colors.purple, // Light purple background
           ),
         );
       },
@@ -192,36 +235,78 @@ class RoomList extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: Row(
+              child: Column(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      rooms[index]['roomPic']!,
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Rent: ${rooms[index]['rent']}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.white),
+                  Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          rooms[index]['roomPic']!,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
                         ),
-                        const SizedBox(height: 4),
-                        Text('Furnished: ${rooms[index]['furnished']}',
-                            style: const TextStyle(color: Colors.white)),
-                        Text('Location: ${rooms[index]['location']}',
-                            style: const TextStyle(color: Colors.white)),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Rent: ${rooms[index]['rent']}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                            const SizedBox(height: 4),
+                            Text('Furnished: ${rooms[index]['furnished']}',
+                                style: const TextStyle(color: Colors.white)),
+                            Text('Location: ${rooms[index]['location']}',
+                                style: const TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                      // const Icon(Icons.bookmark_border, color: Colors.white),
+                    ],
                   ),
-                  // const Icon(Icons.bookmark_border, color: Colors.white),
+                  const SizedBox(height: 12),
+
+                  // Save and Call Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Save Button
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          // Implement save action
+                        },
+                        icon:  Icon(Iconsax.save_2),
+                        label: const Text('Save'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green.shade100, // Save button color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        ),
+                      ),
+                      // Call Button
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          // Implement call action
+                        },
+                        icon: const Icon(Iconsax.call),
+                        label: const Text('Call'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue.shade100, // Call button color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

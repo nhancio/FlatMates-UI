@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "399242916006-gvendab97mq7bjqnfll9hl78lmctcnqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flatemates_ui",
+            "certificate_hash": "8fe5d3254c2ac8a1655fe2c63c03247d8c63f1fe"
+          }
+        },
+        {
           "client_id": "399242916006-ac66uv00b43uk8jujjf5pkbrqf2bsoj7.apps.googleusercontent.com",
           "client_type": 3
         }

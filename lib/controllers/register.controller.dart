@@ -79,16 +79,24 @@ class RegisterUserController extends GetxController {
 
   // Validation logic
   bool validateForm() {
+    // Check if required fields are empty or invalid
     if (nameController.text.isEmpty ||
         selectedGender.value == null ||
         selectedProfession.value == null ||
-        ageController.text.isEmpty) {
-      Get.snackbar('Error',
-          'Please fill all required fields and upload your profile picture.');
+        ageController.text.isEmpty ||
+        phoneController.text.length != 10) {  // Check if phone number is 10 digits
+      Get.snackbar(
+        'Error',
+        'Please fill all required fields and upload your profile picture. Ensure the phone number has exactly 10 digits.',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.white70,
+        colorText: Colors.black,
+      );
       return false;
     }
     return true;
   }
+
 
   // Future<String> uploadProfileImage(File image) async {
   //   try {

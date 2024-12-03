@@ -21,10 +21,15 @@ class _RoomListingPageState extends State<RoomListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Room Listings'),
+        backgroundColor: const Color(0xfff8e6f1),
+        title: const Text('Room Listings',
+            style: TextStyle(color: Color(0xFFB60F6E))),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(
+              Icons.add,
+              color: Color(0xFFB60F6E),
+            ),
             onPressed: () {
               // Navigate to EditRoomPage for adding a new room
               Get.to(() => const EditRoomPage());

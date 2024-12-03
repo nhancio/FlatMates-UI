@@ -1,33 +1,18 @@
-import 'package:flatemates_ui/controllers/google_controller.dart';
-import 'package:flatemates_ui/ui/screens/list_my_room_screen/rooms_listing.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/contact_us.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/profile_intro.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/term_condition.dart';
-import 'package:flatemates_ui/ui/screens/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../../res/bottom/bottom_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final GoogleController signInController = Get.put(GoogleController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-title: Text("Profile Screen"),
-        backgroundColor: Color(0xfff8e6f1),
+        backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-              (route) => false,
-            );
-          },
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       backgroundColor: Colors.white,
@@ -49,7 +34,7 @@ title: Text("Profile Screen"),
                     padding: EdgeInsets.all(cardPadding),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Color(0xFFB60F6E), width: 2),
+                      border: Border.all(color: Colors.purple, width: 2),
                     ),
                     child: InkWell(
                       onTap: () {
@@ -79,7 +64,7 @@ title: Text("Profile Screen"),
                                   style: TextStyle(
                                     fontSize: fontSize,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFFB60F6E),
+                                    color: Colors.purple,
                                   ),
                                 ),
                                 SizedBox(height: 4),
@@ -104,9 +89,10 @@ title: Text("Profile Screen"),
 
                   _buildOptionItem(
                       context, 'Manage your Listing', Icons.arrow_forward_ios,
-                      onTap: () {
-                    Get.to(RoomListingPage());
-                  }),
+                      onTap: () {}),
+                  _buildOptionItem(context, 'About Us', Icons.info_outline,
+                      subtitle: 'Know who we are and what we are doing.',
+                      onTap: () {}),
 
                   _buildOptionItem(context, 'Feedback', Icons.feedback_outlined,
                       subtitle: 'Help Us To Improve More', onTap: () {}),
@@ -134,7 +120,7 @@ title: Text("Profile Screen"),
                           builder: (context) => TermsConditionsScreen()),
                     ),
                   ),
-                  // SizedBox(height: 20),
+                  SizedBox(height: 20),
                   // _buildOptionItem(
                   //   context,
                   //   'Rental Agreement',
@@ -165,10 +151,7 @@ title: Text("Profile Screen"),
                   // ),
 
                   _buildOptionItem(context, 'Logout', Icons.logout,
-                      subtitle: 'You can log in anytime.', onTap: () {
-                    signInController.signOut();
-                    Get.offAll(() => WelcomeScreen());
-                  }),
+                      subtitle: 'You can log in anytime.', onTap: () {}),
                 ],
               ),
             ),

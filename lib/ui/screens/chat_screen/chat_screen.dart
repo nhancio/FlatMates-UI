@@ -60,6 +60,10 @@ class ChatListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+
+        iconTheme: IconThemeData(
+          color:Color(0xFFB60F6E),
+        ),
         title: Text(
           'Message',
           style: TextStyle(
@@ -68,10 +72,10 @@ class ChatListScreen extends StatelessWidget {
             color:Color(0xFFB60F6E),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xfff8e6f1),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
@@ -90,12 +94,12 @@ class ChatListScreen extends StatelessWidget {
               // Handle chat item tap (e.g., navigate to chat details)
             },
             child: Card(
-              elevation: 2,
+              elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               margin: EdgeInsets.symmetric(vertical: 8),
-              color: Colors.white60,
+              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Row(

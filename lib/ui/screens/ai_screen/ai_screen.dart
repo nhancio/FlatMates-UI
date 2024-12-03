@@ -12,10 +12,11 @@ class VoiceInputScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        title: Text("AI",style: TextStyle(color: Color(0xFFB60F6E)),),
+      backgroundColor: Color(0xfff8e6f1),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,

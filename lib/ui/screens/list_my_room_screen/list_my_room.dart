@@ -13,8 +13,13 @@ class AddRoomPage extends StatelessWidget {
     var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor:  Colors.white,
       appBar: AppBar(
-        title: const Text('Add Your Room Details'),
+        backgroundColor: Color(0xfff8e6f1),
+        iconTheme: IconThemeData(
+          color: Color(0xFFB60F6E)
+        ),
+        title: const Text('Add Your Room Details',style: TextStyle(color: Color(0xFFB60F6E)),),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -124,9 +129,9 @@ class AddRoomPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 80),
-                  backgroundColor: Colors.pink, // Button color
+                  backgroundColor: Color(0xFFB60F6E), // Button color
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: const Text(

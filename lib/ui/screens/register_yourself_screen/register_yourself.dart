@@ -9,10 +9,11 @@ import 'package:flutter/foundation.dart';
 
 class RegisterUserScreen extends StatelessWidget {
   final RegisterUserController controller = Get.put(RegisterUserController());
-
+  String? phoneError;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isWideScreen = constraints.maxWidth > 600;
@@ -60,10 +61,13 @@ class RegisterUserScreen extends StatelessWidget {
                         _buildTextField(
                           controller: controller.phoneController,
                           labelText: 'Phone number*',
-                          width: isWideScreen
-                              ? constraints.maxWidth * 0.45
-                              : double.infinity,
+                          keyboardType: TextInputType.number,
+                          width: isWideScreen ? constraints.maxWidth * 0.45 : double.infinity,
+                          isPhoneField: true,
+                          errorText: phoneError, // Pass the error message here
                         ),
+
+
                         _buildProfessionDropdown(
                           context: context,
                           labelText: 'Profession',
@@ -78,15 +82,16 @@ class RegisterUserScreen extends StatelessWidget {
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
                         ),
-                        _buildTextField(
+                        _buildTextFieldAge(
                           controller: controller.ageController,
                           labelText: 'Age',
                           keyboardType: TextInputType.number,
                           width: isWideScreen
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
-                          isAgeField: true,
+                          isAgeField: true, // Age-specific validation
                         ),
+
                       ],
                     ),
                     // const SizedBox(height: 20),
@@ -138,7 +143,15 @@ class RegisterUserScreen extends StatelessWidget {
                               '/preferences'); // Navigate using GetX route
                         }
                       },
-                      child: const Text('Register Your Account'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFB60F6E),
+                          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30), // Increase padding for bigger button
+
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                    ),
+                      child: const Text('Register Your Account',style: TextStyle(color: Colors.white),),
                     ),
                     const SizedBox(height: 15),
                     const Text.rich(
@@ -178,12 +191,62 @@ class RegisterUserScreen extends StatelessWidget {
     );
   }
 
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String labelText,
     TextInputType keyboardType = TextInputType.text,
     required double width,
-    bool isAgeField = false,
+    bool isPhoneField = false, // Flag for phone validation
+    String? errorText, // Error text to show when the phone number is invalid
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: width,
+          child: TextField(
+            controller: controller,
+            keyboardType: keyboardType,
+            inputFormatters: isPhoneField
+                ? [FilteringTextInputFormatter.digitsOnly] // Only allow digits for phone number
+                : [],
+            decoration: InputDecoration(
+              labelText: labelText,
+              border: OutlineInputBorder(),
+              errorText: errorText, // Display error message if any
+            ),
+            onChanged: (value) {
+              if (isPhoneField) {
+                // Ensure the phone number has exactly 10 digits
+                if (value.length > 10) {
+                  controller.text = value.substring(0, 10); // Limit to 10 digits
+                  controller.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controller.text.length)); // Move the cursor to the end
+                }
+              }
+            },
+          ),
+        ),
+        if (errorText != null && errorText.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(
+              errorText,
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ),
+      ],
+    );
+  }
+
+
+  Widget _buildTextFieldAge({
+    required TextEditingController controller,
+    required String labelText,
+    TextInputType keyboardType = TextInputType.text,
+    required double width,
+    bool isAgeField = false, // Flag for age-specific validation
   }) {
     return SizedBox(
       width: width,
@@ -191,15 +254,28 @@ class RegisterUserScreen extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         inputFormatters: isAgeField
-            ? [FilteringTextInputFormatter.digitsOnly] // Only allow digits
+            ? [FilteringTextInputFormatter.digitsOnly] // Only allow digits for age
             : [],
         decoration: InputDecoration(
           labelText: labelText,
           border: OutlineInputBorder(),
         ),
         onChanged: (value) {
-          if (isAgeField && value.length > 3) {
-            controller.text = value.substring(0, 3); // Limit to three digits
+          if (isAgeField) {
+            // Make sure the value is a valid number and not empty
+            if (value.isNotEmpty && int.tryParse(value) != null) {
+              int age = int.parse(value);
+              // Check if the age is within a valid range (between 1 and 99)
+              if (age < 1 || age > 99) {
+                // If age is not in range, reset the input or display a message
+                controller.text = '';
+              }
+            } else {
+              // If it's not a valid number, reset the input
+              controller.text = '';
+            }
+
+            // Move the cursor to the end after text change
             controller.selection = TextSelection.fromPosition(
                 TextPosition(offset: controller.text.length));
           }
@@ -207,6 +283,7 @@ class RegisterUserScreen extends StatelessWidget {
       ),
     );
   }
+
 
   Widget _buildDropdown({
     required BuildContext context,

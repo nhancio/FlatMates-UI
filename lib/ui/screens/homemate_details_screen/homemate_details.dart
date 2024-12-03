@@ -15,10 +15,13 @@ class HomeMateDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color:Color(0xFFB60F6E),
+        ),
+        backgroundColor: Color(0xfff8e6f1),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
@@ -29,7 +32,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
         ),
         title: Text(
           'HomeMate Details',
-          style: TextStyle(color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Color(0xFFB60F6E), fontSize: 22, fontWeight: FontWeight.bold),
         ),
       ),
       backgroundColor: Colors.white,

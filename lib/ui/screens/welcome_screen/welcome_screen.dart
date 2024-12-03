@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../controllers/google_controller.dart';
 import '../../../res/assets/images/images.dart';
@@ -129,9 +130,9 @@ class WelcomeScreen extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFB60F6E),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 15),
+                                horizontal: 30, vertical: 15),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                           child: signInController.isLoading.value
@@ -139,14 +140,28 @@ class WelcomeScreen extends StatelessWidget {
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       Colors.white),
                                 )
-                              : const Text(
-                                  'Login In',
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins', // Your font
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
+                              :Row(
+                            mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                            children: [
+                              Text(
+                                'Login With',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 16,
+                                  color: Colors.white,
                                 ),
+                                overflow: TextOverflow.ellipsis, // Prevent overflow of text
+                                maxLines: 1, // Ensure the text stays on one line
+                              ),
+                              SizedBox(width: 9), // Optional spacing between text and icon
+                              Image.asset(
+                                'assets/icons/google.png',
+                                height: 22,
+                                width: 22,
+                              ),
+                            ],
+                          ),
+
                         ),
                       );
                     }),

@@ -20,7 +20,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
     PreferenceItem(name: 'Sports Person', iconPath: 'assets/icons/sport.png'),
     PreferenceItem(name: 'Yoga Person', iconPath: 'assets/icons/yoga.png'),
     PreferenceItem(
-        name: 'Non-Alcoholic', iconPath: 'assets/icons/non_alcoholic.png'),
+        name: 'Non-Alcoholic', iconPath: 'assets/icons/alcoholic.png'),
     PreferenceItem(
         name: 'Shopping Person', iconPath: 'assets/icons/shopping.png'),
     PreferenceItem(
@@ -38,13 +38,13 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Choose Your Preferences")),
+backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: screenWidth > 800 ? 60 : 100),
+            SizedBox(height:50),
             Center(
               child: Text(
                 'Choose your preferences',
@@ -56,6 +56,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
             const SizedBox(height: 10),
             Center(
               child: Text(
+                textAlign: TextAlign.start,
                 'Choose at least 5 preferences for better results',
                 style: TextStyle(
                     fontSize: screenWidth > 800 ? 18 : 16,
@@ -108,7 +109,15 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
                       });
                     }
                   },
-                  child: const Text('Next', style: TextStyle(fontSize: 18)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFB60F6E),
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30), // Increase padding for bigger button
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text('Next', style: TextStyle(fontSize: 18,color: Colors.white)),
                 ),
               ),
             ),
@@ -159,7 +168,7 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.transparent,
+            color: isSelected ? Color(0xFFB60F6E) : Colors.transparent,
             width: 2,
           ),
         ),
@@ -173,7 +182,8 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
               width: 60,
             ),
             const SizedBox(height: 8),
-            Text(item.name,
+            Text(item.name,overflow: TextOverflow.ellipsis,
+                maxLines: 1,
                 style:
                     const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ],

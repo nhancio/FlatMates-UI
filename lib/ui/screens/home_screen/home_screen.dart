@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                               color: Color(0xFFB60F6E),
                             ),
                           ),
-                          Stack(
+                          /*Stack(
                             children: [
                               IconButton(
                                 icon: const Icon(
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ],
-                          ),
+                          ),*/
                         ],
                       ),
                       const Text(
@@ -127,6 +127,9 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.9),
                           borderRadius: BorderRadius.circular(12),
+
+                          border: Border.all(color: Colors.grey.withOpacity(0.5)), // Adding border
+
                         ),
                         child: Row(
                           children: [
@@ -164,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           // Row with two boxes
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // First box with image size

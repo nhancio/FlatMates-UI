@@ -40,6 +40,7 @@ class _EditRoomPageState extends State<EditRoomPage> {
         title: Text(widget.room == null ? 'Add Room' : 'Edit Room'),
       ),
       body: SingleChildScrollView(
+
         padding: EdgeInsets.symmetric(
           horizontal: screenWidth < 600 ? 16.0 : 40.0,
           vertical: 20.0,
@@ -137,9 +138,9 @@ class _EditRoomPageState extends State<EditRoomPage> {
                 style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 80),
-                  backgroundColor: Colors.pink, // Button color
+                  backgroundColor: Color(0xFFB60F6E), // Button color
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
                 child: const Text(
