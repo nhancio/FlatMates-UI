@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/bottomnav.controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
@@ -9,6 +11,10 @@ import '../../../res/assets/images/images.dart';
 import '../../../res/colors/colors.dart';
 
 class HomePage extends StatefulWidget {
+  final String userId;
+
+  HomePage({required this.userId});
+
   static const String firstScreen = "assets/images/first_page.png";
 
   @override
@@ -16,26 +22,84 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? selectedCity;
   BottomNavController bottomNavController = Get.put(BottomNavController());
   TabControllerState tabCtrl = Get.put(TabControllerState());
+  final userId = FirebaseAuth.instance.currentUser?.uid;
 
+  String? selectedCity;
   final List<String> cities = [
     'Hitech City, Hyderabad',
     'Kondapur, Hyderabad',
     'Marathahalli, Bangalore',
   ];
+  List<String> filteredCities = [];
+  bool showDropdown = false; // Controls visibility of dropdown list
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    filteredCities = cities; // Initialize filtered list with all cities
+  }
+
+  void filterCities(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredCities = cities;
+      } else {
+        filteredCities = cities
+            .where((city) => city.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  Future<Map<String, String>> fetchUserDetails(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      if (userDoc.exists) {
+        String userName = userDoc['userName'] ?? 'N/A';
+
+        return {
+          'userName': userName,
+        };
+      } else {
+        return {
+          'userName': 'User not found',
+        };
+      }
+    } catch (e) {
+      return {
+        'userName': 'Error',
+      };
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (userId == null) {
+      return Scaffold(
+        body: Center(
+          child: Text(
+            'User not logged in. Please log in first.',
+            style: TextStyle(fontSize: 16, color: Colors.red),
+          ),
+        ),
+      );
+    }
     return Scaffold(
+      backgroundColor: Colors.white,
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isWideScreen = constraints.maxWidth > 600;
           return Stack(
             children: [
               // Background Image
-              Positioned(
+              /*  Positioned(
                 child: Image.asset(
                   Images.firstScreen,
                   fit: BoxFit.cover,
@@ -49,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   color: AppColors.backgroundOpacity.withOpacity(1),
                 ),
-              ),
+              ),*/
               // Main Content
               SingleChildScrollView(
                 child: Padding(
@@ -61,58 +125,57 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 60),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Hi Daniel',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFFB60F6E),
-                            ),
-                          ),
-                          /*Stack(
-                            children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.notifications,
-                                  color: Colors.black,
-                                  size: 40,
+                      FutureBuilder<Map<String, String>>(
+                        future: fetchUserDetails(userId!), // Pass userId here
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Row(
+                              children: const [
+                                // CircularProgressIndicator(),
+                                SizedBox(width: 10),
+                                Text(
+                                  '',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey),
                                 ),
-                                onPressed: () {
-                                  // Handle notifications button press
-                                },
+                              ],
+                            );
+                          } else if (snapshot.hasError) {
+                            return const Text(
+                              'Error fetching data!',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
                               ),
-                              Positioned(
-                                right: 8,
-                                top: 8,
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 20,
-                                    minHeight: 20,
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      '5', // Display the number of notifications here
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
+                            );
+                          } else if (snapshot.hasData) {
+                            final userDetails = snapshot.data!;
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Hi ${userDetails['userName']}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFB60F6E),
                                   ),
                                 ),
+                              ],
+                            );
+                          } else {
+                            return const Text(
+                              'User not found',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
                               ),
-                            ],
-                          ),*/
-                        ],
+                            );
+                          }
+                        },
                       ),
                       const Text(
                         "Let's Find Peace For You!",
@@ -128,34 +191,84 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white.withOpacity(0.9),
                           borderRadius: BorderRadius.circular(12),
 
-                          border: Border.all(color: Colors.grey.withOpacity(0.5)), // Adding border
-
+                          border: Border.all(
+                              color: Colors.grey
+                                  .withOpacity(0.5)), // Adding border
                         ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.search),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: DropdownButton<String>(
-                                hint: const Text('Select City'),
-                                value: selectedCity,
-                                isExpanded: true,
-                                icon: const Icon(Icons.arrow_drop_down),
-                                onChanged: (String? newValue) {
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Search Bar
+                              TextFormField(
+                                controller: searchController,
+                                readOnly: true, // Prevent manual typing
+                                onTap: () {
                                   setState(() {
-                                    selectedCity = newValue;
+                                    showDropdown =
+                                        !showDropdown; // Toggle dropdown visibility
+                                    if (!showDropdown) {
+                                      filteredCities =
+                                          cities; // Reset list when closing dropdown
+                                    }
                                   });
                                 },
-                                items: cities.map<DropdownMenuItem<String>>(
-                                    (String city) {
-                                  return DropdownMenuItem<String>(
-                                    value: city,
-                                    child: Text(city),
-                                  );
-                                }).toList(),
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.search,
+                                      color: Colors.grey[600]),
+                                  hintText: selectedCity ??
+                                      'Search or select locality',
+                                  filled: true,
+                                  fillColor: Colors.grey[200],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 10),
+                              // Dropdown Items
+                              if (showDropdown)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border:
+                                        Border.all(color: Colors.grey[300]!),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    // Ensures dropdown doesn't overflow
+                                    itemCount: filteredCities.length,
+                                    itemBuilder: (context, index) {
+                                      final city = filteredCities[index];
+                                      return ListTile(
+                                        title: Text(city),
+                                        onTap: () {
+                                          setState(() {
+                                            selectedCity =
+                                                city; // Update selected city
+                                            searchController.text =
+                                                city; // Show in search bar
+                                            showDropdown =
+                                                false; // Hide dropdown
+                                          });
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ),
 
@@ -177,12 +290,12 @@ class _HomePageState extends State<HomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => Scaffold(
-                                              body: HomemateList(),
-                                              appBar: AppBar(
-                                                title: const Text(
-                                                    "Homemates for you"),
-                                              ),
-                                            )),
+                                          body: HomemateList(userId: '',),
+                                          appBar: AppBar(
+                                            title: const Text(
+                                                "Homemates for you"),
+                                          ),
+                                        )),
                                   );
                                   // tabCtrl.tabController.index = 0;
                                   // bottomNavController.setIndex(
@@ -203,12 +316,12 @@ class _HomePageState extends State<HomePage> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => Scaffold(
-                                              body: RoomList(),
-                                              appBar: AppBar(
-                                                title:
-                                                    const Text("Rooms for you"),
-                                              ),
-                                            )),
+                                          body: RoomList(),
+                                          appBar: AppBar(
+                                            title:
+                                            const Text("Rooms for you"),
+                                          ),
+                                        )),
                                   );
                                   // bottomNavController.setIndex(2);
                                   // tabCtrl.tabController.index = 1;
@@ -254,8 +367,10 @@ class _HomePageState extends State<HomePage> {
   void _showBottomSheet(BuildContext context, String listType) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Allows flexible height
-      backgroundColor: Colors.transparent, // To make the background transparent
+      isScrollControlled: true,
+      // Allows flexible height
+      backgroundColor: Colors.transparent,
+      // To make the background transparent
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0), // Adjust left curve
@@ -278,7 +393,9 @@ class _HomePageState extends State<HomePage> {
                 // Show content based on listType
                 Expanded(
                   child: listType == 'HomemateList'
-                      ? HomemateList() // Show HomemateRoomScreen content
+                      ? HomemateList(
+                          userId: '',
+                        ) // Show HomemateRoomScreen content
                       : RoomList(), // Show RoomListingPage content
                 ),
               ],
@@ -288,7 +405,6 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-
   Widget _buildServiceCard(
       String imagePath, double boxWidth, double imageHeight) {
     return Container(
@@ -307,3 +423,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

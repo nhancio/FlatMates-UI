@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 
 import '../../../res/bottom/bottom_bar.dart';
@@ -23,10 +24,10 @@ class HomeMateDetailsScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-                  (route) => false,
+
             );
           },
         ),
@@ -47,10 +48,10 @@ class HomeMateDetailsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.purple, width: 2),
               ),
-              child: Stack(
+               child:Stack(
                 children: [
                   Container(
-                    width: double.infinity,
+                   width: double.infinity,
                     height: screenWidth < 600
                         ? screenWidth * 0.6
                         : 300, // Adjust the height for mobile and web
@@ -139,7 +140,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
                 onPressed: () {
                   // Handle message action
                 },
-                child: Text('Message',style: TextStyle(color: Colors.white),),
+                child: Text('Call',style: TextStyle(color: Colors.white),),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFB60F6E),
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 50),
@@ -225,6 +226,208 @@ class HomeMateDetailsScreen extends StatelessWidget {
           ],
         );
       }).toList(),
+    );
+  }
+}
+*/
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class HomeMateDetailsScreen extends StatelessWidget {
+  final String userId;
+
+  const HomeMateDetailsScreen({Key? key, required this.userId})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Color(0xFFB60F6E)),
+        backgroundColor: const Color(0xfff8e6f1),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'HomeMate Details',
+          style: TextStyle(
+            color: Color(0xFFB60F6E),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return const Center(child: Text('An error occurred.'));
+          }
+
+          if (!snapshot.hasData || snapshot.data == null || !snapshot.data!.exists) {
+            return const Center(child: Text('User data not found.'));
+          }
+
+          final userData = snapshot.data!.data() as Map<String, dynamic>;
+          final preferences = userData['preferences'] ?? [];
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildProfileSection(userData),
+                const SizedBox(height: 20),
+                _buildDetailRow('Gender', userData['gender'] ?? 'Not specified'),
+                _buildDetailRow('Age', userData['age']?.toString() ?? 'Not specified'),
+                _buildDetailRow('Profession', userData['profession'] ?? 'Not specified'),
+                const SizedBox(height: 20),
+                _buildSectionTitle('Preferences'),
+                _buildPreferenceRow(preferences),
+                const SizedBox(height: 20),
+                _buildCallButton(userData['userPhoneNumber']),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildProfileSection(Map<String, dynamic> userData) {
+    return Row(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.purple, width: 2),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              userData['profileUrl'] ??
+                  "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              userData['userName'] ?? 'Unknown',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              userData['userPhoneNumber'] ?? 'No Phone Number',
+              style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Text(
+            '$title: ',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPreferenceRow(List<dynamic> preferences) {
+    final predefinedPreferences = {
+      'Pet Lover': 'assets/icons/pet.png',
+      'Gym Person': 'assets/icons/gym.png',
+      'Travel Person': 'assets/icons/travel.png',
+      'Party Person': 'assets/icons/party.png',
+      'Music Person': 'assets/icons/music.png',
+      'Vegan Person': 'assets/icons/vegan.png',
+      'Sports Person': 'assets/icons/sport.png',
+      'Yoga Person': 'assets/icons/yoga.png',
+      'Non-Alcoholic': 'assets/icons/alcoholic.png',
+      'Shopping Person': 'assets/icons/shopping.png',
+      'Friendly Person': 'assets/icons/friends.png',
+      'Studious': 'assets/icons/studious.png',
+      'Growth': 'assets/icons/growth.png',
+      'Non-Smoker': 'assets/icons/non_smoker.png',
+    };
+
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: preferences.map((preference) {
+        final iconPath = predefinedPreferences[preference] ?? 'assets/icons/default_icon.png';
+        return Column(
+          children: [
+            Image.asset(iconPath, height: 60, width: 60),
+            const SizedBox(height: 4),
+            Text(
+              preference,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildCallButton(String? phoneNumber) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          if (phoneNumber != null && phoneNumber.isNotEmpty) {
+            final Uri phoneUrl = Uri.parse('tel:$phoneNumber');
+            launchUrl(phoneUrl);
+          } else {
+            // Optionally handle invalid phone number
+          }
+        },
+        child: const Text('Call', style: TextStyle(color: Colors.white)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFFB60F6E),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -156,8 +156,8 @@ class WelcomeScreen extends StatelessWidget {
                               SizedBox(width: 9), // Optional spacing between text and icon
                               Image.asset(
                                 'assets/icons/google.png',
-                                height: 22,
-                                width: 22,
+                                height: 24,
+                                width: 24,
                               ),
                             ],
                           ),

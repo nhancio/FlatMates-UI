@@ -16,10 +16,10 @@ class RoomDetailScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-                  (route) => false,
+
             );
           },
         ),

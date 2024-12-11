@@ -44,7 +44,7 @@ backgroundColor: Colors.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height:50),
+            SizedBox(height:25),
             Center(
               child: Text(
                 'Choose your preferences',
@@ -53,17 +53,20 @@ backgroundColor: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(height: 10),
+
             Center(
-              child: Text(
-                textAlign: TextAlign.start,
-                'Choose at least 5 preferences for better results',
-                style: TextStyle(
-                    fontSize: screenWidth > 800 ? 18 : 16,
-                    color: Colors.grey[600]),
+              child: Padding(
+                padding:  EdgeInsets.fromLTRB(8,10,8,10),
+                child: Text(
+                  textAlign: TextAlign.start,
+                  'Choose at least 5 preferences for better results',
+                  style: TextStyle(
+                      fontSize: screenWidth > 800 ? 18 : 16,
+                      color: Colors.grey[600]),
+                ),
               ),
             ),
-            const SizedBox(height: 20),
+
             GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -78,7 +81,7 @@ backgroundColor: Colors.white,
                 return _buildPreferenceItem(context, preferenceItems[index]);
               },
             ),
-            const SizedBox(height: 20),
+
             if (errorMessage != null) ...[
               Center(
                 child: Text(
@@ -87,9 +90,9 @@ backgroundColor: Colors.white,
                   style: const TextStyle(color: Colors.red, fontSize: 14),
                 ),
               ),
-              const SizedBox(height: 10),
+
             ],
-            const SizedBox(height: 20),
+
             Center(
               child: SizedBox(
                 width: screenWidth > 600 ? 250 : 200,

@@ -93,6 +93,7 @@ import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 class BottomNavBarScreen extends StatelessWidget {
   @override
@@ -103,14 +104,15 @@ class BottomNavBarScreen extends StatelessWidget {
 
     // Define the pages to be displayed in the body
     final List<Widget> _pages = [
-      HomePage(),
-      ChatListScreen(),
+      HomePage(userId: '',),
+     // ChatListScreen(),
       HomemateRoomScreen(),
       ProfileScreen(),
-      VoiceInputScreen(),
+     // VoiceInputScreen(),
     ];
 
     return Scaffold(
+
       body: Obx(() {
         // Use Obx to update the body based on the current index from the controller
         return _pages[_bottomNavController.currentIndex.value];
@@ -119,24 +121,24 @@ class BottomNavBarScreen extends StatelessWidget {
         shape: const CircularNotchedRectangle(),
         notchMargin: 10,
         child: Container(
-          height: 70,
+          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildBottomNavItem(
-                  Icons.home_outlined, 'Home', 0, _bottomNavController),
-              _buildBottomNavItem(
+                  Iconsax.home, 'Home', 0, _bottomNavController),
+             /* _buildBottomNavItem(
                   Icons.wechat_sharp, 'Chat', 1, _bottomNavController),
-              const SizedBox(width: 48), // Space for the FAB
+              const SizedBox(width: 48), // Space for the FAB*/
               _buildBottomNavItem(
-                  Icons.book_outlined, 'Saved', 2, _bottomNavController),
+                  Iconsax.save_2, 'Saved', 1, _bottomNavController),
               _buildBottomNavItem(
-                  Icons.person_outline, 'Profile', 3, _bottomNavController),
+                  Iconsax.profile_2user4, 'Profile', 2, _bottomNavController),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+    /*  floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Update index to navigate to VoiceInputScreen
           _bottomNavController.setIndex(4); // Index for VoiceInputScreen
@@ -144,7 +146,7 @@ class BottomNavBarScreen extends StatelessWidget {
         child: Image.asset(AppIcons.ai, height: 20, width: 20),
         backgroundColor: Colors.white,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
     );
   }
 
@@ -155,27 +157,57 @@ class BottomNavBarScreen extends StatelessWidget {
         controller.setIndex(index); // Update the current index
       },
       child: Obx(() {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: controller.currentIndex.value == index
+        bool isSelected = controller.currentIndex.value == index;
+        bool isHovered = controller.hoverIndex.value == index;
+
+        return MouseRegion(
+          onEnter: (_) {
+            controller.setHoverIndex(index); // Set hover index
+          },
+          onExit: (_) {
+            controller.setHoverIndex(null); // Reset hover index
+          },
+          child: AnimatedContainer(
+
+            duration: Duration(milliseconds: 300),
+            decoration: BoxDecoration(
+              color: isSelected
                   ? Colors.blueAccent
-                  : Colors.grey,
+                  : (isHovered ? Colors.blueGrey[100] : Colors.transparent),
+              borderRadius: BorderRadius.circular(8),
             ),
-            Text(
-              label,
-              style: TextStyle(
-                color: controller.currentIndex.value == index
-                    ? Colors.blueAccent
-                    : Colors.grey,
-              ),
+            padding: EdgeInsets.symmetric(vertical: 4.0), // Reduced padding
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedScale(
+                  duration: Duration(milliseconds: 150),
+                  scale: isSelected ? 1.3 : 1.0,
+                  child: Icon(
+                    icon,
+                    size: 24, // Set a fixed size for the icon
+                    color: isSelected
+                        ? Colors.white
+                        : (isHovered ? Colors.blueGrey : Colors.grey),
+                  ),
+                ),
+                SizedBox(height: 2), // Add spacing between icon and text
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12, // Reduced font size
+                    color: isSelected
+                        ? Colors.white
+                        : (isHovered ? Colors.blueGrey : Colors.grey),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       }),
     );
   }
+
 }

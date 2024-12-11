@@ -25,10 +25,10 @@ class ProfileScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-              (route) => false,
+
             );
           },
         ),

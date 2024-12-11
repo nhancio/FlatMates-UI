@@ -1,16 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/homemates.controller.dart';
+import 'package:flatemates_ui/controllers/room_controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/ui/screens/homemate_details_screen/homemate_details.dart';
 import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../../res/bottom/bottom_bar.dart';
-
 import 'package:get/get.dart';
 
 class HomemateRoomScreen extends StatelessWidget {
   final TabControllerState tabControllerState = Get.put(TabControllerState());
+
   @override
   Widget build(BuildContext context) {
     // Initialize the GetX TabController
@@ -22,10 +25,10 @@ class HomemateRoomScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-              (route) => false,
+
             );
           },
         ),
@@ -33,8 +36,10 @@ class HomemateRoomScreen extends StatelessWidget {
           "Homemates & Rooms",
           style: TextStyle(color: Color(0xFFB60F6E)),
         ),
-        bottom: TabBar(
-          controller: tabControllerState.tabController, // Assign TabController
+        bottom:tabControllerState.tabController != null
+            ? TabBar(
+          controller: tabControllerState.tabController,
+          // Assign TabController
           indicatorColor: Colors.purple,
           labelColor: Colors.purple,
           unselectedLabelColor: Colors.grey,
@@ -42,22 +47,39 @@ class HomemateRoomScreen extends StatelessWidget {
             const Tab(text: 'Homemate'),
             const Tab(text: 'Room'),
           ],
-        ),
+        ) : null,
       ),
-      body: TabBarView(
+      body:tabControllerState.tabController != null
+          ?  TabBarView(
         controller: tabControllerState.tabController, // Assign TabController
         children: [
-          HomemateList(),
+          HomemateList(
+              userId: FirebaseAuth.instance.currentUser?.uid ?? ""
+          ),
           RoomList(),
         ],
-      ),
+      )  : Center(child: CircularProgressIndicator()),
     );
   }
 }
 
-class HomemateList extends StatelessWidget {
+class HomemateList extends StatefulWidget {
+  final String userId;
+
+  HomemateList({Key? key, required this.userId,}) : super(key: key);
+
+  @override
+  State<HomemateList> createState() => _HomemateListState();
+}
+
+class _HomemateListState extends State<HomemateList> {
+  final userId   = FirebaseAuth.instance.currentUser?.uid;
+
+
   @override
   Widget build(BuildContext context) {
+    print('HomemateList userId: $userId'); // Debug log to check userId
+
     final HomemateController homemateController = Get.put(HomemateController());
 
     return Obx(() {
@@ -78,7 +100,7 @@ class HomemateList extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomeMateDetailsScreen(),
+                  builder: (context) => HomeMateDetailsScreen(userId: userId!,),
                 ),
               );
             },
@@ -108,16 +130,16 @@ class HomemateList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Name: ${homemate.userName}',
+                                'Name: ${homemate.userName ?? "N/A"}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
                               const SizedBox(height: 4),
-                              Text('Age: ${homemate.age}',
+                              Text('Age: ${homemate.age ?? "N/A"}',
                                   style: const TextStyle(color: Colors.white)),
-                              Text('Profession: ${homemate.profession}',
+                              Text('Profession: ${homemate.profession ?? "N/A"}',
                                   style: const TextStyle(color: Colors.white)),
                             ],
                           ),
@@ -127,6 +149,135 @@ class HomemateList extends StatelessWidget {
                     const SizedBox(height: 12),
 
                     // Save and Call Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Save Button
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            // Implement save action
+                          },
+                          icon: const Icon(Iconsax.save_2),
+                          label: const Text('Save'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Colors.green.shade100, // Save button color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                          ),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            final Uri _phoneUrl = Uri.parse('tel:${homemate.userPhoneNumber ?? "N/A"}');
+                            try {
+                              await launchUrl(_phoneUrl);  // Directly launch the dialer
+                            } catch (e) {
+                              print('Could not launch the dialer: $e');
+                            }
+                          },
+                          icon: const Icon(Iconsax.call),
+                          label: Text(
+                            'Call ${homemate.userPhoneNumber ?? "N/A"}',
+                            style: TextStyle(fontSize: 9),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green.shade100,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
+                        )
+
+
+
+                        // Call Button
+
+                      ],
+                    ),
+                  ],
+                ),
+              ), // Light purple background
+            ),
+          );
+        },
+      );
+    });
+  }
+}
+
+class RoomList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final RoomControllerFirebase roomController =
+        Get.put(RoomControllerFirebase());
+
+    return Scaffold(
+      body: Obx(() {
+        // Observe the isLoading state
+        if (roomController.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        // Check if rooms are available
+        if (roomController.rooms.isEmpty) {
+          return const Center(child: Text('No rooms available'));
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: roomController.rooms.length,
+          itemBuilder: (context, index) {
+            final room = roomController.rooms[index];
+            return Card(
+              color: Colors.purple,
+              margin: const EdgeInsets.only(bottom: 16),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
+                title: Text(
+                  'Room Type: ${room.roomType ?? "N/A"}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Address: ${room.address ?? "N/A"}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Rent: ${room.roomRent ?? "N/A"}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Home Type: ${room.homeType ?? "N/A"}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Move-in Date: ${room.moveInDate ?? "N/A"}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Occupancy: ${room.occupationPerRoom ?? "N/A"}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -168,16 +319,24 @@ class HomemateList extends StatelessWidget {
                     ),
                   ],
                 ),
-              ), // Light purple background
-            ),
-          );
-        },
-      );
-    });
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RoomDetailScreen(),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        );
+      }),
+    );
   }
 }
 
-class RoomList extends StatelessWidget {
+/*class RoomList extends StatelessWidget {
   final List<Map<String, String>> rooms = [
     {
       'rent': '2600/-',
@@ -217,7 +376,7 @@ class RoomList extends StatelessWidget {
           child: Card(
             margin: const EdgeInsets.only(bottom: 16),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
@@ -270,7 +429,7 @@ class RoomList extends StatelessWidget {
                         label: const Text('Save'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              Colors.green.shade100, // Save button color
+                          Colors.green.shade100, // Save button color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -287,7 +446,7 @@ class RoomList extends StatelessWidget {
                         label: const Text('Call'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              Colors.blue.shade100, // Call button color
+                          Colors.blue.shade100, // Call button color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -306,4 +465,4 @@ class RoomList extends StatelessWidget {
       },
     );
   }
-}
+}*/
