@@ -1,3 +1,4 @@
+/*
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/homemates.controller.dart';
@@ -98,7 +99,7 @@ class _HomemateListState extends State<HomemateList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomeMateDetailsScreen(userId: '',),
+                  builder: (context) => HomeMateDetailsScreen(),
                 ),
               );
             },
@@ -330,137 +331,6 @@ class RoomList extends StatelessWidget {
           },
         );
       }),
-    );
-  }
-}
-
-/*class RoomList extends StatelessWidget {
-  final List<Map<String, String>> rooms = [
-    {
-      'rent': '2600/-',
-      'furnished': 'Fully',
-      'location': 'Gachibowli, Hyderabad',
-      'roomPic': 'assets/images/bad1.png',
-    },
-    {
-      'rent': '2600/-',
-      'furnished': 'Fully',
-      'location': 'Gachibowli, Hyderabad',
-      'roomPic': 'assets/images/bad2.png',
-    },
-    {
-      'rent': '2600/-',
-      'furnished': 'Fully',
-      'location': 'Gachibowli, Hyderabad',
-      'roomPic': 'assets/images/bad3.png',
-    },
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: rooms.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => RoomDetailScreen(),
-              ),
-            );
-          },
-          child: Card(
-            margin: const EdgeInsets.only(bottom: 16),
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          rooms[index]['roomPic']!,
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Rent: ${rooms[index]['rent']}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            const SizedBox(height: 4),
-                            Text('Furnished: ${rooms[index]['furnished']}',
-                                style: const TextStyle(color: Colors.white)),
-                            Text('Location: ${rooms[index]['location']}',
-                                style: const TextStyle(color: Colors.white)),
-                          ],
-                        ),
-                      ),
-                      // const Icon(Icons.bookmark_border, color: Colors.white),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Save and Call Buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Save Button
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Implement save action
-                        },
-                        icon: const Icon(Iconsax.save_2),
-                        label: const Text('Save'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                          Colors.green.shade100, // Save button color
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                        ),
-                      ),
-                      // Call Button
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Implement call action
-                        },
-                        icon: const Icon(Iconsax.call),
-                        label: const Text('Call'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                          Colors.blue.shade100, // Call button color
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            color: Colors.purple,
-          ),
-        );
-      },
     );
   }
 }*/
