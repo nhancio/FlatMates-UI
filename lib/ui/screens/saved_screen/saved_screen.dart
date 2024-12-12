@@ -94,13 +94,17 @@ class _HomemateListState extends State<HomemateList> {
 
           return GestureDetector(
             onTap: () {
-              // Navigate to HomeMateDetailsScreen
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeMateDetailsScreen(userId: '',),
-                ),
-              );
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        HomeMateDetailsScreen(homemate: homemate),
+                  ),
+
+                );
+
+
             },
             child: Card(
               margin: const EdgeInsets.only(bottom: 16),
@@ -236,17 +240,60 @@ class RoomList extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               child: ListTile(
-                title: Text(
+               /* title: Text(
                   'Room Type: ${room.roomType}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
-                ),
+                ),*/
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    Row(
+                      children: [
+                        Container(
+
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(13.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                               "assets/images/house.png",
+                                width: 60,
+                                height: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Room Type: ${room.roomType}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text('Address: ${room.address}',
+                                  style: const TextStyle(color: Colors.white)),
+                              Text('Rent: ${room.roomRent}',
+                                  style: const TextStyle(color: Colors.white)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                   /* Text(
                       'Address: ${room.address}',
                       style: const TextStyle(
                         color: Colors.white,
@@ -275,7 +322,8 @@ class RoomList extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white,
                       ),
-                    ),
+                    ),*/
+                    SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -321,7 +369,7 @@ class RoomList extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RoomDetailScreen(),
+                      builder: (context) => RoomDetailScreen(room: room),
                     ),
                   );
                 },

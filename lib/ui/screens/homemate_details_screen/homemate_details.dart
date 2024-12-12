@@ -233,14 +233,14 @@ class HomeMateDetailsScreen extends StatelessWidget {
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeMateDetailsScreen extends StatelessWidget {
-  final String userId;
+  final dynamic homemate; // Replace `dynamic` with your homemate data type
 
-  const HomeMateDetailsScreen({Key? key, required this.userId})
-      : super(key: key);
+  const HomeMateDetailsScreen({Key? key, required this.homemate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -263,48 +263,28 @@ class HomeMateDetailsScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.white,
-      body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            return const Center(child: Text('An error occurred.'));
-          }
-
-          if (!snapshot.hasData || snapshot.data == null || !snapshot.data!.exists) {
-            return const Center(child: Text('User data not found.'));
-          }
-
-          final userData = snapshot.data!.data() as Map<String, dynamic>;
-          final preferences = userData['preferences'] ?? [];
-
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildProfileSection(userData),
-                const SizedBox(height: 20),
-                _buildDetailRow('Gender', userData['gender'] ?? 'Not specified'),
-                _buildDetailRow('Age', userData['age']?.toString() ?? 'Not specified'),
-                _buildDetailRow('Profession', userData['profession'] ?? 'Not specified'),
-                const SizedBox(height: 20),
-                _buildSectionTitle('Preferences'),
-                _buildPreferenceRow(preferences),
-                const SizedBox(height: 20),
-                _buildCallButton(userData['userPhoneNumber']),
-              ],
-            ),
-          );
-        },
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildProfileSection(),
+            const SizedBox(height: 20),
+            _buildDetailRow('Gender', homemate.gender ?? 'Not specified'),
+            _buildDetailRow('Age', homemate.age?.toString() ?? 'Not specified'),
+            _buildDetailRow('Profession', homemate.profession ?? 'Not specified'),
+            const SizedBox(height: 20),
+            _buildSectionTitle('Preferences'),
+            _buildPreferenceRow(homemate.preferences ?? []),
+            const SizedBox(height: 20),
+            _buildCallButton(homemate.userPhoneNumber),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildProfileSection(Map<String, dynamic> userData) {
+  Widget _buildProfileSection() {
     return Row(
       children: [
         Container(
@@ -315,7 +295,7 @@ class HomeMateDetailsScreen extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              userData['profileUrl'] ??
+
                   "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",
               width: 80,
               height: 80,
@@ -328,11 +308,11 @@ class HomeMateDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              userData['userName'] ?? 'Unknown',
+              homemate.userName ?? 'Unknown',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
-              userData['userPhoneNumber'] ?? 'No Phone Number',
+              homemate.userPhoneNumber ?? 'No Phone Number',
               style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
             ),
           ],
@@ -415,8 +395,6 @@ class HomeMateDetailsScreen extends StatelessWidget {
           if (phoneNumber != null && phoneNumber.isNotEmpty) {
             final Uri phoneUrl = Uri.parse('tel:$phoneNumber');
             launchUrl(phoneUrl);
-          } else {
-            // Optionally handle invalid phone number
           }
         },
         child: const Text('Call', style: TextStyle(color: Colors.white)),
