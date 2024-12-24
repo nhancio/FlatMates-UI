@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "399242916006",
+    "project_id": "homemates-app",
+    "storage_bucket": "homemates-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399242916006:android:dc78943848aaf3140c8467",
+        "android_client_info": {
+          "package_name": "com.example.flatemates_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399242916006-3aqafl5m7t6r076trm29qh02cjrkdtpd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flatemates_ui",
+            "certificate_hash": "d4ea28b960139908e7896be6ad24fac27f900b42"
+          }
+        },
+        {
+          "client_id": "399242916006-gvendab97mq7bjqnfll9hl78lmctcnqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flatemates_ui",
+            "certificate_hash": "8fe5d3254c2ac8a1655fe2c63c03247d8c63f1fe"
+          }
+        },
+        {
+          "client_id": "399242916006-ac66uv00b43uk8jujjf5pkbrqf2bsoj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv6k-wIk-saHCyNplqEArHeMqpQnj53c8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399242916006-ac66uv00b43uk8jujjf5pkbrqf2bsoj7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "399242916006-jgf84jj44h9e6hc28smt288tdvc95tov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flatematesUi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399242916006:android:1db8eb657263494c0c8467",
+        "android_client_info": {
+          "package_name": "com.example.flatmates_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399242916006-ac66uv00b43uk8jujjf5pkbrqf2bsoj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv6k-wIk-saHCyNplqEArHeMqpQnj53c8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399242916006-ac66uv00b43uk8jujjf5pkbrqf2bsoj7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "399242916006-jgf84jj44h9e6hc28smt288tdvc95tov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flatematesUi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
