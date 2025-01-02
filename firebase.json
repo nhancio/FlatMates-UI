@@ -1,0 +1,25 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "homemates-app",
+                    "appId": "1:399242916006:android:1db8eb657263494c0c8467",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "homemates-app",
+                    "configurations": {
+                        "android": "1:399242916006:android:1db8eb657263494c0c8467",
+                        "ios": "1:399242916006:ios:c8bd8ac1f73014e40c8467",
+                        "macos": "1:399242916006:ios:c8bd8ac1f73014e40c8467",
+                        "web": "1:399242916006:web:aed9fc1705f333000c8467",
+                        "windows": "1:399242916006:web:aed9fc1705f333000c8467"
+                    }
+                }
+            }
+        }
+    }
+}
