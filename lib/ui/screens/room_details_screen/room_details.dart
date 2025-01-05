@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,12 +24,16 @@ class RoomDetailScreen extends StatefulWidget {
 class _RoomDetailScreenState extends State<RoomDetailScreen> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
   List<String> _imageUrls = [];
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _loadRoomImages();
+
+
   }
+
 
   Future<void> _loadRoomImages() async {
     try {
@@ -56,7 +62,6 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +86,24 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _imageUrls.isNotEmpty
+                ? CarouselSlider.builder(
+              itemCount: _imageUrls.length,
+              itemBuilder: (context, index, realIndex) {
+                return _buildImage(_imageUrls[index]);
+              },
+              options: CarouselOptions(
+                height: 400, // Full height
+                viewportFraction: 1.0, // Full width
+                autoPlay: true, // Auto-scroll
+                autoPlayInterval: const Duration(seconds: 5),
+                enlargeCenterPage: true,
+              ),
+            )
+                : const Center(
+              child: Text("No images available."),
+            ),
+            const SizedBox(height: 16),
             Text(
               'Room Type: ${widget.room.roomType}',
               style: const TextStyle(
@@ -99,14 +122,8 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
             const SizedBox(height: 8),
             Text('Contact Number: ${widget.room.mobileNumber}', style: const TextStyle(fontSize: 16)),
 
-            _imageUrls.isNotEmpty
-                ? Wrap(
-              spacing: 8.0,
-              children: _imageUrls.map((url) {
-                return _buildImage(url);
-              }).toList(),
-            )
-                : const Center(child: Text("No images available.")),
+
+
             const SizedBox(height: 16),
             Center(
               child: ElevatedButton(
@@ -138,14 +155,15 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
     );
   }
 
+
   Widget _buildImage(String url) {
     return Image.network(
       url,
       fit: BoxFit.cover,
-      width: 100,
-      height: 100,
+      width: double.infinity,
+      height: 400,
       errorBuilder: (context, error, stackTrace) {
-        return Center(child: Icon(Icons.error));
+        return const Center(child: Icon(Icons.error));
       },
     );
   }

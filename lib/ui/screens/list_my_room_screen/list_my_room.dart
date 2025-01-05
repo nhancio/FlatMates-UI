@@ -1,22 +1,13 @@
-
-import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:typed_data';
 import 'dart:html' as html;
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flatemates_ui/controllers/room.controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
-import 'package:uuid/uuid.dart';
-import 'package:file_picker/file_picker.dart';
 
-import '../room_details_screen/room_details.dart';
 
 class AddRoomPage extends StatefulWidget {
   const AddRoomPage({super.key});
@@ -32,8 +23,14 @@ class _AddRoomPageState extends State<AddRoomPage> {
     final controller = Get.put(RoomController());
     final _formKey = GlobalKey<FormState>();
     var screenWidth = MediaQuery.of(context).size.width;
-
     Future<void> _pickAndUploadImage(BuildContext context) async {
+      if (controller.imageUrls.length >= 3) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("You can only upload up to 3 images.")),
+        );
+        return;
+      }
+
       final uploadInput = html.FileUploadInputElement();
       uploadInput.accept = 'image/*';
       uploadInput.click();
@@ -219,7 +216,6 @@ class _AddRoomPageState extends State<AddRoomPage> {
                   controller.updateSelectedValues(values.cast<String>());
                 },
               ),
-
 
               const SizedBox(height: 16),
               Obx(() => Wrap(

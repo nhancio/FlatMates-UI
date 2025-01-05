@@ -6,7 +6,6 @@ import 'package:flatemates_ui/models/room.model.dart';
 import 'package:get/get.dart';
 
 
-
 class RoomController extends GetxController {
   // Rx variables to observe changes
   var roomType = ''.obs;
