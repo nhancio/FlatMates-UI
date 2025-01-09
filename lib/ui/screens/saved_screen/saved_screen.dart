@@ -305,7 +305,9 @@ class _HomemateListState extends State<HomemateList> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Homemates'),
+        automaticallyImplyLeading: false, // This removes the default back icon
+
+        // title: const Text('Homemates'),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
@@ -526,7 +528,9 @@ class _RoomListState extends State<RoomList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Room List'),
+        automaticallyImplyLeading: false, // This removes the default back icon
+
+        // title: const Text('Room List'),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),

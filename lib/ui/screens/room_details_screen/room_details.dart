@@ -1,16 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../controllers/room_controller.dart';
-import '../../../res/bottom/bottom_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:ui' as ui;
-import 'dart:html' as html;
+
 
 class RoomDetailScreen extends StatefulWidget {
   final Room room;

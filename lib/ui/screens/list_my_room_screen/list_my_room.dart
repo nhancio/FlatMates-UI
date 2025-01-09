@@ -336,7 +336,9 @@ class CustomDropdownField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          value: selectedValue, // Bind the selected value here
+         // value: selectedValue, // Bind the selected value here
+          value: options.contains(selectedValue) ? selectedValue : null,
+
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.grey[200],
