@@ -14,6 +14,7 @@ class RegisterUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isWideScreen = constraints.maxWidth > 600;
@@ -30,7 +31,7 @@ class RegisterUserScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       height:
-                          MediaQuery.of(context).size.height > 600 ? 60 : 100,
+                          MediaQuery.of(context).size.height > 600 ? 60 : 1,
                     ),
                     Image.asset(
                       'assets/icons/icon.png',
@@ -74,6 +75,8 @@ class RegisterUserScreen extends StatelessWidget {
                           width: isWideScreen
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
+
+
                         ),
                         _buildDropdown(
                           context: context,
@@ -309,6 +312,7 @@ class RegisterUserScreen extends StatelessWidget {
             labelText: labelText,
             border: const OutlineInputBorder(),
           ),
+          dropdownColor: Colors.white,
         );
       }),
     );
@@ -318,6 +322,8 @@ class RegisterUserScreen extends StatelessWidget {
     required BuildContext context,
     required String labelText,
     required double width,
+
+
   }) {
     return SizedBox(
       width: width,
@@ -334,17 +340,25 @@ class RegisterUserScreen extends StatelessWidget {
             'Others'
           ]
               .map((profession) => DropdownMenuItem(
+
                     value: profession,
                     child: Text(profession),
+
                   ))
               .toList(),
           onChanged: (value) {
             controller.selectedProfession.value = value!;
           },
           decoration: InputDecoration(
+
             labelText: labelText,
             border: const OutlineInputBorder(),
           ),
+          dropdownColor: Colors.white,
+
+
+          itemHeight: 50.0,
+          menuMaxHeight: 200.0,
         );
       }),
     );

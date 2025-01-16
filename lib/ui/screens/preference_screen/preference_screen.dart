@@ -39,21 +39,19 @@ class _PreferenceScreenState extends State<PreferenceScreen> {
 
     return Scaffold(
 backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Color(0xfff8e6f1),
+        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(
+            color: Color(0xFFB60F6E)
+        ),
+        title: const Text('Choose your preferences',style: TextStyle(color: Color(0xFFB60F6E)),),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height:25),
-            Center(
-              child: Text(
-                'Choose your preferences',
-                style: TextStyle(
-                    fontSize: screenWidth > 800 ? 28 : 24,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-
             Center(
               child: Padding(
                 padding:  EdgeInsets.fromLTRB(8,10,8,10),
@@ -90,13 +88,12 @@ backgroundColor: Colors.white,
                   style: const TextStyle(color: Colors.red, fontSize: 14),
                 ),
               ),
-
             ],
 
             Center(
               child: SizedBox(
-                width: screenWidth > 600 ? 250 : 200,
-                height: 60,
+                width: 150,
+                height: 50,
                 child: ElevatedButton(
                   onPressed: () {
                     if (selectedPreferences.length >= 5) {

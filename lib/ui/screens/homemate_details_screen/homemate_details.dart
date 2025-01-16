@@ -234,6 +234,8 @@ class HomeMateDetailsScreen extends StatelessWidget {
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
+import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -246,19 +248,43 @@ class HomeMateDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Color(0xFFB60F6E)),
-        backgroundColor: const Color(0xfff8e6f1),
+        iconTheme: IconThemeData(
+            color: Color(0xFFB60F6E)
+        ),
+        backgroundColor: Color(0xfff8e6f1),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation,
+                    secondaryAnimation) =>
+                    HomemateList(userId: '',),
+                transitionsBuilder: (context, animation,
+                    secondaryAnimation, child) {
+                  var tween = Tween(
+                      begin: const Offset(0.0, 0.0),
+                      end: Offset.zero)
+                      .chain(
+                      CurveTween(curve: Curves.ease));
+                  var offsetAnimation =
+                  animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
         ),
         title: const Text(
           'HomeMate Details',
           style: TextStyle(
             color: Color(0xFFB60F6E),
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
+
           ),
         ),
       ),
@@ -409,3 +435,5 @@ class HomeMateDetailsScreen extends StatelessWidget {
     );
   }
 }
+
+

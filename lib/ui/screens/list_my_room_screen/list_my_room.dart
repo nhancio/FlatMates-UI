@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flatemates_ui/controllers/room.controller.dart';
+import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -67,6 +68,12 @@ class _AddRoomPageState extends State<AddRoomPage> {
     return Scaffold(
       backgroundColor:  Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
+          },
+        ),
         backgroundColor: Color(0xfff8e6f1),
         iconTheme: IconThemeData(
           color: Color(0xFFB60F6E)

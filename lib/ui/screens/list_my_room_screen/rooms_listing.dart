@@ -1,4 +1,5 @@
 import 'package:flatemates_ui/controllers/room.controller.dart';
+import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/edit_room.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,12 @@ class _RoomListingPageState extends State<RoomListingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,color: Colors.black,),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
+          },
+        ),
         backgroundColor: const Color(0xfff8e6f1),
         title: const Text('Room Listings',
             style: TextStyle(color: Color(0xFFB60F6E))),

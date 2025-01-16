@@ -1,4 +1,6 @@
+import 'package:flatemates_ui/Jay/ui/screens/profile_screen/profile_screen.dart';
 import 'package:flatemates_ui/controllers/google_controller.dart';
+import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,8 +37,10 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back,color: Colors.black,),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
+          },
         ),
         title: const Text(
           'Profile',

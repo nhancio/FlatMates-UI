@@ -220,8 +220,16 @@ class WelcomeScreen extends StatelessWidget {
                   isWideScreen ? AppDimensions.large : AppDimensions.small,
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(height: 120,),
+                    Image.asset(
+                     "assets/icons/icon.png",
+                      height: 80,
+                      width: 80,
+
+                    ),
+                    SizedBox(height: 80,),
                     Image.asset(
                       Images.firstScreenIcon,
                       height: isWideScreen
@@ -235,7 +243,7 @@ class WelcomeScreen extends StatelessWidget {
                       "HOMEMATES.AI",
                       style: AppTextStyles.largeTitleStyle(context).copyWith(
                         fontSize: isWideScreen ? 34 : 26,
-                        color: Colors.white,
+                        color: AppColors.primaryColor,
                       ),
                     ),
                     SizedBox(
@@ -249,7 +257,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 100),
+                    SizedBox(height: 80),
                     Obx(() {
                       return SizedBox(
                         width: 200,

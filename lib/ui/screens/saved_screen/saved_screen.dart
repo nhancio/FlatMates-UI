@@ -294,25 +294,68 @@ class _HomemateListState extends State<HomemateList> {
   }
 
   void shareHomemateDetails(homemate) {
-    final String shareText =
-        'Check out this homemate:\n\nName: ${homemate.userName}\nAge: ${homemate.age}\nProfession: ${homemate.profession}\nPhone: ${homemate.userPhoneNumber}';
+    // Construct the unique URL for the room
+    final String roomUrl = 'https://homemates-app.web.app/room/${userId}';
+
+    // Create the shareable content
+    final String shareText = '''
+Check out this homemate:
+Name: ${homemate.userName}
+Age: ${homemate.age}
+Profession: ${homemate.profession}
+
+Explore more details here: $roomUrl
+''';
+
+
     Share.share(shareText);
   }
-
   @override
   Widget build(BuildContext context) {
     final HomemateController homemateController = Get.put(HomemateController());
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // This removes the default back icon
-
+        backgroundColor: Color(0xfff8e6f1),
+        iconTheme: IconThemeData(
+            color: Color(0xFFB60F6E)
+        ),
+        title: const Text(
+            "Homemates for you",style: TextStyle(color: Color(0xFFB60F6E))),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,),
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation,
+                    secondaryAnimation) =>
+                    BottomNavBarScreen(),
+                transitionsBuilder: (context, animation,
+                    secondaryAnimation, child) {
+                  var tween = Tween(
+                      begin: const Offset(0.0, 0.0),
+                      end: Offset.zero)
+                      .chain(
+                      CurveTween(curve: Curves.ease));
+                  var offsetAnimation =
+                  animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+        ),
         // title: const Text('Homemates'),
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: () {
               showModalBottomSheet(
+                backgroundColor: Colors.white,
                 context: context,
                 builder: (context) {
                   return Padding(
@@ -321,11 +364,14 @@ class _HomemateListState extends State<HomemateList> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         DropdownButtonFormField<String>(
+
+
                           decoration: const InputDecoration(
                             labelText: 'Gender',
                           ),
                           items: ['Male', 'Female', 'Other']
                               .map((gender) => DropdownMenuItem(
+
                             value: gender,
                             child: Text(gender),
                           ))
@@ -333,9 +379,11 @@ class _HomemateListState extends State<HomemateList> {
                           onChanged: (value) {
                             selectedGender.value = value!;
                           },
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
                         ),
                         const SizedBox(height: 16),
                         TextField(
+
                           decoration: const InputDecoration(
                             labelText: 'Age',
                           ),
@@ -349,7 +397,13 @@ class _HomemateListState extends State<HomemateList> {
                           onPressed: () {
                             Get.back();
                           },
-                          child: const Text('Apply Filter'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFB60F6E),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text('Apply Filter',style: TextStyle(color: Colors.white),),
                         ),
                       ],
                     ),
@@ -390,9 +444,24 @@ class _HomemateListState extends State<HomemateList> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation,
+                        secondaryAnimation) =>
                         HomeMateDetailsScreen(homemate: homemate),
+                    transitionsBuilder: (context, animation,
+                        secondaryAnimation, child) {
+                      var tween = Tween(
+                          begin: const Offset(0.0, 0.0),
+                          end: Offset.zero)
+                          .chain(
+                          CurveTween(curve: Curves.ease));
+                      var offsetAnimation =
+                      animation.drive(tween);
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
                   ),
                 );
               },
@@ -449,9 +518,9 @@ class _HomemateListState extends State<HomemateList> {
                               saveHomemateToFirestore(homemate);
                             },
                             icon: const Icon(Icons.save),
-                            label: const Text('Save'),
+                            label: const Text('Save',),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade100,
+                              backgroundColor: Color(0xffACE7E6),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -472,7 +541,7 @@ class _HomemateListState extends State<HomemateList> {
                             icon: const Icon(Icons.call),
                             label: const Text('Call'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade100,
+                              backgroundColor: Color(0xffFFF5BA),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -487,7 +556,7 @@ class _HomemateListState extends State<HomemateList> {
                             icon: const Icon(Icons.share),
                             label: const Text('Share'),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade100,
+                              backgroundColor: Color(0xffFAD4E4),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -528,12 +597,38 @@ class _RoomListState extends State<RoomList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // This removes the default back icon
-
+        backgroundColor: Color(0xfff8e6f1),
+        title:
+        const Text("Rooms for you",style: TextStyle(color: Color(0xFFB60F6E))),
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E)),
+          onPressed: () {
+            Navigator.push(
+                context,
+                PageRouteBuilder(
+                pageBuilder: (context, animation,
+                secondaryAnimation) =>
+                BottomNavBarScreen(),
+            transitionsBuilder: (context, animation,
+            secondaryAnimation, child) {
+            var tween = Tween(
+            begin: const Offset(0.0, 0.0),
+            end: Offset.zero)
+                .chain(
+            CurveTween(curve: Curves.ease));
+            var offsetAnimation =
+            animation.drive(tween);
+            return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+            );
+            },),);          },
+        ),
         // title: const Text('Room List'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_list),
+            icon: const Icon(Icons.filter_list,color: Color(0xFFB60F6E)),
             onPressed: () {
               showDialog(
                 context: context,
@@ -665,8 +760,7 @@ class _RoomListState extends State<RoomList> {
                           icon: const Icon(Iconsax.save_2),
                           label: const Text('Save'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                            Colors.green.shade100, // Save button color
+                            backgroundColor:Color(0xffACE7E6),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -691,7 +785,7 @@ class _RoomListState extends State<RoomList> {
                           icon: const Icon(Iconsax.call),
                           label: const Text('Call'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue.shade100, // Call button color
+                            backgroundColor:Color(0xffFFF5BA),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -708,7 +802,7 @@ class _RoomListState extends State<RoomList> {
                           icon: const Icon(Icons.share),
                           label: const Text('Share'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.orange.shade100, // Share button color
+                            backgroundColor: Color(0xffFAD4E4), // Share button color
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -722,10 +816,24 @@ class _RoomListState extends State<RoomList> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => RoomDetailScreen(room: room,),
-                    ),
-                  );
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation,
+                          secondaryAnimation) =>
+                          RoomDetailScreen(room: room,),
+                      transitionsBuilder: (context, animation,
+                          secondaryAnimation, child) {
+                        var tween = Tween(
+                            begin: const Offset(0.0, 0.0),
+                            end: Offset.zero)
+                            .chain(
+                            CurveTween(curve: Curves.ease));
+                        var offsetAnimation =
+                        animation.drive(tween);
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      },),);
                 },
               ),
             );

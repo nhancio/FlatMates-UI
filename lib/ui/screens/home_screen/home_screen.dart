@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
                       FutureBuilder<Map<String, String>>(
                         future: fetchUserDetails(userId!), // Pass userId here
                         builder: (context, snapshot) {
@@ -288,10 +288,7 @@ class _HomePageState extends State<HomePage> {
                                     MaterialPageRoute(
                                         builder: (context) => Scaffold(
                                           body: HomemateList(userId: '',),
-                                          appBar: AppBar(
-                                            title: const Text(
-                                                "Homemates for you"),
-                                          ),
+
                                         )),
                                   );
                                   // tabCtrl.tabController.index = 0;
@@ -314,10 +311,7 @@ class _HomePageState extends State<HomePage> {
                                     MaterialPageRoute(
                                         builder: (context) => Scaffold(
                                           body: RoomList(),
-                                          appBar: AppBar(
-                                            title:
-                                            const Text("Rooms for you"),
-                                          ),
+
                                         )),
                                   );
                                   // bottomNavController.setIndex(2);
