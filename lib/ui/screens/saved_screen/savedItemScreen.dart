@@ -179,6 +179,70 @@ class SavedHomematesScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              // Confirm before unsaving
+                              final bool? confirm = await showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Remove Homemate'),
+                                  content: const Text('Are you sure you want to unsave this homemate?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, false),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, true),
+                                      child: const Text('Remove'),
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                              if (confirm == true) {
+                                try {
+                                  final homemateId = snapshot.data!.docs[index].id; // Get document ID
+                                  print("Attempting to delete homemate with ID: $homemateId");
+                                  if (homemateId == null) {
+                                    print("Error: homemate['userId'] is null or undefined");
+                                    return;
+                                  }
+                                  // Delete the homemate from Firebase
+                                  await FirebaseFirestore.instance
+                                      .collection('savedHomemates')
+                                      .doc(userId)
+                                      .collection('items')
+                                      .doc(homemateId) // assuming userId is used for the document ID
+                                      .delete();
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Homemate removed successfully.')),
+                                  );
+                                } catch (e) {
+                                  print('Error removing homemate: $e');
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Failed to remove homemate.')),
+                                  );
+                                }
+                              }
+                            },
+                            icon: const Icon(Iconsax.trash),
+                            label: const Text(
+                              'Unsave',
+                              style: TextStyle(fontSize: 9),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red.shade100,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 10,
+                              ),
+                            ),
+                          ),
                       /*    ElevatedButton.icon(
 
                             onPressed: () async {

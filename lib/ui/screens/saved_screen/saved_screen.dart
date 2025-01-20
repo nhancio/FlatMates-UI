@@ -365,7 +365,6 @@ Explore more details here: $roomUrl
                       children: [
                         DropdownButtonFormField<String>(
 
-
                           decoration: const InputDecoration(
                             labelText: 'Gender',
                           ),
@@ -630,18 +629,26 @@ class _RoomListState extends State<RoomList> {
           IconButton(
             icon: const Icon(Icons.filter_list,color: Color(0xFFB60F6E)),
             onPressed: () {
-              showDialog(
+              showModalBottomSheet(
                 context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Filter Rooms'),
-                    content: Column(
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18),
+                    topRight: Radius.circular(18),
+                  ),
+                ),
+                isScrollControlled: true,
+                builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Room Type Filter
                         DropdownButton<String>(
                           value: selectedRoomType,
                           hint: const Text('Select Room Type'),
+                          isExpanded: true,
                           onChanged: (newValue) {
                             setState(() {
                               selectedRoomType = newValue;
@@ -654,24 +661,33 @@ class _RoomListState extends State<RoomList> {
                                 child: Text(type),
                               ))
                               .toList(),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
                         ),
-                        // Rent Filter
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFB60F6E),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: const Text(
+                            'Apply Filter',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ],
                     ),
-                    actions: [
-                      TextButton(
-                        child: const Text('Apply'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
                   );
                 },
               );
             },
-          )
+          ),
         ],
+
       ),
 
       body: Obx(() {

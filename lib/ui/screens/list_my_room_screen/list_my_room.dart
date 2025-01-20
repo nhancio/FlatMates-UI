@@ -3,6 +3,7 @@ import 'dart:html' as html;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flatemates_ui/controllers/room.controller.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
+import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,8 @@ class _AddRoomPageState extends State<AddRoomPage> {
   @override
   Widget build(BuildContext context) {
     // Initialize controller
+    bool isLoading = false; // Flag to track loading state
+
     final controller = Get.put(RoomController());
     final _formKey = GlobalKey<FormState>();
     var screenWidth = MediaQuery.of(context).size.width;
@@ -71,7 +74,26 @@ class _AddRoomPageState extends State<AddRoomPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation,
+                    secondaryAnimation) =>
+                    BottomNavBarScreen(),
+                transitionsBuilder: (context, animation,
+                    secondaryAnimation, child) {
+                  var tween = Tween(
+                      begin: const Offset(0.0, 0.0),
+                      end: Offset.zero)
+                      .chain(
+                      CurveTween(curve: Curves.ease));
+                  var offsetAnimation =
+                  animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },),);
           },
         ),
         backgroundColor: Color(0xfff8e6f1),
@@ -205,26 +227,63 @@ class _AddRoomPageState extends State<AddRoomPage> {
                 },
               ),
               const SizedBox(height: 12),
-              MultiSelectDialogField(
-                title: Text("Select Amenities"),
-                items: [
-                  MultiSelectItem("Fridge", "Fridge"),
-                  MultiSelectItem("Washing Machine", "Washing Machine"),
-                  MultiSelectItem("Matress", "Matress"),
-                  MultiSelectItem("Smart TV", "Smart TV"),
-                  MultiSelectItem("Sofa", "Sofa"),
-                  MultiSelectItem("Dining table", "Dining table"),
-                  MultiSelectItem("AC", "AC"),
-                  MultiSelectItem("Water purifier", "Water purifier"),
-                  MultiSelectItem("Geyser", "Geyser"),
-                ],
-                initialValue: controller.selectedValues.toList(), // Pass a list
-                onConfirm: (values) {
-                  controller.updateSelectedValues(values.cast<String>());
-                },
+              Text(
+                "Select Amenities",
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
+              const SizedBox(height: 6),
+            MultiSelectDialogField(
 
-              const SizedBox(height: 16),
+              backgroundColor: Colors.white,
+              title: const Text(
+                "Select Amenities",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              items:  [
+                MultiSelectItem("Fridge", "Fridge"),
+                MultiSelectItem("Washing Machine", "Washing Machine"),
+                MultiSelectItem("Mattress", "Mattress"),
+                MultiSelectItem("Smart TV", "Smart TV"),
+                MultiSelectItem("Sofa", "Sofa"),
+                MultiSelectItem("Dining Table", "Dining Table"),
+                MultiSelectItem("AC", "AC"),
+                MultiSelectItem("Water Purifier", "Water Purifier"),
+                MultiSelectItem("Geyser", "Geyser"),
+              ],
+              initialValue: controller.selectedValues.toList(),
+              onConfirm: (values) {
+                controller.updateSelectedValues(values.cast<String>());
+              },
+              buttonText: const Text(
+                "Select Amenities",
+                style: TextStyle(
+                  fontSize: 16,
+
+                  color: Color(0xff949292),
+                ),
+              ),
+              buttonIcon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1,
+                ),
+              ),
+              dialogHeight: 400, // Adjust height
+              dialogWidth: 300, // Adjust width
+
+            ),
+
+
+            const SizedBox(height: 16),
               Obx(() => Wrap(
                 spacing: 8.0,
                 children: controller.imageUrls.map((url) {
@@ -233,19 +292,53 @@ class _AddRoomPageState extends State<AddRoomPage> {
               )),
               ElevatedButton(
                 onPressed: () => _pickAndUploadImage(context),
-                child: Text('Upload Image'),
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  backgroundColor: Colors.blue.shade200
+                ),
+                child: Text('Upload Image',style: TextStyle(color: Colors.white),),
               ),
               const SizedBox(height: 30),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: isLoading
+                      ? null
+                      : () async{
                     if (_formKey.currentState!.validate()) {
-                      controller.submitRoomListing();  // This will now work because image upload status is tracked
+                      setState(() {
+                        isLoading = true;
+                      });
+                      controller.submitRoomListing();
+                      setState(() {
+                        isLoading = false;
+                      });
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation,
+                              secondaryAnimation) =>
+                              RoomList(),
+                          transitionsBuilder: (context, animation,
+                              secondaryAnimation, child) {
+                            var tween = Tween(
+                                begin: const Offset(0.0, 0.0),
+                                end: Offset.zero)
+                                .chain(
+                                CurveTween(curve: Curves.ease));
+                            var offsetAnimation =
+                            animation.drive(tween);
+                            return SlideTransition(
+                              position: offsetAnimation,
+                              child: child,
+                            );
+                          },),);
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 15, horizontal: 80),
+                        const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
                     backgroundColor: Color(0xFFB60F6E), // Button color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -266,6 +359,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
 }
 
 class CustomTextField extends StatelessWidget {
+
   final String label;
   final String hintText;
   final ValueChanged<String> onChanged;
@@ -297,15 +391,27 @@ class CustomTextField extends StatelessWidget {
               TextEditingController(text: initialValue), // Set initial value
           onChanged: onChanged,
           validator: validator,
-
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,
-            fillColor: Colors.grey[200],
+            fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
             ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: Colors.grey, // Border color when not focused
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: Color(0xFFB60F6E), // Border color when focused or selected
+              ),
+            ),
           ),
+
         ),
       ],
     );
@@ -319,7 +425,6 @@ class CustomDropdownField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final String? selectedValue; // Added for pre-select functionality
   final String? Function(String?)? validator;
-
 
   const CustomDropdownField({
     Key? key,
@@ -338,21 +443,48 @@ class CustomDropdownField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
+
           label,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
+
          // value: selectedValue, // Bind the selected value here
           value: options.contains(selectedValue) ? selectedValue : null,
+          dropdownColor: Colors.white,
+          hint: Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              hintText,
+              style: const TextStyle(
+
+
+              ),
+              overflow: TextOverflow.visible,
+            ),
+          ),
 
           decoration: InputDecoration(
             filled: true,
-            fillColor: Colors.grey[200],
+            fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            hintText: hintText,
+          //hintText: hintText,
+
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: Colors.grey, // Border color when not focused
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: Color(0xFFB60F6E), // Border color when focused or selected
+              ),
+            ),
           ),
           items: options.map((option) {
             return DropdownMenuItem<String>(
@@ -375,7 +507,6 @@ class CustomDropdownField extends StatelessWidget {
 /*
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flatemates_ui/controllers/room.controller.dart';
