@@ -95,7 +95,7 @@ import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+
 
 import '../../ui/image/b.dart';
 final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
@@ -132,14 +132,14 @@ class BottomNavBarScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildBottomNavItem(
-                  Iconsax.home, 'Home', 0, _bottomNavController),
+                  Icons.home, 'Home', 0, _bottomNavController),
              /* _buildBottomNavItem(
                   Icons.wechat_sharp, 'Chat', 1, _bottomNavController),
               const SizedBox(width: 48), // Space for the FAB*/
               _buildBottomNavItem(
-                  Iconsax.save_2, 'Saved', 1, _bottomNavController),
+                  Icons.save, 'Saved', 1, _bottomNavController),
               _buildBottomNavItem(
-                  Iconsax.profile_2user4, 'Profile', 2, _bottomNavController),
+                  Icons.supervised_user_circle_sharp, 'Profile', 2, _bottomNavController),
             ],
           ),
         ),

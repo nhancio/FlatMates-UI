@@ -8,7 +8,7 @@ import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/savedItemScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:iconsax/iconsax.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import '../../../res/bottom/bottom_bar.dart';
 import 'package:get/get.dart';
@@ -773,7 +773,7 @@ class _RoomListState extends State<RoomList> {
                           onPressed: () {
                             roomController.saveRoom(room);
                           },
-                          icon: const Icon(Iconsax.save_2),
+                          icon: const Icon(Icons.save),
                           label: const Text('Save'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:Color(0xffACE7E6),
@@ -798,7 +798,7 @@ class _RoomListState extends State<RoomList> {
                               print('Could not launch the dialer: $e');
                             }
                           },
-                          icon: const Icon(Iconsax.call),
+                          icon: const Icon(Icons.call),
                           label: const Text('Call'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:Color(0xffFFF5BA),

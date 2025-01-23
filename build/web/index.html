@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <meta name="google-signin-client_id" content="399242916006-ac66uv00b43uk8jujjf5pkbrqf2bsoj7.apps.googleusercontent.com">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="flatemates_ui">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/icons/logo.jpeg"/>
+
+  <title>HomeMates App</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics.js"></script>
+</head>
+<body>
+<!-- Firebase Initialization -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js"></script>
+
+<script>
+  // Firebase configuration object
+  const firebaseConfig = {
+    apiKey: "AIzaSyB9HiuiUTT1-nNF8xJOTeMLCiGy7tfRwsQ",
+    authDomain: "homemates-app.firebaseapp.com",
+    projectId: "homemates-app",
+    storageBucket: "homemates-app.appspot.com", // Corrected URL
+    messagingSenderId: "399242916006",
+    appId: "1:399242916006:web:c4e39c656426fd970c8467",
+    measurementId: "G-B9091B95VE"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+
+  const storage = firebase.storage();
+
+  // Optional: Initialize Analytics
+  if ('measurementId' in firebaseConfig) {
+    const analytics = firebase.getAnalytics(app); // Adjusted for Firebase v9 modular syntax
+  }
+</script>
+
+<!-- Flutter Bootstrap -->
+<script src="flutter_bootstrap.js" async></script>
+</body>
+
+</html>

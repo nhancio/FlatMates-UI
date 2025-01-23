@@ -184,7 +184,7 @@ class WelcomeScreen extends StatelessWidget {
 /// new
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+
 import '../../../controllers/google_controller.dart';
 import '../../../res/assets/images/images.dart';
 import '../../../res/colors/colors.dart';

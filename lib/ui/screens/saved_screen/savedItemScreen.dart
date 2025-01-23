@@ -4,7 +4,7 @@ import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 
@@ -162,7 +162,7 @@ class SavedHomematesScreen extends StatelessWidget {
                                 print('Could not launch the dialer: $e');
                               }
                             },
-                            icon: const Icon(Iconsax.call),
+                            icon: const Icon(Icons.call),
                             label: Text(
                            //   'Call ${homemate['userPhoneNumber']}',
                               'Call',
@@ -227,7 +227,7 @@ class SavedHomematesScreen extends StatelessWidget {
                                 }
                               }
                             },
-                            icon: const Icon(Iconsax.trash),
+                            icon: const Icon(Icons.delete),
                             label: const Text(
                               'Unsave',
                               style: TextStyle(fontSize: 9),
@@ -418,7 +418,7 @@ class HomemateDetailsScreen extends StatelessWidget {
                   print('Could not launch the dialer: $e');
                 }
               },
-              icon: const Icon(Iconsax.call),
+              icon: const Icon(Icons.call),
               label: const Text('Call Homemate'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
@@ -569,7 +569,7 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                               print('Could not launch the dialer: $e');
                             }
                           },
-                          icon: const Icon(Iconsax.call),
+                          icon: const Icon(Icons.call),
                          // label: Text('Call: ${room.mobileNumber}'),
                           label: Text('Call'),
                           style: ElevatedButton.styleFrom(
