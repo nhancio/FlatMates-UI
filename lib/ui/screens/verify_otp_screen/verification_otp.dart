@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../auth/auth_controller.dart';
+import '../../../controllers/auth_controller.dart';
 import '../../../navigation/app_routes/routes.dart';
 import '../../../res/colors/colors.dart';
 import '../../../res/dimensions/dimensions.dart';

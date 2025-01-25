@@ -152,9 +152,33 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     _buildOptionItem(context, 'Logout', Icons.logout,
                         subtitle: 'You can log in anytime.', onTap: () {
-                      signInController.signOut();
-                      Get.offAll(() => WelcomeScreen());
-                    }),
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Logout Confirmation'),
+                                content: Text('Are you sure you want to log out?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context); // Close the dialog
+                                      signInController.signOut();
+                                      Get.offAll(() => WelcomeScreen()); // Navigate to WelcomeScreen
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }),
+
                   ],
                 ),
               ),

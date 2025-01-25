@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/bottomnav.controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
+import 'package:flatemates_ui/ui/a.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
@@ -183,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 20),
                       // Search Bar with city dropdown
-                      Container(
+                     /* Container(
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.9),
                           borderRadius: BorderRadius.circular(12),
@@ -267,12 +270,12 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+                      ),*/
+                      SizedBox(
+                        height: 300,
+                        child:    HomeScreen1(),
                       ),
 
-                      SizedBox(
-                        height:
-                            MediaQuery.of(context).size.height > 600 ? 60 : 100,
-                      ),
                       Column(
                         children: [
                           // Row with two boxes
@@ -414,4 +417,100 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
+
+
+class HomeScreen1 extends StatefulWidget {
+  @override
+  _HomeScreen1State createState() => _HomeScreen1State();
+}
+
+class _HomeScreen1State extends State<HomeScreen1> {
+  final List<String> infoBoxes = [
+    "Room Info Features :\n- Upload image\n- Rent/month\n- Amenities: Wi-Fi, Parking \n- Address: Hyderabad  \n- Call and Saved/Unsaved",
+    "User Info:\n- Name: John Doe\n- Gender: Male\n- Profession: Engineer \n- Call and Saved/Unsaved",
+    "Upcoming Features:\n- AI Recommendations\n- HubSpot Integration",
+  ];
+
+  final ScrollController _scrollController = ScrollController();
+  late Timer _scrollTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoScroll();
+  }
+
+  @override
+  void dispose() {
+    _scrollTimer.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoScroll() {
+    _scrollTimer = Timer.periodic(Duration(milliseconds: 100), (_) {
+      if (_scrollController.hasClients) {
+        final maxScrollExtent = _scrollController.position.maxScrollExtent;
+        final currentPosition = _scrollController.offset;
+
+        if (currentPosition >= maxScrollExtent) {
+          _scrollController.jumpTo(0); // Reset to the beginning
+        } else {
+          _scrollController.animateTo(
+            currentPosition + 2, // Scroll a small amount
+            duration: Duration(milliseconds: 30),
+            curve: Curves.linear,
+          );
+        }
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+    backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        controller: _scrollController,
+        child: Row(
+          children: infoBoxes
+              .map((text) => _buildInfoBox(text))
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoBox(String text) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: 200,
+        width: 300,
+
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.pink.shade50,
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 8.0,
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          textAlign: TextAlign.left,
+        ),
+      ),
+    );
+  }
+}
+
 

@@ -5,12 +5,14 @@ import 'package:flatemates_ui/controllers/register.controller.dart';
 import 'package:flatemates_ui/firebase_options.dart';
 import 'package:flatemates_ui/res/font/font_size.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'controllers/google_controller.dart';
 import 'navigation/app_routes/routes.dart';
 
 void main() async {
+  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -57,6 +57,10 @@ dependencies:
   cached_network_image: ^3.2.3
   carousel_slider: ^5.0.0
   smooth_page_indicator: ^1.2.0+3
+
+  flutter_web_plugins:
+    sdk: flutter
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
