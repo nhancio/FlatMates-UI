@@ -1,4 +1,5 @@
 import 'package:flatemates_ui/controllers/google_controller.dart';
+import 'package:flatemates_ui/ui/screens/feedback/feedback.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/rooms_listing.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/contact_us.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/profile_intro.dart';
@@ -125,7 +126,9 @@ class ProfileScreen extends StatelessWidget {
 
                     _buildOptionItem(
                         context, 'Feedback', Icons.feedback_outlined,
-                        subtitle: 'Help Us To Improve More', onTap: () {}),
+                        subtitle: 'Help Us To Improve More', onTap: () {
+                      Get.to(  FeedbackPage());
+                    }),
 
                     _buildOptionItem(
                       context,

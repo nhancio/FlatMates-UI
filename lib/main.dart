@@ -12,7 +12,9 @@ import 'controllers/google_controller.dart';
 import 'navigation/app_routes/routes.dart';
 
 void main() async {
-  usePathUrlStrategy();
+
+
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -25,6 +25,8 @@ class _HomemateListState extends State<HomemateList> {
   final userId = FirebaseAuth.instance.currentUser?.uid;
   final RxString selectedGender = ''.obs;
   final RxInt selectedAge = 0.obs;
+  final RxString selectedProfession = ''.obs;
+
 
   void saveHomemateToFirestore(homemate) async {
     try {
@@ -120,7 +122,6 @@ Explore more details here: $roomUrl
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         DropdownButtonFormField<String>(
-
                           decoration: const InputDecoration(
                             labelText: 'Gender',
                           ),
@@ -146,6 +147,32 @@ Explore more details here: $roomUrl
                             selectedAge.value = int.tryParse(value) ?? 0;
                           },
                         ),
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: 'Select Profession',
+
+                          ),
+                          items: [
+                            'IT',
+                            'Medicine',
+                            'Student',
+                            'Seeking Job',
+                            'Content Creator',
+                            'Others',
+                          ]
+                              .map((profession) => DropdownMenuItem(
+                            value: profession,
+                            child: Text(profession),
+                          ))
+                              .toList(),
+                          onChanged: (value) {
+                            selectedProfession.value = value!; // Update the reactive variable
+                          },
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+                        ),
+
+
+
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
@@ -181,7 +208,9 @@ Explore more details here: $roomUrl
               homemate.gender == selectedGender.value;
           final matchesAge = selectedAge.value == 0 ||
               homemate.age == selectedAge.value;
-          return matchesGender && matchesAge;
+          final matchesProfession = selectedProfession.value.isEmpty || homemate.profession == selectedProfession.value;
+
+          return matchesGender && matchesAge && matchesProfession;
         }).toList();
 
         if (filteredHomemates.isEmpty) {
@@ -345,8 +374,17 @@ class _RoomListState extends State<RoomList> {
   final RoomControllerFirebase roomController = Get.put(RoomControllerFirebase());
 
   String? selectedRoomType;
+  String? selectedHomeType;
+  String? selectedMoveDate;
+  String? selectedOccupation;
   double? selectedRent;
   List<String> roomTypes = ["1BHK", "2BHK", "3BHK"];
+  List<String> moveDate = ["Immediately", "1 Month", "3 Months"];
+  List<String> occupation = ["1 Person", "2 Persons", "3 Persons"];
+  List<String> homeTypes = [ "Aprtment",
+    "Individual House",
+    "Gated Community Flat",
+    "Villa"];
 
 
   @override
@@ -420,6 +458,60 @@ class _RoomListState extends State<RoomList> {
                               .toList(),
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
                         ),
+                        DropdownButton<String>(
+                          value: selectedHomeType,
+                          hint: const Text('Home Type'),
+                          isExpanded: true,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedHomeType = newValue;
+                            });
+                          },
+                          items: homeTypes
+                              .map<DropdownMenuItem<String>>(
+                                  (type) => DropdownMenuItem<String>(
+                                value: type,
+                                child: Text(type),
+                              ))
+                              .toList(),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+                        ),
+                        DropdownButton<String>(
+                          value: selectedMoveDate,
+                          hint: const Text('Move Date'),
+                          isExpanded: true,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedMoveDate = newValue;
+                            });
+                          },
+                          items: moveDate
+                              .map<DropdownMenuItem<String>>(
+                                  (type) => DropdownMenuItem<String>(
+                                value: type,
+                                child: Text(type),
+                              ))
+                              .toList(),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+                        ),
+                        DropdownButton<String>(
+                          value: selectedOccupation,
+                          hint: const Text('Select Occupation'),
+                          isExpanded: true,
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedOccupation = newValue;
+                            });
+                          },
+                          items: occupation
+                              .map<DropdownMenuItem<String>>(
+                                  (type) => DropdownMenuItem<String>(
+                                value: type,
+                                child: Text(type),
+                              ))
+                              .toList(),
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+                        ),
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
@@ -457,6 +549,23 @@ class _RoomListState extends State<RoomList> {
         if (selectedRoomType != null) {
           filteredRooms = filteredRooms
               .where((room) => room.roomType == selectedRoomType)
+              .toList();
+        }
+        if (selectedHomeType != null) {
+          filteredRooms = filteredRooms
+              .where((room) => room.homeType == selectedHomeType)
+              .toList();
+        }
+
+        if (selectedMoveDate != null) {
+          filteredRooms = filteredRooms
+              .where((room) => room.moveInDate == selectedMoveDate)
+              .toList();
+        }
+
+        if (selectedOccupation != null) {
+          filteredRooms = filteredRooms
+              .where((room) => room.occupationPerRoom == selectedOccupation)
               .toList();
         }
 
@@ -527,8 +636,38 @@ class _RoomListState extends State<RoomList> {
                       children: [
                         // Save Button
                         ElevatedButton.icon(
-                          onPressed: () {
-                            roomController.saveRoom(room);
+                          onPressed: ()async {
+                            try {
+                              // Ensure you are using the correct userId (get it from FirebaseAuth or pass it in)
+                              String userId = FirebaseAuth.instance.currentUser?.uid ?? ""; // Make sure to get userId from Firebase Auth
+
+                              // Save room to Firebase
+                              await FirebaseFirestore.instance
+                                  .collection('savedRooms')
+                                  .doc(userId) // Use the logged-in user's ID
+                                  .collection('items')
+                                  .doc(room.mobileNumber) // Use mobileNumber as the unique room ID
+                                  .set({
+                                'roomType': room.roomType,
+                                'address': room.address,
+                                'roomRent': room.roomRent,
+                                'timestamp': FieldValue.serverTimestamp(),
+                                'roomMoveInDate': room.moveInDate,
+                                'roomOccupationPerRoom': room.occupationPerRoom,
+                                'userId': room.userId,
+                                'roomMobileNumber': room.mobileNumber,
+                                'roomSelectedValues': room.selectedValues,
+                                'roomProfileImages': room.profileImages,
+                              });
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Room saved successfully.')),
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Failed to save room.')),
+                              );
+                            }
                           },
                           icon: const Icon(Icons.save),
                           label: const Text('Save'),

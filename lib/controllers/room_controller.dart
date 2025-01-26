@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:get/get.dart';
 
 class RoomControllerFirebase extends GetxController {
@@ -31,7 +32,7 @@ class RoomControllerFirebase extends GetxController {
   }
 
   // Fetch saved rooms from Firestore
-  Future<void> fetchSavedRooms() async {
+  /* Future<void> fetchSavedRooms() async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       QuerySnapshot snapshot = await firestore.collection('saved_rooms').get();
@@ -70,8 +71,51 @@ class RoomControllerFirebase extends GetxController {
       Get.snackbar('Error', 'Failed to save the room.');
     }
   }
-}
+}*/
+  Future<void> fetchSavedRooms(String userId) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('savedRooms')
+          .doc(userId)  // Use current user's ID
+          .collection('items')
+          .get();
 
+      if (querySnapshot.docs.isEmpty) {
+        print("No saved rooms found.");
+        return;
+      }
+
+      // Map Firestore data to a list of Room objects
+      savedRooms.value = List<Room>.from(
+        querySnapshot.docs.map((doc) {
+          return Room.fromMap(doc.data());
+        }),
+      );
+    } catch (e) {
+      print('Error fetching saved rooms: ${e.toString()}');
+    }
+  }
+
+
+  // Delete a saved room from Firebase
+  Future<void> deleteRoom(String userId, String roomId) async {
+    try {
+      // Delete from Firebase
+      await FirebaseFirestore.instance
+          .collection('savedRooms')
+          .doc(userId)  // Make sure you use the correct userId
+          .collection('items')
+          .doc(roomId)  // Using the roomId for deleting
+          .delete();
+
+      // Remove from the local list
+      savedRooms.removeWhere((room) => room.mobileNumber == roomId); // Room is removed from the local list
+      print("Room deleted successfully.");
+    } catch (e) {
+      print("Error deleting room: $e");
+    }
+  }
+}
 class Room {
 
   final String address;

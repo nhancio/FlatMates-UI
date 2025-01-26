@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/room_controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
@@ -51,7 +52,7 @@ class SavedTabBarScreen extends StatelessWidget {
         children: [
 
           SavedHomematesScreen(userId: userId,),
-          SavedRoomsScreen(),
+          SavedRoomsScreen(currentUserId: userId,),
         ],
       ),
     );
@@ -440,18 +441,23 @@ class HomemateDetailsScreen extends StatelessWidget {
 ///
 
 class SavedRoomsScreen extends StatefulWidget {
+  final String currentUserId;
+  SavedRoomsScreen({required this.currentUserId});
+
   @override
   State<SavedRoomsScreen> createState() => _SavedRoomsScreenState();
 }
 
 class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
   @override
+  List<Room> savedRooms = []; // Define savedRooms as a list of Room objects
+
   Widget build(BuildContext context) {
     // Put the RoomControllerFirebase instance here
     final RoomControllerFirebase roomController = Get.put(RoomControllerFirebase());
 
     // Fetch saved rooms when the screen is loaded
-    roomController.fetchSavedRooms();
+    roomController.fetchSavedRooms(widget.currentUserId);
 
     return Scaffold(
    /*   appBar: AppBar(
@@ -585,6 +591,41 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                           ),
                         ),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            try {
+                              String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
+
+                              // Delete the room from Firebase using mobileNumber as the unique ID
+                              await FirebaseFirestore.instance
+                                  .collection('savedRooms')
+                                  .doc(userId) // Use the logged-in user's ID
+                                  .collection('items')
+                                  .doc(room.mobileNumber) // Use mobileNumber as the document ID
+                                  .delete();
+
+                              // Remove the deleted room from the local list
+                              savedRooms.removeWhere((savedRoom) => savedRoom.mobileNumber == room.mobileNumber);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Room deleted successfully.')),
+                              );
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Failed to delete room.')),
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.delete),
+                          label: Text('Delete'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red.shade200,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
+                        )
 
                       ],
                     ),
