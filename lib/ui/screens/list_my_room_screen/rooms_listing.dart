@@ -24,7 +24,7 @@ class _RoomListingPageState extends State<RoomListingPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.black,),
+          icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E),),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
           },
@@ -73,7 +73,7 @@ class _RoomListingPageState extends State<RoomListingPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.asset(
-                          'assets/images/bad1.png', // Replace with room's image URL if applicable
+                          'assets/images/user.jpg', // Replace with room's image URL if applicable
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,

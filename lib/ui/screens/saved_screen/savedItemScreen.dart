@@ -31,6 +31,7 @@ class SavedTabBarScreen extends StatelessWidget {
             );
           },
         ),*/
+        automaticallyImplyLeading: false,
         title: const Text(
           "Homemates & Rooms",
           style: TextStyle(color: Color(0xFFB60F6E)),

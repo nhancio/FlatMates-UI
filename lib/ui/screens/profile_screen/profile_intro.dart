@@ -34,20 +34,19 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+
         elevation: 0,
+          backgroundColor: const Color(0xfff8e6f1),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Colors.black,),
+          icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E),),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
           },
         ),
         title: const Text(
           'Profile',
-          style: TextStyle(
-              color: Colors.purple, fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-      ),
+    style: TextStyle(color: Color(0xFFB60F6E)),
+    )),
       backgroundColor: Colors.white,
       body: Obx(() {
         return Padding(
@@ -61,14 +60,15 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.purple, width: 2),
+                    border: Border.all(
+                        color: const Color(0xFFB60F6E), width: 2),
                   ),
                   child: Row(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(50),
                         child: Image.asset(
-                          'assets/icons/danile.png',
+                          'assets/images/user.jpg',
                           height: 80,
                           width: 80,
                           fit: BoxFit.cover,
@@ -84,7 +84,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.purple,
+                                color: Color(0xFFB60F6E),
                               ),
                               softWrap: true,
                             ),

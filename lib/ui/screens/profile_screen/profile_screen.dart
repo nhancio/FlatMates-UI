@@ -20,19 +20,10 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile Screen"),
+        title: const Text("Profile Screen",  style: TextStyle(color: Color(0xFFB60F6E)),),
         backgroundColor: const Color(0xfff8e6f1),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
-
-            );
-          },
-        ),
+         automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.white,
       body: LayoutBuilder(
@@ -41,7 +32,6 @@ class ProfileScreen extends StatelessWidget {
           double profileImageSize = screenWidth < 600 ? 80 : 100;
           double cardPadding = screenWidth < 600 ? 16 : 24;
           double fontSize = screenWidth < 600 ? 16 : 20;
-
           return Obx(() {
             // Get the user profile from the controller
             var user = signInController.userProfile;
