@@ -67,6 +67,9 @@ class _AddRoomPageState extends State<AddRoomPage> {
       });
     }
 
+    final TextEditingController addressController = TextEditingController();
+    final TextEditingController rentController = TextEditingController();
+    final TextEditingController contactController = TextEditingController();
 
     return Scaffold(
       backgroundColor:  Colors.white,
@@ -117,6 +120,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
               const SizedBox(height: 12),
               // Address TextField
               CustomTextField(
+                controller: addressController,
                 label: "Address*",
                 hintText: "Write your address...",
                 onChanged: (value) {
@@ -133,6 +137,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
               const SizedBox(height: 12),
               // Room Rent TextField
               CustomTextField(
+                controller: rentController,
                 label: "Room Rent*",
                 hintText: "e.g. \₹5000",
                 onChanged: (value) {
@@ -149,6 +154,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
               const SizedBox(height: 12),
 
               CustomTextField(
+                controller: contactController,
                 label: "Contact Number*",
                 hintText: "Enter Contect number",
                 onChanged: (value) {
@@ -364,7 +370,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
   }
 }
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
 
   final String label;
   final String hintText;
@@ -372,6 +378,7 @@ class CustomTextField extends StatelessWidget {
   final String? initialValue; // Added for autofill functionality
   final String? Function(String?)? validator;
   final bool isContactNumber;
+  final TextEditingController? controller; // Accept controller
 
   const CustomTextField({
     super.key,
@@ -381,25 +388,31 @@ class CustomTextField extends StatelessWidget {
     this.initialValue, // Accept initial value for autofill
     this.validator,
     this.isContactNumber = false,
+    this.controller,
   });
 
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          widget.label,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 6),
         TextFormField(
           controller:
-              TextEditingController(text: initialValue), // Set initial value
-          onChanged: onChanged,
-          validator: validator,
+              TextEditingController(text: widget.initialValue), // Set initial value
+          onChanged: widget.onChanged,
+          validator: widget.validator,
           decoration: InputDecoration(
-            hintText: hintText,
+            hintText: widget.hintText,
             filled: true,
             fillColor: Colors.white,
             border: OutlineInputBorder(
@@ -418,8 +431,8 @@ class CustomTextField extends StatelessWidget {
               ),
             ),
           ),
-          keyboardType: isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
-          inputFormatters: isContactNumber
+          keyboardType: widget.isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
+          inputFormatters: widget.isContactNumber
               ? [
             FilteringTextInputFormatter.digitsOnly,  // Allow only digits for contact number
             LengthLimitingTextInputFormatter(10),    // Limit to 10 digits
