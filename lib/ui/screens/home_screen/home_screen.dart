@@ -119,12 +119,12 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: isWideScreen ? 100.0 : 20.0,
-                    vertical: 40.0,
+                    vertical: 10.0,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
+
                       FutureBuilder<Map<String, String>>(
                         future: fetchUserDetails(userId!), // Pass userId here
                         builder: (context, snapshot) {
@@ -288,12 +288,30 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) =>
+                                          HomemateList(userId: '',),
+                                      transitionsBuilder:
+                                          (context, animation, secondaryAnimation, child) {
+                                        var tween = Tween(
+                                            begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                            .chain(CurveTween(curve: Curves.ease));
+                                        var offsetAnimation = animation.drive(tween);
+                                        return SlideTransition(
+                                          position: offsetAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
+                               /*   Navigator.push(
+                                    context,
                                     MaterialPageRoute(
                                         builder: (context) => Scaffold(
                                           body: HomemateList(userId: '',),
 
                                         )),
-                                  );
+                                  );*/
                                   // tabCtrl.tabController.index = 0;
                                   // bottomNavController.setIndex(
                                   //     2); // For example, to navigate to the 'Saved' screen
@@ -311,12 +329,30 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) =>
+                                      RoomList(),
+                                      transitionsBuilder:
+                                          (context, animation, secondaryAnimation, child) {
+                                        var tween = Tween(
+                                            begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                            .chain(CurveTween(curve: Curves.ease));
+                                        var offsetAnimation = animation.drive(tween);
+                                        return SlideTransition(
+                                          position: offsetAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
+                             /*     Navigator.push(
+                                    context,
                                     MaterialPageRoute(
                                         builder: (context) => Scaffold(
                                           body: RoomList(),
 
                                         )),
-                                  );
+                                  );*/
                                   // bottomNavController.setIndex(2);
                                   // tabCtrl.tabController.index = 1;
                                   // _showBottomSheet(context, 'RoomList');
@@ -334,10 +370,29 @@ class _HomePageState extends State<HomePage> {
                             onTap: () {
                               Navigator.push(
                                 context,
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) =>
+                                      AddRoomPage(),
+                                  transitionsBuilder:
+                                      (context, animation, secondaryAnimation, child) {
+                                    var tween = Tween(
+                                        begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                        .chain(CurveTween(curve: Curves.ease));
+                                    var offsetAnimation = animation.drive(tween);
+                                    return SlideTransition(
+                                      position: offsetAnimation,
+                                      child: child,
+                                    );
+                                  },
+                                ),
+                              );
+
+                           /*Navigator.push(
+                                context,
                                 MaterialPageRoute(
                                   builder: (context) => const AddRoomPage(),
                                 ),
-                              );
+                              );*/
                             },
                             child: _buildServiceCard(
                               'assets/images/list_room.png',

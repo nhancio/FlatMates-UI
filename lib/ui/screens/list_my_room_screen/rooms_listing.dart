@@ -26,7 +26,24 @@ class _RoomListingPageState extends State<RoomListingPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E),),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    BottomNavBarScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  var tween = Tween(
+                      begin: const Offset(0.0, 0.0), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.ease));
+                  var offsetAnimation = animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
+            );
           },
         ),
         backgroundColor: const Color(0xfff8e6f1),
@@ -73,7 +90,7 @@ class _RoomListingPageState extends State<RoomListingPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.asset(
-                          'assets/images/user.jpg', // Replace with room's image URL if applicable
+                          'assets/images/house.png', // Replace with room's image URL if applicable
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,

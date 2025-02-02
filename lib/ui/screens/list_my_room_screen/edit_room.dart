@@ -83,6 +83,7 @@ class _EditRoomPageState extends State<EditRoomPage> {
               onChanged: (value) {
                 controller.setAddress(value);
               },
+              isContactNumber: false,
             ),
             const SizedBox(height: 12),
             // Room Rent TextField
@@ -93,6 +94,7 @@ class _EditRoomPageState extends State<EditRoomPage> {
               onChanged: (value) {
                 controller.setRoomRent(value);
               },
+              isContactNumber: true,
             ),
             const SizedBox(height: 12),
             // Move In Date Dropdown

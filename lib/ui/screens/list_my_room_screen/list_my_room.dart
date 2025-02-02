@@ -6,6 +6,7 @@ import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
@@ -21,7 +22,6 @@ class AddRoomPage extends StatefulWidget {
 class _AddRoomPageState extends State<AddRoomPage> {
   @override
   Widget build(BuildContext context) {
-    // Initialize controller
     bool isLoading = false; // Flag to track loading state
 
     final controller = Get.put(RoomController());
@@ -134,7 +134,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                 label: "Home Type*",
                 hintText: "Select Home Type",
                 options: const [
-                  "Aprtment",
+                  "Apartment",
                   "Individual House",
                   "Gated Community Flat",
                   "Villa"
@@ -163,12 +163,13 @@ class _AddRoomPageState extends State<AddRoomPage> {
                   }
                   return null;
                 },
+                isContactNumber: false,
               ),
               const SizedBox(height: 12),
               // Room Rent TextField
               CustomTextField(
                 label: "Room Rent*",
-                hintText: "e.g. \$5000",
+                hintText: "e.g. \₹5000",
                 onChanged: (value) {
                   controller.setRoomRent(value);
                 },
@@ -178,6 +179,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                   }
                   return null;
                 },
+                isContactNumber: true,
               ),
               const SizedBox(height: 12),
               // Move In Date Dropdown
@@ -198,7 +200,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
               const SizedBox(height: 12),
               // Occupation per room Dropdown
               CustomDropdownField(
-                label: "Occupation per room",
+                label: "Occupancy per room",
                 hintText: "Select an option",
                 options: const ["1 Person", "2 Persons", "3 Persons"],
                 onChanged: (value) {
@@ -225,6 +227,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                   }
                   return null;
                 },
+                isContactNumber: true,
               ),
               const SizedBox(height: 12),
               Text(
@@ -365,6 +368,7 @@ class CustomTextField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final String? initialValue; // Added for autofill functionality
   final String? Function(String?)? validator;
+  final bool isContactNumber;
 
   const CustomTextField({
     super.key,
@@ -373,7 +377,7 @@ class CustomTextField extends StatelessWidget {
     required this.onChanged,
     this.initialValue, // Accept initial value for autofill
     this.validator,
-
+    this.isContactNumber = false,
   });
 
   @override
@@ -411,6 +415,13 @@ class CustomTextField extends StatelessWidget {
               ),
             ),
           ),
+          keyboardType: isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
+          inputFormatters: isContactNumber
+              ? [
+            FilteringTextInputFormatter.digitsOnly,  // Allow only digits for contact number
+            LengthLimitingTextInputFormatter(10),    // Limit to 10 digits
+          ]
+              : null,  // No restrictions for address
 
         ),
       ],

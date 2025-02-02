@@ -5,6 +5,7 @@ import 'package:flatemates_ui/ui/screens/preference_screen/preference_screen.dar
 import 'package:flatemates_ui/ui/screens/register_yourself_screen/register_yourself.dart';
 import 'package:flatemates_ui/ui/screens/verify_otp_screen/verification_otp.dart';
 import 'package:flatemates_ui/ui/screens/welcome_screen/welcome_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../ui/screens/register_screen/register_screen.dart';
@@ -18,14 +19,35 @@ class AppRoutes {
   static const String bottomNavBar = '/bottomNavBar';
 
   static List<GetPage> routes = [
-    GetPage(name: welcome, page: () => WelcomeScreen()),
-    GetPage(name: register, page: () => RegisterScreen()),
+    GetPage(name: welcome, page: () => WelcomeScreen(), customTransition: CustomPageTransition()),
+    GetPage(name: register, page: () => RegisterScreen(), customTransition: CustomPageTransition()),
     GetPage(
       name: verification,
-      page: () => VerificationScreen(),
+      page: () => VerificationScreen(), customTransition: CustomPageTransition()
     ),
-    GetPage(name: registerUser, page: () => RegisterUserScreen()),
-    GetPage(name: preferences, page: () => PreferenceScreen()),
-    GetPage(name: bottomNavBar, page: () => BottomNavBarScreen()),
+    GetPage(name: registerUser, page: () => RegisterUserScreen(), customTransition: CustomPageTransition()),
+    GetPage(name: preferences, page: () => PreferenceScreen(), customTransition: CustomPageTransition()),
+    GetPage(name: bottomNavBar, page: () => BottomNavBarScreen(), customTransition: CustomPageTransition()),
   ];
+}
+class CustomPageTransition extends CustomTransition {
+  @override
+  Widget buildTransition(
+      BuildContext context,
+      Curve? curve,
+      Alignment? alignment,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+      ) {
+    const begin = Offset(0.0, 0.0);
+    const end = Offset.zero;
+    const curve = Curves.ease;
+    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    var offsetAnimation = animation.drive(tween);
+    return SlideTransition(
+      position: offsetAnimation,
+      child: child,
+    );
+  }
 }

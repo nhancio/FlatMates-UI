@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:get/get.dart';
 
@@ -75,9 +76,9 @@ class RoomControllerFirebase extends GetxController {
   Future<void> fetchSavedRooms(String userId) async {
     try {
       final querySnapshot = await FirebaseFirestore.instance
+          .collection('saved_Rooms')
+          .doc(userId)
           .collection('savedRooms')
-          .doc(userId)  // Use current user's ID
-          .collection('items')
           .get();
 
       if (querySnapshot.docs.isEmpty) {
@@ -86,35 +87,25 @@ class RoomControllerFirebase extends GetxController {
       }
 
       // Map Firestore data to a list of Room objects
-      savedRooms.value = List<Room>.from(
-        querySnapshot.docs.map((doc) {
-          return Room.fromMap(doc.data());
-        }),
-      );
+      savedRooms.value = querySnapshot.docs.map((doc) {
+        return Room.fromMap(doc.data());
+      }).toList();
+
+      print("Fetched ${savedRooms.value.length} saved rooms.");
     } catch (e) {
       print('Error fetching saved rooms: ${e.toString()}');
     }
   }
 
 
-  // Delete a saved room from Firebase
-  Future<void> deleteRoom(String userId, String roomId) async {
-    try {
-      // Delete from Firebase
-      await FirebaseFirestore.instance
-          .collection('savedRooms')
-          .doc(userId)  // Make sure you use the correct userId
-          .collection('items')
-          .doc(roomId)  // Using the roomId for deleting
-          .delete();
 
-      // Remove from the local list
-      savedRooms.removeWhere((room) => room.mobileNumber == roomId); // Room is removed from the local list
-      print("Room deleted successfully.");
-    } catch (e) {
-      print("Error deleting room: $e");
-    }
-  }
+  // Delete a saved room from Firebase
+  // Define the deleteRoom function
+
+
+
+
+
 }
 class Room {
 
@@ -162,6 +153,7 @@ class Room {
     };
   }
   factory Room.fromMap(Map<String, dynamic> map) {
+
     return Room(
       address: map['address'] ?? '',
       homeType: map['homeType'] ?? '',

@@ -78,6 +78,7 @@ class RegisterUserController extends GetxController {
   }
 
   // Validation logic
+/*
   bool validateForm() {
     // Check if required fields are empty or invalid
     if (nameController.text.isEmpty ||
@@ -87,13 +88,47 @@ class RegisterUserController extends GetxController {
         phoneController.text.length != 10) {  // Check if phone number is 10 digits
       Get.snackbar(
         'Error',
-        'Please fill all required fields and upload your profile picture. Ensure the phone number has exactly 10 digits.',
+        'Please fill all required fields. Ensure the phone number has exactly 10 digits',
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.white70,
         colorText: Colors.black,
       );
       return false;
     }
+    return true;
+  }
+*/
+  bool validateForm() {
+    String errorMessage = '';
+
+    if (nameController.text.isEmpty) {
+      errorMessage = 'Name is required.';
+    } else if (selectedGender.value == null) {
+      errorMessage = 'Please select a gender.';
+    } else if (selectedProfession.value == null) {
+      errorMessage = 'Please select a profession.';
+    } else if (ageController.text.isEmpty) {
+      errorMessage = 'Age is required.';
+    } else if (int.tryParse(ageController.text) == null || int.parse(ageController.text) <= 0) {
+      errorMessage = 'Please enter a valid age.';
+    } else if (phoneController.text.isEmpty) {
+      errorMessage = 'Phone number is required.';
+    } else if (phoneController.text.length != 10 || !RegExp(r'^[0-9]+$').hasMatch(phoneController.text)) {
+      errorMessage = 'Phone number must be exactly 10 digits and contain only numbers.';
+    }
+
+    if (errorMessage.isNotEmpty) {
+      Get.snackbar(
+        'Error',
+        errorMessage,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.grey.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 2),
+      );
+      return false;
+    }
+
     return true;
   }
 

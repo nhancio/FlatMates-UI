@@ -1,8 +1,10 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flatemates_ui/models/room.model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 
@@ -124,12 +126,28 @@ class RoomController extends GetxController {
 
       };
       await FirebaseFirestore.instance.collection('rooms').add(roomData);
-      Get.snackbar('Success', 'Room listing added successfully!');
 
+    //  Get.snackbar('Success', 'Room listing added successfully!');
+      Get.snackbar(
+        'Success',
+        'Room listing added successfully!',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.grey.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 2),
+      );
       // Add the data to Firestore
       await rooms.add(roomData);
       Get.back();
     } catch (e, stackTrace) {
+      Get.snackbar(
+        'Error',
+        'Error submitting room listing',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 3),
+      );
       print('Error submitting room listing: $e');
       print(stackTrace);
     }

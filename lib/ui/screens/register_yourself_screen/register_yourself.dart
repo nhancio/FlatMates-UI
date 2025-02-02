@@ -19,12 +19,12 @@ class RegisterUserScreen extends StatelessWidget {
         builder: (context, constraints) {
           bool isWideScreen = constraints.maxWidth > 600;
 
-          return SingleChildScrollView(
-            child: Center(
-              child: Container(
-                width: double.infinity,
-                height: kIsWeb ? MediaQuery.of(context).size.height : null,
-                padding: const EdgeInsets.all(20.0),
+          return Center(
+            child: Container(
+              width: double.infinity,
+              height: kIsWeb ? MediaQuery.of(context).size.height : null,
+              padding: const EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +71,7 @@ class RegisterUserScreen extends StatelessWidget {
 
                         _buildProfessionDropdown(
                           context: context,
-                          labelText: 'Profession',
+                          labelText: 'Profession*',
                           width: isWideScreen
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
@@ -87,7 +87,7 @@ class RegisterUserScreen extends StatelessWidget {
                         ),
                         _buildTextFieldAge(
                           controller: controller.ageController,
-                          labelText: 'Age',
+                          labelText: 'Age*',
                           keyboardType: TextInputType.number,
                           width: isWideScreen
                               ? constraints.maxWidth * 0.45

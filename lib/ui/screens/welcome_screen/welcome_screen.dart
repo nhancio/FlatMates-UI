@@ -219,86 +219,88 @@ class WelcomeScreen extends StatelessWidget {
                   horizontal:
                   isWideScreen ? AppDimensions.large : AppDimensions.small,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 120,),
-                    Image.asset(
-                     "assets/icons/icon.png",
-                      height: 80,
-                      width: 80,
-
-                    ),
-                    SizedBox(height: 80,),
-                    Image.asset(
-                      Images.firstScreenIcon,
-                      height: isWideScreen
-                          ? AppDimensions.largeImageHeight
-                          : AppDimensions.smallImageHeight,
-                    ),
-                    SizedBox(
-                      height: isWideScreen ? AppDimensions.medium : AppDimensions.small,
-                    ),
-                    Text(
-                      "HOMEMATES.AI",
-                      style: AppTextStyles.largeTitleStyle(context).copyWith(
-                        fontSize: isWideScreen ? 34 : 26,
-                        color: AppColors.primaryColor,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 120,),
+                      Image.asset(
+                       "assets/icons/icon.png",
+                        height: 80,
+                        width: 80,
+                  
                       ),
-                    ),
-                    SizedBox(
-                      height: isWideScreen ? AppDimensions.small : AppDimensions.extraSmall,
-                    ),
-                    Text(
-                      '# Find Roomie With Same Qualities',
-                      style: AppTextStyles.bodyStyle(context).copyWith(
-                        fontSize: isWideScreen ? 20 : 16,
-                        color: AppColors.textColor,
+                      SizedBox(height: 80,),
+                      Image.asset(
+                        Images.firstScreenIcon,
+                        height: isWideScreen
+                            ? AppDimensions.largeImageHeight
+                            : AppDimensions.smallImageHeight,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 80),
-                    Obx(() {
-                      return SizedBox(
-                        width: 200,
-                        height: 55,
-                        child: ElevatedButton(
-                          onPressed: signInController.isLoading.value
-                              ? null
-                              : signInController.signInWithGoogle,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFB60F6E),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                      SizedBox(
+                        height: isWideScreen ? AppDimensions.medium : AppDimensions.small,
+                      ),
+                      Text(
+                        "HOMEMATES",
+                        style: AppTextStyles.largeTitleStyle(context).copyWith(
+                          fontSize: isWideScreen ? 34 : 26,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: isWideScreen ? AppDimensions.small : AppDimensions.extraSmall,
+                      ),
+                      Text(
+                        'Find rooms and roommates based on your preferences',
+                        style: AppTextStyles.bodyStyle(context).copyWith(
+                          fontSize: isWideScreen ? 20 : 16,
+                          color: AppColors.textColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 80),
+                      Obx(() {
+                        return SizedBox(
+                          width: 200,
+                          height: 55,
+                          child: ElevatedButton(
+                            onPressed: signInController.isLoading.value
+                                ? null
+                                : signInController.signInWithGoogle,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFB60F6E),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: signInController.isLoading.value
+                                ? const CircularProgressIndicator(
+                              valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                            )
+                                : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Login With',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SizedBox(width: 8),
+                                Image.asset(
+                                  'assets/icons/google.png',
+                                  height: 24,
+                                  width: 24,
+                                ),
+                              ],
                             ),
                           ),
-                          child: signInController.isLoading.value
-                              ? const CircularProgressIndicator(
-                            valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.white),
-                          )
-                              : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Login With',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Image.asset(
-                                'assets/icons/google.png',
-                                height: 24,
-                                width: 24,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
+                        );
+                      }),
+                    ],
+                  ),
                 ),
               ),
             ],

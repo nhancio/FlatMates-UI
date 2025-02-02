@@ -7,9 +7,12 @@ import 'package:flatemates_ui/models/userprofile.model.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/register_yourself_screen/register_yourself.dart';
 import 'package:flatemates_ui/ui/screens/welcome_screen/welcome_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../widgets/routes_get.dart';
 
 class GoogleController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -148,7 +151,8 @@ class GoogleController extends GetxController {
     // Check if the user is logged in
     if (user == null) {
       // If there's no user, navigate to Register Screen
-      Get.to(RegisterUserScreen());
+     // Get.to(RegisterUserScreen());
+      Navigator.of(Get.context!).push(CustomWidgetTransition(page: RegisterUserScreen()));
       return;
     }
 
@@ -161,10 +165,12 @@ class GoogleController extends GetxController {
 
       if (!userDoc.exists) {
         // User doesn't exist in the Firestore collection, navigate to Register Screen
-        Get.to(RegisterUserScreen());
+       // Get.to(RegisterUserScreen());
+        Navigator.of(Get.context!).push(CustomWidgetTransition(page: RegisterUserScreen()));
       } else {
         // User exists in Firestore, navigate to Home Screen
-        Get.to(BottomNavBarScreen());
+      //  Get.to(BottomNavBarScreen());
+        Navigator.of(Get.context!).push(CustomWidgetTransition(page: BottomNavBarScreen()));
       }
     } catch (e) {
       print('Error checking user: $e');

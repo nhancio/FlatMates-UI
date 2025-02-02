@@ -5,11 +5,10 @@ import 'package:flatemates_ui/controllers/room_controller.dart';
 import 'package:flatemates_ui/ui/screens/homemate_details_screen/homemate_details.dart';
 import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flutter/material.dart';
-
+import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../res/bottom/bottom_bar.dart';
 import 'package:get/get.dart';
-
 import 'package:share_plus/share_plus.dart';
 
 class HomemateList extends StatefulWidget {
@@ -26,10 +25,25 @@ class _HomemateListState extends State<HomemateList> {
   final RxString selectedGender = ''.obs;
   final RxInt selectedAge = 0.obs;
   final RxString selectedProfession = ''.obs;
+  String userGender = 'Loading...';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserGender(userId!);
+  }
 
 
   void saveHomemateToFirestore(homemate) async {
     try {
+      if (homemate.userPhoneNumber == null || homemate.userPhoneNumber.isEmpty) {
+        throw Exception("Invalid phone number. Cannot save homemate.");
+      }
+
+      if (userId == null || userId!.isEmpty) {
+        throw Exception("User ID is missing. Please log in again.");
+      }
+
       await FirebaseFirestore.instance
           .collection('savedHomemates')
           .doc(userId)
@@ -45,11 +59,55 @@ class _HomemateListState extends State<HomemateList> {
         'image': "assets/images/user.jpg",
         'timestamp': FieldValue.serverTimestamp(),
       });
+      Get.snackbar(
+        'Success',
+        'Homemate saved successfully!',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.grey.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 2),
+      );
+
       print('Homemate saved successfully');
     } catch (e) {
-      print('Error saving homemate: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to save homemate',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 3),
+      );
     }
   }
+
+  Future<String> fetchUserGender(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      if (userDoc.exists) {
+        String gender = userDoc['gender'] ?? 'N/A';
+        print("Fetched Gender: $gender");  // Print the fetched gender
+        setState(() {
+          selectedGender.value = gender;  // Update selectedGender
+        });
+        return gender;
+      } else {
+        print("No user found with this ID.");
+        selectedGender.value = 'N/A';
+        return 'N/A';  // Return a default value if the document does not exist
+      }
+    } catch (e) {
+      print("Error fetching user gender: $e");  // Print any errors that occur
+      selectedGender.value = 'Error';
+      return 'Error';  // Return 'Error' if an exception occurs
+    }
+  }
+
+
 
   void shareHomemateDetails(homemate) {
     // Construct the unique URL for the room
@@ -121,7 +179,7 @@ Explore more details here: $roomUrl
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        DropdownButtonFormField<String>(
+                     /*   DropdownButtonFormField<String>(
                           decoration: const InputDecoration(
                             labelText: 'Gender',
                           ),
@@ -135,7 +193,7 @@ Explore more details here: $roomUrl
                             selectedGender.value = value!;
                           },
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
-                        ),
+                        ),*/
                         const SizedBox(height: 16),
                         TextField(
 
@@ -202,7 +260,7 @@ Explore more details here: $roomUrl
         if (homemateController.isError.value) {
           return Center(child: Text(homemateController.errorMessage.value));
         }
-
+        String selectedGenderValue = selectedGender.value.isEmpty ? 'N/A' : selectedGender.value;
         final filteredHomemates = homemateController.homemates.where((homemate) {
           final matchesGender = selectedGender.value.isEmpty ||
               homemate.gender == selectedGender.value;
@@ -295,61 +353,86 @@ Explore more details here: $roomUrl
                         ],
                       ),
                       const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              saveHomemateToFirestore(homemate);
-                            },
-                            icon: const Icon(Icons.save),
-                            label: const Text('Save',),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xffACE7E6),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                saveHomemateToFirestore(homemate);
+                              },
+                              icon: const Icon(Icons.save),
+                              label: const Text('Save',),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffACE7E6),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
                             ),
-                          ),
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              final Uri _phoneUrl =
-                              Uri.parse('tel:${homemate.userPhoneNumber}');
-                              try {
-                                await launchUrl(_phoneUrl);
-                              } catch (e) {
-                                print('Could not launch the dialer: $e');
-                              }
-                            },
-                            icon: const Icon(Icons.call),
-                            label: const Text('Call'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xffFFF5BA),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                            SizedBox(width: 8),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                final Uri _phoneUrl =
+                                Uri.parse('tel:${homemate.userPhoneNumber}');
+                                try {
+                                  await launchUrl(_phoneUrl);
+                                } catch (e) {
+                                  print('Could not launch the dialer: $e');
+                                }
+                              },
+                              icon: const Icon(Icons.call),
+                              label: const Text('Call'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffFFF5BA),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
                             ),
-                          ),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              shareHomemateDetails(homemate);
-                            },
-                            icon: const Icon(Icons.share),
-                            label: const Text('Share'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xffFAD4E4),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                            SizedBox(width: 8),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                final String shareContent =
+                                    'Check out this room:\User name: ${homemate.userName}\nAge: ${homemate.age}\nRent: ${homemate.profession}\nContact: ${homemate.userPhoneNumber}';
+
+                                final String whatsappUrl = 'whatsapp://send?text=$shareContent';
+
+                                // Check if WhatsApp is installed
+                                if (await canLaunch(whatsappUrl)) {
+                                  await launch(whatsappUrl);
+                                } else {
+                                  // If WhatsApp is not installed, you can show an error or fallback
+                                  Get.snackbar(
+                                    'Error',
+                                    'WhatsApp is not installed',
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: Colors.red.shade100,
+                                    colorText: Colors.black,
+                                    duration: Duration(seconds: 2),
+                                  );
+
+                                }
+                              },
+                              icon: const Icon(Icons.share),
+                              label: const Text('Share'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xffFAD4E4),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -372,6 +455,7 @@ class RoomList extends StatefulWidget {
 
 class _RoomListState extends State<RoomList> {
   final RoomControllerFirebase roomController = Get.put(RoomControllerFirebase());
+  TextEditingController searchController = TextEditingController();
 
   String? selectedRoomType;
   String? selectedHomeType;
@@ -381,10 +465,68 @@ class _RoomListState extends State<RoomList> {
   List<String> roomTypes = ["1BHK", "2BHK", "3BHK"];
   List<String> moveDate = ["Immediately", "1 Month", "3 Months"];
   List<String> occupation = ["1 Person", "2 Persons", "3 Persons"];
-  List<String> homeTypes = [ "Aprtment",
+  List<String> homeTypes = [ "Apartment",
     "Individual House",
     "Gated Community Flat",
     "Villa"];
+
+
+  void saveRoom(Room room) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    var uuid = Uuid();
+
+    String? userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      print("User not logged in.");
+      return;
+    }
+
+    try {
+      // Generate a unique ID for each room
+      String roomId = uuid.v4();
+
+      DocumentReference roomRef = _firestore
+          .collection('saved_Rooms')
+          .doc(userId)
+          .collection('savedRooms')
+          .doc(roomId); // Use unique ID
+
+      await roomRef.set({
+        'roomId': roomId, // Store room ID
+        'roomType': room.roomType,
+        'homeType': room.homeType,
+        'address': room.address,
+        'roomRent': room.roomRent,
+        'roomMoveInDate': room.moveInDate,
+        'roomOccupationPerRoom': room.occupationPerRoom,
+        'roomMobileNumber': room.mobileNumber,
+        'userId': userId,
+        'roomSelectedValues': room.selectedValues,
+        'roomProfileImages': room.profileImages,
+      });
+      Get.snackbar(
+        'Success',
+        'Room saved successfully!',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.grey.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 2),
+      );
+
+      print('Homemate saved successfully');
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed  saving room',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 3),
+      );
+    }
+  }
+
 
 
   @override
@@ -539,219 +681,239 @@ class _RoomListState extends State<RoomList> {
 
       ),
 
-      body: Obx(() {
-        if (roomController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: "Search by only address",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onChanged: (query) {
+                setState(() {}); // Update UI when search input changes
+              },
+            ),
+          ),
+          Expanded(
+            child: Obx(() {
+              if (roomController.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+            
+              // Filter the rooms based on the selected filters
+              List<Room> filteredRooms = roomController.rooms;
+              if (selectedRoomType != null) {
+                filteredRooms = filteredRooms
+                    .where((room) => room.roomType == selectedRoomType)
+                    .toList();
+              }
+              if (selectedHomeType != null) {
+                filteredRooms = filteredRooms
+                    .where((room) => room.homeType == selectedHomeType)
+                    .toList();
+              }
+            
+              if (selectedMoveDate != null) {
+                filteredRooms = filteredRooms
+                    .where((room) => room.moveInDate == selectedMoveDate)
+                    .toList();
+              }
+            
+              if (selectedOccupation != null) {
+                filteredRooms = filteredRooms
+                    .where((room) => room.occupationPerRoom == selectedOccupation)
+                    .toList();
+              }
+            
+            
+              if (filteredRooms.isEmpty) {
+                return const Center(child: Text('No rooms available'));
+              }
+              String query = searchController.text.toLowerCase();
+              if (query.isNotEmpty) {
+                filteredRooms = filteredRooms.where((room) => room.address.toLowerCase().contains(query)).toList();
+              }
 
-        // Filter the rooms based on the selected filters
-        List<Room> filteredRooms = roomController.rooms;
-        if (selectedRoomType != null) {
-          filteredRooms = filteredRooms
-              .where((room) => room.roomType == selectedRoomType)
-              .toList();
-        }
-        if (selectedHomeType != null) {
-          filteredRooms = filteredRooms
-              .where((room) => room.homeType == selectedHomeType)
-              .toList();
-        }
+              if (filteredRooms.isEmpty) {
+                return const Center(child: Text('No rooms available'));
+              }
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: filteredRooms.length,
+                itemBuilder: (context, index) {
+                  final room = filteredRooms[index];
 
-        if (selectedMoveDate != null) {
-          filteredRooms = filteredRooms
-              .where((room) => room.moveInDate == selectedMoveDate)
-              .toList();
-        }
-
-        if (selectedOccupation != null) {
-          filteredRooms = filteredRooms
-              .where((room) => room.occupationPerRoom == selectedOccupation)
-              .toList();
-        }
-
-
-        if (filteredRooms.isEmpty) {
-          return const Center(child: Text('No rooms available'));
-        }
-
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: filteredRooms.length,
-          itemBuilder: (context, index) {
-            final room = filteredRooms[index];
-            return Card(
-              color: Colors.purple,
-              margin: const EdgeInsets.only(bottom: 16),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              child: ListTile(
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(13.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                "assets/images/house.png",
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  return Card(
+                    color: Colors.purple,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    child: ListTile(
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Text(
-                                'Room Type: ${room.roomType}',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                              Container(
+                                decoration: BoxDecoration(
                                   color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(13.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.asset(
+                                      "assets/images/house.png",
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              Text('Address: ${room.address}',
-                                  style: const TextStyle(color: Colors.white)),
-                              Text('Rent: ${room.roomRent}',
-                                  style: const TextStyle(color: Colors.white)),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Room Type: ${room.roomType}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text('Address: ${room.address}',
+                                        style: const TextStyle(color: Colors.white)),
+                                    Text('Rent: ${room.roomRent}',
+                                        style: const TextStyle(color: Colors.white)),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Save Button
-                        ElevatedButton.icon(
-                          onPressed: ()async {
-                            try {
-                              // Ensure you are using the correct userId (get it from FirebaseAuth or pass it in)
-                              String userId = FirebaseAuth.instance.currentUser?.uid ?? ""; // Make sure to get userId from Firebase Auth
+                          SizedBox(height: 12),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Save Button
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    saveRoom(room);
+                                  },
+                                  icon: const Icon(Icons.save),
+                                  label: const Text('Save'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:Color(0xffACE7E6),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                  ),
+                                ),
+                                SizedBox(width: 8,),
+                                // Call Button
+                                ElevatedButton.icon(
+                                  onPressed: () async {
+                                    final Uri _phoneUrl = Uri.parse('tel:${room.mobileNumber}');
+                                    try {
+                                      if (await canLaunchUrl(_phoneUrl)) {
+                                        await launchUrl(_phoneUrl);
+                                      } else {
+                                        throw 'Could not launch the dialer';
+                                      }
+                                    } catch (e) {
+                                      print('Could not launch the dialer: $e');
+                                    }
+                                  },
+                                  icon: const Icon(Icons.call),
+                                  label: const Text('Call'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:Color(0xffFFF5BA),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  ),
+                                ),
+                                // Share Button
+                                SizedBox(width: 8,),
+                                ElevatedButton.icon(
+                                  onPressed: () async {
+                                    final String shareContent =
+                                        'Check out this room:\nRoom Type: ${room.roomType}\nAddress: ${room.address}\nRent: ${room.roomRent}\nContact: ${room.mobileNumber}';
 
-                              // Save room to Firebase
-                              await FirebaseFirestore.instance
-                                  .collection('savedRooms')
-                                  .doc(userId) // Use the logged-in user's ID
-                                  .collection('items')
-                                  .doc(room.mobileNumber) // Use mobileNumber as the unique room ID
-                                  .set({
-                                'roomType': room.roomType,
-                                'address': room.address,
-                                'roomRent': room.roomRent,
-                                'timestamp': FieldValue.serverTimestamp(),
-                                'roomMoveInDate': room.moveInDate,
-                                'roomOccupationPerRoom': room.occupationPerRoom,
-                                'userId': room.userId,
-                                'roomMobileNumber': room.mobileNumber,
-                                'roomSelectedValues': room.selectedValues,
-                                'roomProfileImages': room.profileImages,
-                              });
+                                    final String whatsappUrl = 'whatsapp://send?text=$shareContent';
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Room saved successfully.')),
+                                    // Check if WhatsApp is installed
+                                    if (await canLaunch(whatsappUrl)) {
+                                      await launch(whatsappUrl);
+                                    } else {
+                                      Get.snackbar(
+                                        'Error',
+                                        'WhatsApp is not installed',
+                                        snackPosition: SnackPosition.TOP,
+                                        backgroundColor: Colors.red.shade100,
+                                        colorText: Colors.black,
+                                        duration: Duration(seconds: 2),
+                                      );
+                                    }
+                                  },
+                                  icon: const Icon(Icons.share),
+                                  label: const Text('Share'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xffFAD4E4), // Share button color
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (context, animation,
+                                secondaryAnimation) =>
+                                RoomDetailScreen(room: room,),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              var tween = Tween(
+                                  begin: const Offset(0.0, 0.0),
+                                  end: Offset.zero)
+                                  .chain(
+                                  CurveTween(curve: Curves.ease));
+                              var offsetAnimation =
+                              animation.drive(tween);
+                              return SlideTransition(
+                                position: offsetAnimation,
+                                child: child,
                               );
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Failed to save room.')),
-                              );
-                            }
-                          },
-                          icon: const Icon(Icons.save),
-                          label: const Text('Save'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:Color(0xffACE7E6),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                          ),
-                        ),
-                        // Call Button
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            final Uri _phoneUrl = Uri.parse('tel:${room.mobileNumber}');
-                            try {
-                              if (await canLaunchUrl(_phoneUrl)) {
-                                await launchUrl(_phoneUrl);
-                              } else {
-                                throw 'Could not launch the dialer';
-                              }
-                            } catch (e) {
-                              print('Could not launch the dialer: $e');
-                            }
-                          },
-                          icon: const Icon(Icons.call),
-                          label: const Text('Call'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:Color(0xffFFF5BA),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          ),
-                        ),
-                        // Share Button
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            final String shareContent =
-                                'Check out this room:\nRoom Type: ${room.roomType}\nAddress: ${room.address}\nRent: ${room.roomRent}\nContact: ${room.mobileNumber}';
-                            Share.share(shareContent);
-                          },
-                          icon: const Icon(Icons.share),
-                          label: const Text('Share'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xffFAD4E4), // Share button color
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          ),
-                        ),
-                      ],
+                            },),);
+                      },
                     ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation,
-                          secondaryAnimation) =>
-                          RoomDetailScreen(room: room,),
-                      transitionsBuilder: (context, animation,
-                          secondaryAnimation, child) {
-                        var tween = Tween(
-                            begin: const Offset(0.0, 0.0),
-                            end: Offset.zero)
-                            .chain(
-                            CurveTween(curve: Curves.ease));
-                        var offsetAnimation =
-                        animation.drive(tween);
-                        return SlideTransition(
-                          position: offsetAnimation,
-                          child: child,
-                        );
-                      },),);
+                  );
                 },
-              ),
-            );
-          },
-        );
-      }),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 

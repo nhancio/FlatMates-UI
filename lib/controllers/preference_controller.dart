@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
+import 'package:flatemates_ui/widgets/routes_get.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PreferenceController extends GetxController {
@@ -27,7 +29,8 @@ class PreferenceController extends GetxController {
       print('Preferences saved successfully!');
       // Navigate to the next screen after saving preferences
       // Get.toNamed('/nextScreen');
-      Get.to(BottomNavBarScreen());
+      //Get.to(BottomNavBarScreen());
+      Navigator.of(Get.context!).push(CustomWidgetTransition(page: BottomNavBarScreen()));
     } catch (e) {
       print('Error saving preferences: $e');
     }

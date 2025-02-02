@@ -2,6 +2,7 @@ import 'package:flatemates_ui/controllers/google_controller.dart';
 import 'package:flatemates_ui/ui/screens/feedback/feedback.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/rooms_listing.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/contact_us.dart';
+import 'package:flatemates_ui/ui/screens/profile_screen/privacy_policy.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/profile_intro.dart';
 import 'package:flatemates_ui/ui/screens/profile_screen/term_condition.dart';
 import 'package:flatemates_ui/ui/screens/welcome_screen/welcome_screen.dart';
@@ -60,9 +61,24 @@ class ProfileScreen extends StatelessWidget {
                         onTap: () {
                           signInController.fetchUserProfile();
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProfileIntroScreen()));
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  ProfileIntroScreen(),
+                              transitionsBuilder:
+                                  (context, animation, secondaryAnimation, child) {
+                                var tween = Tween(
+                                    begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                    .chain(CurveTween(curve: Curves.ease));
+                                var offsetAnimation = animation.drive(tween);
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+
                         },
                         child: Row(
                           children: [
@@ -111,13 +127,49 @@ class ProfileScreen extends StatelessWidget {
                     _buildOptionItem(
                         context, 'Manage your Listing', Icons.arrow_forward_ios,
                         onTap: () {
-                      Get.to(RoomListingPage());
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  RoomListingPage(),
+                              transitionsBuilder:
+                                  (context, animation, secondaryAnimation, child) {
+                                var tween = Tween(
+                                    begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                    .chain(CurveTween(curve: Curves.ease));
+                                var offsetAnimation = animation.drive(tween);
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
+                     // Get.to(RoomListingPage());
                     }),
 
                     _buildOptionItem(
                         context, 'Feedback', Icons.feedback_outlined,
                         subtitle: 'Help Us To Improve More', onTap: () {
-                      Get.to(  FeedbackPage());
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) =>
+                              FeedbackPage(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var tween = Tween(
+                                begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                .chain(CurveTween(curve: Curves.ease));
+                            var offsetAnimation = animation.drive(tween);
+                            return SlideTransition(
+                              position: offsetAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                     // Get.to(  FeedbackPage());
                     }),
 
                     _buildOptionItem(
@@ -125,11 +177,26 @@ class ProfileScreen extends StatelessWidget {
                       'Contact Us',
                       Icons.info,
                       subtitle: 'We are always here for you.',
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ContactUsScreen()),
-                      ),
+                      onTap: () =>
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  ContactUsScreen(),
+                              transitionsBuilder:
+                                  (context, animation, secondaryAnimation, child) {
+                                var tween = Tween(
+                                    begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                    .chain(CurveTween(curve: Curves.ease));
+                                var offsetAnimation = animation.drive(tween);
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          ),
+
                     ),
 
                     _buildOptionItem(
@@ -137,11 +204,52 @@ class ProfileScreen extends StatelessWidget {
                       'Terms and Conditions',
                       Icons.article_outlined,
                       subtitle: ' We are always here for you.',
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TermsConditionsScreen()),
-                      ),
+                      onTap: () =>
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  TermsConditionsScreen(),
+                              transitionsBuilder:
+                                  (context, animation, secondaryAnimation, child) {
+                                var tween = Tween(
+                                    begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                    .chain(CurveTween(curve: Curves.ease));
+                                var offsetAnimation = animation.drive(tween);
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          ),
+
+                    ),
+                    _buildOptionItem(
+                      context,
+                      'Privacy Policy',
+                      Icons.privacy_tip_rounded,
+                      subtitle: ' We are always here for you.',
+                      onTap: () =>
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) =>
+                                  PrivacyPolicyScreen(),
+                              transitionsBuilder:
+                                  (context, animation, secondaryAnimation, child) {
+                                var tween = Tween(
+                                    begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                    .chain(CurveTween(curve: Curves.ease));
+                                var offsetAnimation = animation.drive(tween);
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          ),
+
                     ),
                     _buildOptionItem(context, 'Logout', Icons.logout,
                         subtitle: 'You can log in anytime.', onTap: () {

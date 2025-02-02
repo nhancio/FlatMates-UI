@@ -4,6 +4,7 @@ import 'package:flatemates_ui/controllers/room_controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
+import 'package:flatemates_ui/ui/screens/saved_screen/details_room.dart';
 import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -16,12 +17,11 @@ class SavedTabBarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xfff8e6f1),
         elevation: 0,
-       /* leading: IconButton(
+        /* leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
             Navigator.push(
@@ -51,9 +51,12 @@ class SavedTabBarScreen extends StatelessWidget {
       body: TabBarView(
         controller: tabControllerState.tabController, // Assign TabController
         children: [
-
-          SavedHomematesScreen(userId: userId,),
-          SavedRoomsScreen(currentUserId: userId,),
+          SavedHomematesScreen(
+            userId: userId,
+          ),
+          SavedRoomsScreen(
+            currentUserId: userId,
+          ),
         ],
       ),
     );
@@ -65,7 +68,8 @@ class SavedTabBarScreen extends StatelessWidget {
 class SavedHomematesScreen extends StatelessWidget {
   final String userId;
 
-  const SavedHomematesScreen({Key? key, required this.userId}) : super(key: key);
+  const SavedHomematesScreen({Key? key, required this.userId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -91,24 +95,21 @@ class SavedHomematesScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             itemCount: savedHomemates.length,
             itemBuilder: (context, index) {
-              final homemate = savedHomemates[index].data() as Map<String, dynamic>;
+              final homemate =
+                  savedHomemates[index].data() as Map<String, dynamic>;
               return GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (context, animation,
-                          secondaryAnimation) =>
+                      pageBuilder: (context, animation, secondaryAnimation) =>
                           HomemateDetailsScreen(homemate: homemate),
-                      transitionsBuilder: (context, animation,
-                          secondaryAnimation, child) {
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
                         var tween = Tween(
-                            begin: const Offset(0.0, 0.0),
-                            end: Offset.zero)
-                            .chain(
-                            CurveTween(curve: Curves.ease));
-                        var offsetAnimation =
-                        animation.drive(tween);
+                                begin: const Offset(0.0, 0.0), end: Offset.zero)
+                            .chain(CurveTween(curve: Curves.ease));
+                        var offsetAnimation = animation.drive(tween);
                         return SlideTransition(
                           position: offsetAnimation,
                           child: child,
@@ -149,10 +150,12 @@ class SavedHomematesScreen extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  Text('Age: ${homemate['age']}',style:
-                                  const TextStyle(color: Colors.white)),
-                                  Text('Profession: ${homemate['profession']}',style:
-                                  const TextStyle(color: Colors.white)),
+                                  Text('Age: ${homemate['age']}',
+                                      style:
+                                          const TextStyle(color: Colors.white)),
+                                  Text('Profession: ${homemate['profession']}',
+                                      style:
+                                          const TextStyle(color: Colors.white)),
                                 ],
                               ),
                             ),
@@ -164,19 +167,20 @@ class SavedHomematesScreen extends StatelessWidget {
                           children: [
                             ElevatedButton.icon(
                               onPressed: () async {
-                                final Uri _phoneUrl =
-                                Uri.parse('tel:${homemate['userPhoneNumber']}');
+                                final Uri _phoneUrl = Uri.parse(
+                                    'tel:${homemate['userPhoneNumber']}');
                                 try {
-                                  await launchUrl(_phoneUrl); // Directly launch the dialer
+                                  await launchUrl(
+                                      _phoneUrl); // Directly launch the dialer
                                 } catch (e) {
                                   print('Could not launch the dialer: $e');
                                 }
                               },
                               icon: const Icon(Icons.call),
                               label: Text(
-                             //   'Call ${homemate['userPhoneNumber']}',
+                                //   'Call ${homemate['userPhoneNumber']}',
                                 'Call',
-                                style: const TextStyle(fontSize: 9),
+
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green.shade100,
@@ -189,7 +193,9 @@ class SavedHomematesScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 30,),
+                            SizedBox(
+                              width: 30,
+                            ),
                             ElevatedButton.icon(
                               onPressed: () async {
                                 // Confirm before unsaving
@@ -197,14 +203,17 @@ class SavedHomematesScreen extends StatelessWidget {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     title: const Text('Remove Homemate'),
-                                    content: const Text('Are you sure you want to unsave this homemate?'),
+                                    content: const Text(
+                                        'Are you sure you want to unsave this homemate?'),
                                     actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.pop(context, false),
+                                        onPressed: () =>
+                                            Navigator.pop(context, false),
                                         child: const Text('Cancel'),
                                       ),
                                       TextButton(
-                                        onPressed: () => Navigator.pop(context, true),
+                                        onPressed: () =>
+                                            Navigator.pop(context, true),
                                         child: const Text('Remove'),
                                       ),
                                     ],
@@ -213,10 +222,13 @@ class SavedHomematesScreen extends StatelessWidget {
 
                                 if (confirm == true) {
                                   try {
-                                    final homemateId = snapshot.data!.docs[index].id; // Get document ID
-                                    print("Attempting to delete homemate with ID: $homemateId");
+                                    final homemateId = snapshot.data!
+                                        .docs[index].id; // Get document ID
+                                    print(
+                                        "Attempting to delete homemate with ID: $homemateId");
                                     if (homemateId == null) {
-                                      print("Error: homemate['userId'] is null or undefined");
+                                      print(
+                                          "Error: homemate['userId'] is null or undefined");
                                       return;
                                     }
                                     // Delete the homemate from Firebase
@@ -224,16 +236,21 @@ class SavedHomematesScreen extends StatelessWidget {
                                         .collection('savedHomemates')
                                         .doc(userId)
                                         .collection('items')
-                                        .doc(homemateId) // assuming userId is used for the document ID
+                                        .doc(
+                                            homemateId) // assuming userId is used for the document ID
                                         .delete();
 
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Homemate removed successfully.')),
+                                      const SnackBar(
+                                          content: Text(
+                                              'Homemate removed successfully.')),
                                     );
                                   } catch (e) {
                                     print('Error removing homemate: $e');
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Failed to remove homemate.')),
+                                      const SnackBar(
+                                          content: Text(
+                                              'Failed to remove homemate.')),
                                     );
                                   }
                                 }
@@ -241,7 +258,7 @@ class SavedHomematesScreen extends StatelessWidget {
                               icon: const Icon(Icons.delete),
                               label: const Text(
                                 'Unsave',
-                                style: TextStyle(fontSize: 9),
+
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.red.shade100,
@@ -254,7 +271,6 @@ class SavedHomematesScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-
                           ],
                         ),
                       ],
@@ -273,22 +289,24 @@ class SavedHomematesScreen extends StatelessWidget {
 class HomemateDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> homemate;
 
-  const HomemateDetailsScreen({Key? key, required this.homemate}) : super(key: key);
+  const HomemateDetailsScreen({Key? key, required this.homemate})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-            color: Color(0xFFB60F6E)
-        ),
+        iconTheme: IconThemeData(color: Color(0xFFB60F6E)),
         backgroundColor: Color(0xfff8e6f1),
         elevation: 0,
-        title: Text(homemate['userName'],style: TextStyle(color:  Color(0xFFB60F6E)),),
+        title: Text(
+          homemate['userName'],
+          style: TextStyle(color: Color(0xFFB60F6E)),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
           onPressed: () {
-          Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
       ),
@@ -297,11 +315,16 @@ class HomemateDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             const SizedBox(height: 16),
             _buildProfileSection(),
-            _buildDetailRow( 'Age','${homemate['age']}',),
-            _buildDetailRow( 'Profession','${homemate['profession']}',),
+            _buildDetailRow(
+              'Age',
+              '${homemate['age']}',
+            ),
+            _buildDetailRow(
+              'Profession',
+              '${homemate['profession']}',
+            ),
             _buildDetailRow('Gender', homemate['gender'] ?? 'N/A'),
             const SizedBox(height: 20),
             Text(
@@ -309,29 +332,36 @@ class HomemateDetailsScreen extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            homemate['preferences'] != null && homemate['preferences'].isNotEmpty
+            homemate['preferences'] != null &&
+                    homemate['preferences'].isNotEmpty
                 ? _buildPreferenceRow(homemate['preferences'])
                 : const Text(
-              'No preferences available',
-              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-            ),
-//shello sss//
+                    'No preferences available',
+                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                  ),
+
             const SizedBox(height: 20),
             Center(
               child: ElevatedButton.icon(
                 onPressed: () async {
-                  final Uri _phoneUrl = Uri.parse('tel:${homemate['userPhoneNumber']}');
+                  final Uri _phoneUrl =
+                      Uri.parse('tel:${homemate['userPhoneNumber']}');
                   try {
                     await launchUrl(_phoneUrl);
                   } catch (e) {
                     print('Could not launch the dialer: $e');
                   }
                 },
-                icon: const Icon(Icons.call,color: Colors.white,),
-                label: const Text('Call', style: TextStyle(color: Colors.white)),
+                icon: const Icon(
+                  Icons.call,
+                  color: Colors.white,
+                ),
+                label:
+                    const Text('Call', style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFB60F6E),
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -366,7 +396,8 @@ class HomemateDetailsScreen extends StatelessWidget {
       spacing: 10,
       runSpacing: 10,
       children: preferences.map((preference) {
-        final iconPath = predefinedPreferences[preference] ?? 'assets/icons/default_icon.png';
+        final iconPath = predefinedPreferences[preference] ??
+            'assets/icons/default_icon.png';
         return Column(
           children: [
             Image.asset(iconPath, height: 60, width: 60),
@@ -402,47 +433,50 @@ class HomemateDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildProfileSection() {
-    return Row(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.purple, width: 2),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.purple, width: 2),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                "https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg",
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Name: ${homemate['userName']}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'tel:${homemate['userPhoneNumber']}',
-              style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
-            ),
-          ],
-        ),
-      ],
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Name: ${homemate['userName']}',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'tel:${homemate['userPhoneNumber']}',
+                style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
-
 
 ///
 
 class SavedRoomsScreen extends StatefulWidget {
   final String currentUserId;
+
   SavedRoomsScreen({required this.currentUserId});
 
   @override
@@ -452,19 +486,274 @@ class SavedRoomsScreen extends StatefulWidget {
 class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
   @override
   List<Room> savedRooms = []; // Define savedRooms as a list of Room objects
+  final RoomControllerFirebase roomController =
+      Get.put(RoomControllerFirebase());
+
+  Future<void> deleteRoom(String roomId) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    String? userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      print("User not logged in.");
+      return;
+    }
+
+    // Check if roomId is empty
+    if (roomId.isEmpty) {
+      print("Error: Room ID is empty!");
+      return; // Exit if roomId is empty
+    }
+
+    try {
+      print("Attempting to delete room with ID: $roomId");
+
+      // Delete the room by its unique ID
+      await _firestore
+          .collection('saved_Rooms') // Correct path to saved rooms
+          .doc(userId)
+          .collection('savedRooms')
+          .doc(roomId) // Use the roomId here as the document ID
+          .delete();
+
+      print("Room deleted successfully!");
+    } catch (e) {
+      print("Error deleting room: $e");
+      rethrow; // Optionally rethrow to catch it outside
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRooms(); // Fetch data on screen load
+  }
+
+  void fetchRooms() async {
+    await roomController.fetchSavedRooms(widget.currentUserId);
+    setState(() {}); // Refresh UI
+  }
 
   Widget build(BuildContext context) {
     // Put the RoomControllerFirebase instance here
-    final RoomControllerFirebase roomController = Get.put(RoomControllerFirebase());
 
     // Fetch saved rooms when the screen is loaded
     roomController.fetchSavedRooms(widget.currentUserId);
 
     return Scaffold(
-   /*   appBar: AppBar(
+      /*   appBar: AppBar(
         title: const Text("Saved Rooms"),
       ),*/
-      body: Obx(() {
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('saved_Rooms')
+            .doc(widget.currentUserId) // Assuming currentUserId is available
+            .collection('savedRooms')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error loading rooms'));
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("No rooms saved yet."));
+          }
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              final room = snapshot.data!.docs[index];
+              final roomId = room.id;  // Get the document ID from Firestore
+
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RoomDetailPage(
+                        roomData: {
+                          'roomType': room['roomType'],
+                          'homeType': room['homeType'],
+                          'address': room['address'],
+                          'roomRent': room['roomRent'],
+                          'roomMoveInDate': room['roomMoveInDate'],
+                          'roomOccupationPerRoom': room['roomOccupationPerRoom'],
+                          'roomMobileNumber': room['roomMobileNumber'],
+                          'userId': room['userId'],
+                          'roomSelectedValues': room['roomSelectedValues'],
+                          'roomProfileImages': room['roomProfileImages'],
+                        },
+                      ),
+                    ),
+                  );
+                },
+                child: Card(
+                  color: Colors.purple,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: ListTile(
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(13.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.asset(
+                                    "assets/images/house.png",
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Room Type: ${room['roomType']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text('Address: ${room['address']}',
+                                      style: const TextStyle(color: Colors.white)),
+                                  Text('Rent: ${room['roomRent']}',
+                                      style: const TextStyle(color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                final Uri _phoneUrl =
+                                Uri.parse('tel:${room["mobileNumber"]}');
+                                try {
+                                  if (await canLaunchUrl(_phoneUrl)) {
+                                    await launchUrl(_phoneUrl);
+                                  } else {
+                                    throw 'Could not launch the dialer';
+                                  }
+                                } catch (e) {
+                                  print('Could not launch the dialer: $e');
+                                }
+                              },
+                              icon: const Icon(Icons.call),
+                              // label: Text('Call: ${room.mobileNumber}'),
+                              label: Text('Call'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green.shade100,
+                                // Call button color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 30,),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                final bool? confirm = await showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Remove Room'),
+                                    content: const Text(
+                                        'Are you sure you want to unsave this room?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context, false),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context, true),
+                                        child: const Text('Remove'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+
+                                if (confirm == true) {
+                                  try {
+                                    print("Room ID to delete: $roomId");
+
+                                    // Ensure that roomId is valid
+                                    if (roomId.isEmpty) {
+                                      print("Error: Room ID is empty!");
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Room ID is empty. Cannot delete the room.')),
+                                      );
+                                      return;
+                                    }
+
+                                    // Call deleteRoom function and pass roomId
+                                    await deleteRoom(roomId); // Call the delete function with roomId
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Room removed successfully.')),
+                                    );
+                                  } catch (e) {
+                                    print('Error removing room: $e');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Failed to remove room.')),
+                                    );
+                                  }
+                                }
+                              },
+                              icon: const Icon(Icons.delete),
+                              label: const Text('Unsave'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red.shade100,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 10,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      )
+    );
+  }
+}
+
+/*Obx(() {
         if (roomController.savedRooms.isEmpty) {
           return const Center(child: Text("No rooms saved yet."));
         }
@@ -479,7 +768,7 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
-              child:  ListTile(
+              child: ListTile(
                 /* title: Text(
                   'Room Type: ${room.roomType}',
                   style: const TextStyle(
@@ -493,7 +782,6 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                     Row(
                       children: [
                         Container(
-
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(12),
@@ -570,7 +858,8 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                         // Call Button
                         ElevatedButton.icon(
                           onPressed: () async {
-                            final Uri _phoneUrl = Uri.parse('tel:${room.mobileNumber}');
+                            final Uri _phoneUrl =
+                                Uri.parse('tel:${room.mobileNumber}');
                             try {
                               if (await canLaunchUrl(_phoneUrl)) {
                                 await launchUrl(_phoneUrl);
@@ -582,43 +871,73 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                             }
                           },
                           icon: const Icon(Icons.call),
-                         // label: Text('Call: ${room.mobileNumber}'),
+                          // label: Text('Call: ${room.mobileNumber}'),
                           label: Text('Call'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue.shade100, // Call button color
+                            backgroundColor: Colors.blue.shade100,
+                            // Call button color
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
                           ),
                         ),
                         ElevatedButton.icon(
                           onPressed: () async {
-                            try {
-                              String userId = FirebaseAuth.instance.currentUser?.uid ?? "";
+                            final bool? confirm = await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Remove Room'),
+                                content: const Text('Are you sure you want to unsave this room?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, true),
+                                    child: const Text('Remove'),
+                                  ),
+                                ],
+                              ),
+                            );
 
-                              // Delete the room from Firebase using mobileNumber as the unique ID
-                              await FirebaseFirestore.instance
-                                  .collection('savedRooms')
-                                  .doc(userId) // Use the logged-in user's ID
-                                  .collection('items')
-                                  .doc(room.mobileNumber) // Use mobileNumber as the document ID
-                                  .delete();
+                            if (confirm == true) {
+                              try {
+                                final roomId = snapshot.data!.docs[index].id; // Get the document ID directly
+                                print("Room ID to delete: $roomId");
 
-                              // Remove the deleted room from the local list
-                              savedRooms.removeWhere((savedRoom) => savedRoom.mobileNumber == room.mobileNumber);
+                                // Ensure that roomId is valid
+                                if (roomId.isEmpty) {
+                                  print("Error: Room ID is empty!");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Room ID is empty. Cannot delete the room.')),
+                                  );
+                                  return;
+                                }
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Room deleted successfully.')),
-                              );
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Failed to delete room.')),
-                              );
+                                // Call deleteRoom function and pass roomId
+                                await deleteRoom(roomId); // Call the delete function with roomId
+
+                                // Remove room from the UI list
+                                setState(() {
+                                  savedRooms.removeAt(index); // Remove the room at the specified index
+                                });
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Room removed successfully.')),
+                                );
+                              } catch (e) {
+                                print('Error removing room: $e');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Failed to remove room.')),
+                                );
+                              }
                             }
                           },
                           icon: const Icon(Icons.delete),
-                          label: Text('Delete'),
+                          label: const Text('Delete'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red.shade200,
                             shape: RoundedRectangleBorder(
@@ -628,6 +947,8 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                           ),
                         )
 
+
+
                       ],
                     ),
                   ],
@@ -636,7 +957,9 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => RoomDetailScreen(room: room, ),
+                      builder: (context) => RoomDetailScreen(
+                        room: room,
+                      ),
                     ),
                   );
                 },
@@ -644,9 +967,5 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
             );
           },
         );
-      }),
-    );
-  }
-}
-
-
+      }
+      ),*/

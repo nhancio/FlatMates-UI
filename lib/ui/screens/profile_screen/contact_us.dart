@@ -1,3 +1,4 @@
+import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 class ContactUsScreen extends StatelessWidget {
@@ -5,17 +6,32 @@ class ContactUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Contact Us',
-          style: TextStyle(color: Colors.purple),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+          backgroundColor: const Color(0xfff8e6f1),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E),),
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      BottomNavBarScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var tween = Tween(
+                        begin: const Offset(0.0, 0.0), end: Offset.zero)
+                        .chain(CurveTween(curve: Curves.ease));
+                    var offsetAnimation = animation.drive(tween);
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+
+            },
+          ),
+          title: Text('Contact Us',   style: TextStyle(color: Color(0xFFB60F6E)),)),
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),

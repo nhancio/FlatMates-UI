@@ -1,28 +1,22 @@
-
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
+import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
+import 'package:flatemates_ui/ui/screens/saved_screen/savedItemScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../controllers/room_controller.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
+class RoomDetailPage extends StatefulWidget {
+  final Map<String, dynamic> roomData;
 
-class RoomDetailScreen extends StatefulWidget {
-  final Room room;
-
-  RoomDetailScreen({required this.room});
+   RoomDetailPage({Key? key, required this.roomData}) : super(key: key);
 
   @override
-  State<RoomDetailScreen> createState() => _RoomDetailScreenState();
+  State<RoomDetailPage> createState() => _RoomDetailPageState();
+
 }
 
-class _RoomDetailScreenState extends State<RoomDetailScreen> {
-  final FirebaseStorage _storage = FirebaseStorage.instance;
+class _RoomDetailPageState extends State<RoomDetailPage> {
   List<String> _imageUrls = [];
-  final ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
@@ -34,12 +28,12 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
 
   Future<void> _loadRoomImages() async {
     try {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      var firestore = FirebaseFirestore.instance;
 
 
       QuerySnapshot roomQuery = await firestore
           .collection('rooms')
-          .where('address', isEqualTo: widget.room.address) // Match by userId
+          .where('address', isEqualTo: widget.roomData['address']) // Match by userId
           .get();
 
       // If rooms exist for the user, fetch the first document
@@ -58,7 +52,6 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
       print('Error loading room images: ${e.toString()}');
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,29 +61,12 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E)),
           onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation,
-                    secondaryAnimation) =>
-                    RoomList(),
-                transitionsBuilder: (context, animation,
-                    secondaryAnimation, child) {
-                  var tween = Tween(
-                      begin: const Offset(0.0, 0.0),
-                      end: Offset.zero)
-                      .chain(
-                      CurveTween(curve: Curves.ease));
-                  var offsetAnimation =
-                  animation.drive(tween);
-                  return SlideTransition(
-                    position: offsetAnimation,
-                    child: child,
-                  );
-                },),);          },
+           Navigator.of(context).pop();
+
+                   },
         ),
         title: const Text(
-          'Room Detail'
+            'Room Detail'
             ,style: TextStyle(color: Color(0xFFB60F6E))
         ),
       ),
@@ -182,7 +158,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text: widget.room.roomType,
+                    text:widget.roomData['roomType'],
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal, // Normal weight for value
@@ -204,7 +180,28 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text:widget.room.address,
+                    text:widget.roomData['address'],
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal, // Normal weight for value
+                      color: Color(0xff100f0f),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 11),
+            RichText(
+              text: TextSpan(
+                text: 'Home Type: ',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600, // Medium weight for label
+                  color: Colors.black87,
+                ),
+                children: [
+                  TextSpan(
+                    text:widget.roomData['homeType'],
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal, // Normal weight for value
@@ -226,7 +223,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text:widget.room.roomRent,
+                    text:widget.roomData['roomRent'],
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal, // Normal weight for value
@@ -248,28 +245,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text:widget.room.moveInDate,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Home Type: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
-                ),
-                children: [
-                  TextSpan(
-                    text:widget.room.homeType,
+                    text:widget.roomData['roomMoveInDate'],
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal, // Normal weight for value
@@ -291,7 +267,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text:widget.room.occupationPerRoom,
+                    text:widget.roomData['roomOccupationPerRoom'],
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal, // Normal weight for value
@@ -313,7 +289,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text:widget.room.selectedValues.join(", "),
+                    text:widget.roomData['roomSelectedValues'].join(", "),
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal, // Normal weight for value
@@ -336,7 +312,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 ),
                 children: [
                   TextSpan(
-                    text:widget.room.mobileNumber,
+                    text:widget.roomData['roomMobileNumber'],
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal, // Normal weight for value
@@ -353,7 +329,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
             Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  final Uri phoneUrl = Uri.parse('tel:${widget.room.mobileNumber}');
+                  final Uri phoneUrl = Uri.parse('tel:${widget.roomData['roomMobileNumber']}');
                   try {
                     if (await canLaunchUrl(phoneUrl)) {
                       await launchUrl(phoneUrl);
@@ -377,22 +353,61 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
           ],
         ),
       ),
-    );
-  }
-
-
-  Widget _buildImage(String url) {
-    return Image.network(
-      url,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: 400,
-      errorBuilder: (context, error, stackTrace) {
-        return const Center(child: Icon(Icons.error));
-      },
-    );
+    );/*Scaffold(
+      appBar: AppBar(title: Text("Room Details")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Room Type: ${roomData['roomType']}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            SizedBox(height: 8),
+            Text("Home Type: ${roomData['homeType']}"),
+            SizedBox(height: 8),
+            Text("Address: ${roomData['address']}"),
+            SizedBox(height: 8),
+            Text("Rent: ${roomData['roomRent']}"),
+            SizedBox(height: 8),
+            Text("Move-in Date: ${roomData['roomMoveInDate']}"),
+            SizedBox(height: 8),
+            Text("Occupation Per Room: ${roomData['roomOccupationPerRoom']}"),
+            SizedBox(height: 8),
+            Text("Mobile Number: ${roomData['roomMobileNumber']}"),
+            SizedBox(height: 8),
+            Text("User ID: ${roomData['userId']}"),
+            SizedBox(height: 8),
+            Text("Selected Values: ${roomData['roomSelectedValues']}"),
+            SizedBox(height: 8),
+            roomData['roomProfileImages'] != null
+                ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Room Images:"),
+                SizedBox(height: 8),
+                SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: roomData['roomProfileImages'].length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Image.network(
+                          roomData['roomProfileImages'][index],
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            )
+                : Container(),
+          ],
+        ),
+      ),
+    );*/
   }
 }
-
-
-

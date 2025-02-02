@@ -40,7 +40,25 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E),),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    BottomNavBarScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  var tween = Tween(
+                      begin: const Offset(0.0, 0.0), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.ease));
+                  var offsetAnimation = animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+
           },
         ),
         title: const Text(
@@ -145,7 +163,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
                       style: TextStyle(color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
+                        backgroundColor: const Color(0xFFB60F6E),
                       padding: const EdgeInsets.symmetric(
                           vertical: 12, horizontal: 50),
                       shape: RoundedRectangleBorder(

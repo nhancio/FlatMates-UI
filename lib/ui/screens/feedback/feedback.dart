@@ -10,10 +10,29 @@ class FeedbackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: const Color(0xfff8e6f1),
           leading: IconButton(
             icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E),),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavBarScreen()));
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      BottomNavBarScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var tween = Tween(
+                        begin: const Offset(0.0, 0.0), end: Offset.zero)
+                        .chain(CurveTween(curve: Curves.ease));
+                    var offsetAnimation = animation.drive(tween);
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+
             },
           ),
           title: Text('Feedback Form',   style: TextStyle(color: Color(0xFFB60F6E)),)),
