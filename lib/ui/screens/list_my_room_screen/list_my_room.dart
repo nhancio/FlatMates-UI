@@ -370,7 +370,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
   }
 }
 
-class CustomTextField extends StatefulWidget {
+class CustomTextField extends StatelessWidget {
 
   final String label;
   final String hintText;
@@ -392,27 +392,22 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
-}
-
-class _CustomTextFieldState extends State<CustomTextField> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.label,
+          label,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 6),
         TextFormField(
           controller:
-              TextEditingController(text: widget.initialValue), // Set initial value
-          onChanged: widget.onChanged,
-          validator: widget.validator,
+          controller ?? TextEditingController(text: initialValue), // Set initial value
+          onChanged: onChanged,
+          validator: validator,
           decoration: InputDecoration(
-            hintText: widget.hintText,
+            hintText: hintText,
             filled: true,
             fillColor: Colors.white,
             border: OutlineInputBorder(
@@ -431,8 +426,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
             ),
           ),
-          keyboardType: widget.isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
-          inputFormatters: widget.isContactNumber
+          keyboardType: isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
+          inputFormatters: isContactNumber
               ? [
             FilteringTextInputFormatter.digitsOnly,  // Allow only digits for contact number
             LengthLimitingTextInputFormatter(10),    // Limit to 10 digits
