@@ -67,36 +67,24 @@ class _AddRoomPageState extends State<AddRoomPage> {
       });
     }
 
-    late final TextEditingController addressController;
-    late final TextEditingController rentController;
-    late final TextEditingController contactController;
-    late FocusNode addressFocus;
-    late FocusNode rentFocus;
-    late FocusNode contactFocus;
+    final TextEditingController addressController = TextEditingController();
+    final TextEditingController rentController = TextEditingController();
+    final TextEditingController contactController = TextEditingController();
+    final FocusNode addressFocus = FocusNode();
+    final FocusNode rentFocus = FocusNode();
+    final FocusNode contactFocus = FocusNode();
 
-    @override
-    void initState() {
-      super.initState();
-
-      // Initialize TextEditingController and FocusNode objects
-      addressController = TextEditingController();
-      rentController = TextEditingController();
-      contactController = TextEditingController();
-      addressFocus = FocusNode();
-      rentFocus = FocusNode();
-      contactFocus = FocusNode();
-    }
+  
 
     @override
     void dispose() {
-      // Dispose of TextEditingController and FocusNode objects
+
       addressController.dispose();
       rentController.dispose();
       contactController.dispose();
       addressFocus.dispose();
       rentFocus.dispose();
       contactFocus.dispose();
-
       super.dispose();
     }
     return Scaffold(
