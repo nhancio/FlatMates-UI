@@ -70,7 +70,21 @@ class _AddRoomPageState extends State<AddRoomPage> {
     final TextEditingController addressController = TextEditingController();
     final TextEditingController rentController = TextEditingController();
     final TextEditingController contactController = TextEditingController();
+    final FocusNode addressFocus = FocusNode();
+    final FocusNode rentFocus = FocusNode();
+    final FocusNode contactFocus = FocusNode();
 
+    @override
+    void dispose() {
+
+      addressController.dispose();
+      rentController.dispose();
+      contactController.dispose();
+      addressFocus.dispose();
+      rentFocus.dispose();
+      contactFocus.dispose();
+      super.dispose();
+    }
     return Scaffold(
       backgroundColor:  Colors.white,
       appBar: AppBar(
@@ -120,6 +134,8 @@ class _AddRoomPageState extends State<AddRoomPage> {
               const SizedBox(height: 12),
               // Address TextField
               CustomTextField(
+                focusNode: addressFocus,
+                nextFocusNode: rentFocus,
                 controller: addressController,
                 label: "Address*",
                 hintText: "Write your address...",
@@ -137,6 +153,8 @@ class _AddRoomPageState extends State<AddRoomPage> {
               const SizedBox(height: 12),
               // Room Rent TextField
               CustomTextField(
+                focusNode: rentFocus,
+                nextFocusNode: contactFocus,
                 controller: rentController,
                 label: "Room Rent*",
                 hintText: "e.g. \₹5000",
@@ -154,6 +172,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
               const SizedBox(height: 12),
 
               CustomTextField(
+                focusNode: contactFocus,
                 controller: contactController,
                 label: "Contact Number*",
                 hintText: "Enter Contect number",
@@ -371,7 +390,6 @@ class _AddRoomPageState extends State<AddRoomPage> {
 }
 
 class CustomTextField extends StatelessWidget {
-
   final String label;
   final String hintText;
   final ValueChanged<String> onChanged;
@@ -379,6 +397,8 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool isContactNumber;
   final TextEditingController? controller; // Accept controller
+  final FocusNode? focusNode;
+  final FocusNode? nextFocusNode; // New: To move focus to next field
 
   const CustomTextField({
     super.key,
@@ -389,6 +409,8 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.isContactNumber = false,
     this.controller,
+    this.focusNode,
+    this.nextFocusNode, // Accept next field focus node
   });
 
   @override
@@ -403,7 +425,8 @@ class CustomTextField extends StatelessWidget {
         const SizedBox(height: 6),
         TextFormField(
           controller:
-          controller, // Set initial value
+          controller,
+          focusNode: focusNode, // Set focus node
           onChanged: onChanged,
           validator: validator,
           decoration: InputDecoration(
@@ -426,7 +449,15 @@ class CustomTextField extends StatelessWidget {
               ),
             ),
           ),
+          textInputAction: nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
           keyboardType: isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
+          onFieldSubmitted: (value) {
+            if (nextFocusNode != null) {
+              FocusScope.of(context).requestFocus(nextFocusNode); // Move to next field
+            } else {
+              FocusScope.of(context).unfocus(); // Close keyboard on last field
+            }
+          },
           inputFormatters: isContactNumber
               ? [
             FilteringTextInputFormatter.digitsOnly,  // Allow only digits for contact number
