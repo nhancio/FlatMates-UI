@@ -67,22 +67,36 @@ class _AddRoomPageState extends State<AddRoomPage> {
       });
     }
 
-    final TextEditingController addressController = TextEditingController();
-    final TextEditingController rentController = TextEditingController();
-    final TextEditingController contactController = TextEditingController();
-    final FocusNode addressFocus = FocusNode();
-    final FocusNode rentFocus = FocusNode();
-    final FocusNode contactFocus = FocusNode();
+    late final TextEditingController addressController;
+    late final TextEditingController rentController;
+    late final TextEditingController contactController;
+    late FocusNode addressFocus;
+    late FocusNode rentFocus;
+    late FocusNode contactFocus;
+
+    @override
+    void initState() {
+      super.initState();
+
+      // Initialize TextEditingController and FocusNode objects
+      addressController = TextEditingController();
+      rentController = TextEditingController();
+      contactController = TextEditingController();
+      addressFocus = FocusNode();
+      rentFocus = FocusNode();
+      contactFocus = FocusNode();
+    }
 
     @override
     void dispose() {
-
+      // Dispose of TextEditingController and FocusNode objects
       addressController.dispose();
       rentController.dispose();
       contactController.dispose();
       addressFocus.dispose();
       rentFocus.dispose();
       contactFocus.dispose();
+
       super.dispose();
     }
     return Scaffold(
@@ -451,13 +465,7 @@ class CustomTextField extends StatelessWidget {
           ),
           textInputAction: nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
           keyboardType: isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
-          onFieldSubmitted: (value) {
-            if (nextFocusNode != null) {
-              FocusScope.of(context).requestFocus(nextFocusNode); // Move to next field
-            } else {
-              FocusScope.of(context).unfocus(); // Close keyboard on last field
-            }
-          },
+
           inputFormatters: isContactNumber
               ? [
             FilteringTextInputFormatter.digitsOnly,  // Allow only digits for contact number
