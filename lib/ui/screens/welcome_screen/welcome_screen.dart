@@ -223,7 +223,7 @@ class WelcomeScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: 120,),
+                      SizedBox(height: 40,),
                       Image.asset(
                        "assets/icons/icon.png",
                         height: 80,

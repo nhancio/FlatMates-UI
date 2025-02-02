@@ -272,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),*/
                       SizedBox(
-                        height: 300,
+                        height: 200,
                         child:    HomeScreen1(),
                       ),
 
@@ -366,39 +366,97 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           // Third box with image size (in a separate column to avoid overflow)
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder: (context, animation, secondaryAnimation) =>
-                                      AddRoomPage(),
-                                  transitionsBuilder:
-                                      (context, animation, secondaryAnimation, child) {
-                                    var tween = Tween(
-                                        begin: const Offset(0.0, 0.0), end: Offset.zero)
-                                        .chain(CurveTween(curve: Curves.ease));
-                                    var offsetAnimation = animation.drive(tween);
-                                    return SlideTransition(
-                                      position: offsetAnimation,
-                                      child: child,
-                                    );
-                                  },
-                                ),
-                              );
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation, secondaryAnimation) =>
+                                          AddRoomPage(),
+                                      transitionsBuilder:
+                                          (context, animation, secondaryAnimation, child) {
+                                        var tween = Tween(
+                                            begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                            .chain(CurveTween(curve: Curves.ease));
+                                        var offsetAnimation = animation.drive(tween);
+                                        return SlideTransition(
+                                          position: offsetAnimation,
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
 
-                           /*Navigator.push(
+                               /*Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const AddRoomPage(),
+                                    ),
+                                  );*/
+                                },
+                                child: _buildServiceCard(
+                                  'assets/images/list_room.png',
+                                  160.0, // Width of the box
+                                  160.0, // Height of the image
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+
+
+                                  /*Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const AddRoomPage(),
                                 ),
                               );*/
-                            },
-                            child: _buildServiceCard(
-                              'assets/images/list_room.png',
-                              160.0, // Width of the box
-                              160.0, // Height of the image
-                            ),
+                                },
+                                child:Padding(
+                                  padding:  EdgeInsets.only(top: 20.0,right: 10),
+                                  child: Container(
+
+                                  height:   140.0,
+                                  width:   140.0,
+                                    child: Card(
+                                      color: Color(0xffF8E7F1),
+                                      elevation: 6,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 1.0,top: 1),
+                                        child:  Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center, // Center the text
+                                          children: [
+                                            Text(
+                                              "Upcoming Features",
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(height: 6), // Space between texts
+                                            Text(
+                                              "AI Match Making",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black54,
+                                              ),
+                                              textAlign: TextAlign.center, // Center-align text
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ),
+                            ],
                           ),
                         ],
                       )
