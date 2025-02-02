@@ -40,6 +40,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
     contactFocus.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     bool isLoading = false; // Flag to track loading state
@@ -461,7 +462,13 @@ class CustomTextField extends StatelessWidget {
             LengthLimitingTextInputFormatter(10),    // Limit to 10 digits
           ]
               : null,  // No restrictions for address
-
+          onFieldSubmitted: (value) {
+            if (nextFocusNode != null) {
+              FocusScope.of(context).requestFocus(nextFocusNode);
+            } else {
+              FocusScope.of(context).unfocus();
+            }
+          },
         ),
       ],
     );
