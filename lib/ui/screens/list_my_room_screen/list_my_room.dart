@@ -20,6 +20,26 @@ class AddRoomPage extends StatefulWidget {
 }
 
 class _AddRoomPageState extends State<AddRoomPage> {
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController rentController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+  final FocusNode addressFocus = FocusNode();
+  final FocusNode rentFocus = FocusNode();
+  final FocusNode contactFocus = FocusNode();
+
+
+
+  @override
+  void dispose() {
+
+    addressController.dispose();
+    rentController.dispose();
+    contactController.dispose();
+    addressFocus.dispose();
+    rentFocus.dispose();
+    contactFocus.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     bool isLoading = false; // Flag to track loading state
@@ -67,26 +87,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
       });
     }
 
-    final TextEditingController addressController = TextEditingController();
-    final TextEditingController rentController = TextEditingController();
-    final TextEditingController contactController = TextEditingController();
-    final FocusNode addressFocus = FocusNode();
-    final FocusNode rentFocus = FocusNode();
-    final FocusNode contactFocus = FocusNode();
 
-  
-
-    @override
-    void dispose() {
-
-      addressController.dispose();
-      rentController.dispose();
-      contactController.dispose();
-      addressFocus.dispose();
-      rentFocus.dispose();
-      contactFocus.dispose();
-      super.dispose();
-    }
     return Scaffold(
       backgroundColor:  Colors.white,
       appBar: AppBar(
