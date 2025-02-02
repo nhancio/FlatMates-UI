@@ -327,6 +327,7 @@ class HomemateDetailsScreen extends StatelessWidget {
             ),
             _buildDetailRow('Gender', homemate['gender'] ?? 'N/A'),
             const SizedBox(height: 20),
+            //33
             Text(
               'Preferences',
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
