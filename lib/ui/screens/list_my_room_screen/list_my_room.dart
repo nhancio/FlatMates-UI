@@ -403,7 +403,7 @@ class CustomTextField extends StatelessWidget {
         const SizedBox(height: 6),
         TextFormField(
           controller:
-          controller ?? TextEditingController(text: initialValue), // Set initial value
+          controller, // Set initial value
           onChanged: onChanged,
           validator: validator,
           decoration: InputDecoration(
