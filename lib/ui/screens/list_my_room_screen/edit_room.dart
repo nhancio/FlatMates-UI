@@ -15,11 +15,32 @@ class EditRoomPage extends StatefulWidget {
 
 class _EditRoomPageState extends State<EditRoomPage> {
   final RoomController controller = Get.find<RoomController>();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController rentController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+  late FocusNode addressFocus;
+  late FocusNode rentFocus;
+  late FocusNode contactFocus;
 
+
+
+
+  @override
+  void dispose() {
+    addressController.dispose();
+    rentController.dispose();
+    contactController.dispose();
+    addressFocus.dispose();
+    rentFocus.dispose();
+    contactFocus.dispose();
+    super.dispose();
+  }
   @override
   void initState() {
     super.initState();
-
+    addressFocus = FocusNode();
+    rentFocus = FocusNode();
+    contactFocus = FocusNode();
     // Autofill fields with room data when editing
     if (widget.room != null) {
       controller.setRoomType(widget.room!.roomType);
@@ -83,7 +104,7 @@ class _EditRoomPageState extends State<EditRoomPage> {
               onChanged: (value) {
                 controller.setAddress(value);
               },
-              isContactNumber: false,
+              isContactNumber: false, controller: addressController, focusNode: addressFocus,
             ),
             const SizedBox(height: 12),
             // Room Rent TextField
@@ -94,7 +115,7 @@ class _EditRoomPageState extends State<EditRoomPage> {
               onChanged: (value) {
                 controller.setRoomRent(value);
               },
-              isContactNumber: true,
+              isContactNumber: true, controller: rentController, focusNode: rentFocus,
             ),
             const SizedBox(height: 12),
             // Move In Date Dropdown

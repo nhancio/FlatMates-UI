@@ -23,15 +23,21 @@ class _AddRoomPageState extends State<AddRoomPage> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController rentController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final FocusNode addressFocus = FocusNode();
-  final FocusNode rentFocus = FocusNode();
-  final FocusNode contactFocus = FocusNode();
+  late FocusNode addressFocus;
+  late FocusNode rentFocus;
+  late FocusNode contactFocus;
 
+  @override
+  void initState() {
+    super.initState();
+    addressFocus = FocusNode();
+    rentFocus = FocusNode();
+    contactFocus = FocusNode();
+  }
 
 
   @override
   void dispose() {
-
     addressController.dispose();
     rentController.dispose();
     contactController.dispose();
@@ -40,53 +46,54 @@ class _AddRoomPageState extends State<AddRoomPage> {
     contactFocus.dispose();
     super.dispose();
   }
+  final controller = Get.put(RoomController());
+  final _formKey = GlobalKey<FormState>();
+  bool isLoading = false; // Flag to track loading state
 
+
+
+  Future<void> _pickAndUploadImage(BuildContext context) async {
+    if (controller.imageUrls.length >= 3) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("You can only upload up to 3 images.")),
+      );
+      return;
+    }
+
+    final uploadInput = html.FileUploadInputElement();
+    uploadInput.accept = 'image/*';
+    uploadInput.click();
+
+    uploadInput.onChange.listen((event) async {
+      final file = uploadInput.files?.first;
+      if (file == null) return;
+
+      final reader = html.FileReader();
+      reader.readAsArrayBuffer(file);
+
+      reader.onLoadEnd.listen((_) async {
+        try {
+          final fileName = 'images/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
+          final ref = FirebaseStorage.instance.ref(fileName);
+          final uploadTask = ref.putData(reader.result as Uint8List);
+          await uploadTask.whenComplete(() async {
+            final url = await ref.getDownloadURL();
+            controller.imageUrls.add(url);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Image uploaded successfully!")),
+            );
+          });
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to upload image: $e")),
+          );
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    bool isLoading = false; // Flag to track loading state
-
-    final controller = Get.put(RoomController());
-    final _formKey = GlobalKey<FormState>();
     var screenWidth = MediaQuery.of(context).size.width;
-    Future<void> _pickAndUploadImage(BuildContext context) async {
-      if (controller.imageUrls.length >= 3) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("You can only upload up to 3 images.")),
-        );
-        return;
-      }
-
-      final uploadInput = html.FileUploadInputElement();
-      uploadInput.accept = 'image/*';
-      uploadInput.click();
-
-      uploadInput.onChange.listen((event) async {
-        final file = uploadInput.files?.first;
-        if (file == null) return;
-
-        final reader = html.FileReader();
-        reader.readAsArrayBuffer(file);
-
-        reader.onLoadEnd.listen((_) async {
-          try {
-            final fileName = 'images/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
-            final ref = FirebaseStorage.instance.ref(fileName);
-            final uploadTask = ref.putData(reader.result as Uint8List);
-            await uploadTask.whenComplete(() async {
-              final url = await ref.getDownloadURL();
-              controller.imageUrls.add(url);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Image uploaded successfully!")),
-              );
-            });
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Failed to upload image: $e")),
-            );
-          }
-        });
-      });
-    }
 
 
     return Scaffold(
@@ -393,48 +400,50 @@ class _AddRoomPageState extends State<AddRoomPage> {
   }
 }
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String label;
   final String hintText;
   final ValueChanged<String> onChanged;
-  final String? initialValue; // Added for autofill functionality
+  final String? initialValue; // Add initialValue for autofill functionality
   final String? Function(String?)? validator;
   final bool isContactNumber;
-  final TextEditingController? controller; // Accept controller
-  final FocusNode? focusNode;
-  final FocusNode? nextFocusNode; // New: To move focus to next field
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final FocusNode? nextFocusNode;
 
   const CustomTextField({
-    super.key,
+    Key? key,
     required this.label,
     required this.hintText,
     required this.onChanged,
     this.initialValue, // Accept initial value for autofill
     this.validator,
     this.isContactNumber = false,
-    this.controller,
-    this.focusNode,
-    this.nextFocusNode, // Accept next field focus node
-  });
+    required this.controller,
+    required this.focusNode,
+    this.nextFocusNode,
+  }) : super(key: key);
 
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
+        Text(widget.label, style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 6),
         TextFormField(
-          controller:
-          controller,
-          focusNode: focusNode, // Set focus node
-          onChanged: onChanged,
-          validator: validator,
+          controller: widget.controller,
+          focusNode: widget.focusNode,
+          initialValue: widget.initialValue, // Pass initial value to autofill
+          onChanged: widget.onChanged,
+          validator: widget.validator,
           decoration: InputDecoration(
-            hintText: hintText,
+            hintText: widget.hintText,
             filled: true,
             fillColor: Colors.white,
             border: OutlineInputBorder(
@@ -442,31 +451,21 @@ class CustomTextField extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: Colors.grey, // Border color when not focused
-              ),
+              borderSide: BorderSide(color: Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: Color(0xFFB60F6E), // Border color when focused or selected
-              ),
+              borderSide: BorderSide(color: Color(0xFFB60F6E)),
             ),
           ),
-          textInputAction: nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
-          keyboardType: isContactNumber ? TextInputType.phone : TextInputType.text,  // Change keyboard type
-
-          inputFormatters: isContactNumber
-              ? [
-            FilteringTextInputFormatter.digitsOnly,  // Allow only digits for contact number
-            LengthLimitingTextInputFormatter(10),    // Limit to 10 digits
-          ]
-              : null,  // No restrictions for address
+          textInputAction: widget.nextFocusNode != null ? TextInputAction.next : TextInputAction.done,
+          keyboardType: widget.isContactNumber ? TextInputType.phone : TextInputType.text,
+          inputFormatters: widget.isContactNumber
+              ? [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(10)]
+              : null,
           onFieldSubmitted: (value) {
-            if (nextFocusNode != null) {
-              FocusScope.of(context).requestFocus(nextFocusNode);
-            } else {
-              FocusScope.of(context).unfocus();
+            if (widget.nextFocusNode != null) {
+              FocusScope.of(context).requestFocus(widget.nextFocusNode);
             }
           },
         ),
@@ -474,6 +473,8 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
+
+
 
 class CustomDropdownField extends StatelessWidget {
   final String label;
