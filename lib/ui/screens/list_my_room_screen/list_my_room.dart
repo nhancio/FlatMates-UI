@@ -23,9 +23,19 @@ class _AddRoomPageState extends State<AddRoomPage> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController rentController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
+  final TextEditingController securityController = TextEditingController();
+  final TextEditingController brokerageController = TextEditingController();
+  final TextEditingController setupController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+
   late FocusNode addressFocus;
   late FocusNode rentFocus;
   late FocusNode contactFocus;
+
+  late FocusNode securityFocus;
+  late FocusNode brokerageFocus;
+  late FocusNode setupFocus;
+  late FocusNode descriptionFocus;
 
   @override
   void initState() {
@@ -33,6 +43,10 @@ class _AddRoomPageState extends State<AddRoomPage> {
     addressFocus = FocusNode();
     rentFocus = FocusNode();
     contactFocus = FocusNode();
+    securityFocus = FocusNode();
+    brokerageFocus = FocusNode();
+    setupFocus = FocusNode();
+    descriptionFocus = FocusNode();
   }
 
 
@@ -41,9 +55,19 @@ class _AddRoomPageState extends State<AddRoomPage> {
     addressController.dispose();
     rentController.dispose();
     contactController.dispose();
+    securityController.dispose();
+    brokerageController.dispose();
+    setupController.dispose();
+    descriptionController.dispose();
+
     addressFocus.dispose();
     rentFocus.dispose();
     contactFocus.dispose();
+
+    securityFocus.dispose();
+    brokerageFocus.dispose();
+    setupFocus.dispose();
+    descriptionFocus.dispose();
     super.dispose();
   }
   final controller = Get.put(RoomController());
@@ -53,9 +77,9 @@ class _AddRoomPageState extends State<AddRoomPage> {
 
 
   Future<void> _pickAndUploadImage(BuildContext context) async {
-    if (controller.imageUrls.length >= 3) {
+    if (controller.imageUrls.length >= 5) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("You can only upload up to 3 images.")),
+        SnackBar(content: Text("You can only upload up to 5 images.")),
       );
       return;
     }
@@ -184,9 +208,10 @@ class _AddRoomPageState extends State<AddRoomPage> {
 
               CustomTextField(
                 focusNode: contactFocus,
+                nextFocusNode: securityFocus,
                 controller: contactController,
                 label: "Contact Number*",
-                hintText: "Enter Contect number",
+                hintText: "Enter Contact number",
                 onChanged: (value) {
                   controller.setMobileNumber(value);
                 },
@@ -197,6 +222,57 @@ class _AddRoomPageState extends State<AddRoomPage> {
                   return null;
                 },
                 isContactNumber: true,
+              ),
+              const SizedBox(height: 12),
+              CustomTextField(
+                focusNode: securityFocus,
+                nextFocusNode: brokerageFocus,
+                controller: securityController,
+                label: "Security deposit",
+                hintText: "Enter Security deposit",
+                onChanged: (value) {
+                  controller.setSecurityDeposit(value);
+                },
+
+                isContactNumber: false,
+              ),
+              const SizedBox(height: 12),
+              CustomTextField(
+                focusNode: brokerageFocus,
+                nextFocusNode: setupFocus,
+                controller: brokerageController,
+                label: "Brokerage",
+                hintText: "Enter Brokerage",
+                onChanged: (value) {
+                  controller.setBrokerage(value);
+                },
+
+                isContactNumber: false,
+              ),
+              const SizedBox(height: 12),
+              CustomTextField(
+                focusNode: setupFocus,
+                nextFocusNode: descriptionFocus,
+                controller: setupController,
+                label: "Setup Cost",
+                hintText: "Enter Setup cost",
+                onChanged: (value) {
+                  controller.setupCost(value);
+                },
+
+                isContactNumber: false,
+              ),
+              const SizedBox(height: 12),
+              CustomTextField(
+                focusNode: descriptionFocus,
+                controller: descriptionController,
+                label: "Description",
+                hintText: "Enter Description",
+                onChanged: (value) {
+                  controller.setDescription(value);
+                },
+              
+                isContactNumber: false,
               ),
               const SizedBox(height: 12),
               // Room Type Dropdown
@@ -352,7 +428,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                       setState(() {
                         isLoading = true;
                       });
-                      controller.submitRoomListing();
+                      await controller.submitRoomListing();
                       setState(() {
                         isLoading = false;
                       });
@@ -386,7 +462,9 @@ class _AddRoomPageState extends State<AddRoomPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
+                  child:isLoading
+                      ? const CircularProgressIndicator(color: Colors.white) // Show loader
+                      :  const Text(
                     'Done',
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),

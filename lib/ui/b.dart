@@ -1374,3 +1374,112 @@ class Room {
 }
 
 */
+
+/// catch file remove
+/*import 'package:flutter/material.dart';
+import 'dart:html' as html; // Needed for browser operations
+import 'package:firebase_auth/firebase_auth.dart';
+
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  Future<void> _clearCacheAndRefresh() async {
+    // 1. Sign out Firebase user (optional)
+    await FirebaseAuth.instance.signOut();
+
+    // 2. Clear Service Worker & Cache Storage (for Flutter Web)
+    html.window.location.reload(); // Reloads the page with fresh cache
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: _clearCacheAndRefresh, // Called on pull-to-refresh
+        child: ListView(
+          physics: AlwaysScrollableScrollPhysics(), // Enables pull-down even if not scrollable
+          children: [
+            SizedBox(height: 100), // Just for spacing
+            Center(child: Text("Login Screen", style: TextStyle(fontSize: 24))),
+            // Add your login form here
+          ],
+        ),
+      ),
+    );
+  }
+}
+*/
+
+
+/// catch file remove
+/*Future<void> _clearCacheAndRefresh() async {
+  await FirebaseAuth.instance.signOut(); // Optional logout
+
+  // Clear Service Worker cache
+  html.window.navigator.serviceWorker?.getRegistrations().then((registrations) {
+    for (var registration in registrations) {
+      registration.unregister(); // Unregister all service workers
+    }
+  });
+
+  // Reload the page
+  html.window.location.reload();
+}
+*/
+
+/// Phone number
+/*import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class PhoneNumberField extends StatefulWidget {
+  @override
+  _PhoneNumberFieldState createState() => _PhoneNumberFieldState();
+}
+
+class _PhoneNumberFieldState extends State<PhoneNumberField> {
+  final TextEditingController phoneController = TextEditingController();
+  String? phoneError;
+
+  void _validatePhoneNumber(String value) {
+    // Only allow numbers starting with 9, 8, 7, or 6
+    if (value.isNotEmpty && !RegExp(r'^[9876]').hasMatch(value)) {
+      setState(() {
+        phoneError = "Phone number must start with 9, 8, 7, or 6";
+      });
+    } else if (value.length > 10) {
+      // Enforce max 10 digits
+      phoneController.text = value.substring(0, 10);
+      phoneController.selection = TextSelection.fromPosition(
+          TextPosition(offset: phoneController.text.length));
+    } else {
+      setState(() {
+        phoneError = null; // No error
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: phoneController,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly, // Only allow digits
+            LengthLimitingTextInputFormatter(10), // Limit to 10 digits
+          ],
+          decoration: InputDecoration(
+            labelText: 'Phone number*',
+            errorText: phoneError, // Show error if invalid
+          ),
+          onChanged: _validatePhoneNumber, // Validate on change
+        ),
+      ],
+    );
+  }
+}
+*/

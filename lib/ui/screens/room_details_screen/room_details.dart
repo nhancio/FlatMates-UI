@@ -325,7 +325,90 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
             ),
 
             const SizedBox(height: 11),
-
+            RichText(
+              text: TextSpan(
+                text: 'Security deposit: ',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600, // Medium weight for label
+                  color: Colors.black87,
+                ),
+                children: [
+                  TextSpan(
+                    text:widget.room.securityDeposit,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal, // Normal weight for value
+                      color: Color(0xff100f0f),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 11),
+            RichText(
+              text: TextSpan(
+                text: 'Brokerage: ',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600, // Medium weight for label
+                  color: Colors.black87,
+                ),
+                children: [
+                  TextSpan(
+                    text:widget.room.brokerage,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal, // Normal weight for value
+                      color: Color(0xff100f0f),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 11),
+            RichText(
+              text: TextSpan(
+                text: 'Setup Cost: ',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600, // Medium weight for label
+                  color: Colors.black87,
+                ),
+                children: [
+                  TextSpan(
+                    text:widget.room.setup,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal, // Normal weight for value
+                      color: Color(0xff100f0f),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 11),
+            RichText(
+              text: TextSpan(
+                text: 'Description: ',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600, // Medium weight for label
+                  color: Colors.black87,
+                ),
+                children: [
+                  TextSpan(
+                    text:widget.room.description,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal, // Normal weight for value
+                      color: Color(0xff100f0f),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 11),
             RichText(
               text: TextSpan(
                 text: 'Contact Number: ',

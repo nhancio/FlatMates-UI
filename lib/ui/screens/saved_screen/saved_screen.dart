@@ -471,7 +471,7 @@ class _RoomListState extends State<RoomList> {
     "Villa"];
 
 
-  void saveRoom(Room room) async {
+  /*void saveRoom(Room room) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     var uuid = Uuid();
@@ -525,8 +525,86 @@ class _RoomListState extends State<RoomList> {
         duration: Duration(seconds: 3),
       );
     }
-  }
+  }*/
 
+  void saveRoom(Room room) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+    String? userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      print("User not logged in.");
+      return;
+    }
+
+    try {
+      CollectionReference savedRoomsRef = _firestore
+          .collection('saved_Rooms')
+          .doc(userId)
+          .collection('savedRooms');
+
+      // Use a unique identifier for the room (e.g., address + userId)
+      String roomId = '${room.address}_${userId}'; // Unique key for each user-room pair
+
+      DocumentReference roomRef = savedRoomsRef.doc(roomId);
+
+      // Check if the room already exists
+      DocumentSnapshot existingRoom = await roomRef.get();
+
+      if (existingRoom.exists) {
+        // Room is already saved, show a Snackbar
+        Get.snackbar(
+          'Info',
+          'Room is already saved!',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.blue.shade100,
+          colorText: Colors.black,
+          duration: Duration(seconds: 2),
+        );
+        return;
+      }
+
+      // Save the room using a consistent roomId
+      await roomRef.set({
+        'roomId': roomId, // Now using a consistent identifier
+        'roomType': room.roomType,
+        'homeType': room.homeType,
+        'address': room.address,
+        'roomRent': room.roomRent,
+        'roomMoveInDate': room.moveInDate,
+        'roomOccupationPerRoom': room.occupationPerRoom,
+        'roomMobileNumber': room.mobileNumber,
+        'userId': userId,
+        'roomSelectedValues': room.selectedValues,
+        'roomProfileImages': room.profileImages,
+        'brokerage': room.brokerage,
+        'description': room.description,
+        'securityDeposit': room.securityDeposit,
+        'setupCost': room.setup,
+      });
+
+      Get.snackbar(
+        'Success',
+        'Room saved successfully!',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.grey.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 2),
+      );
+
+      print('Room saved successfully');
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to save room',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.black,
+        duration: Duration(seconds: 3),
+      );
+      print('Error saving room: $e');
+    }
+  }
 
 
   @override

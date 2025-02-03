@@ -117,9 +117,12 @@ class Room {
   final String roomType;
   final String userId;
   final String mobileNumber;
+  final String securityDeposit;
+  final String brokerage;
+  final String setup;
+  final String description;
   final List<String> selectedValues;
   List<String> profileImages;
-
 
 
   Room({
@@ -133,6 +136,10 @@ class Room {
     required this.mobileNumber,
     required this.selectedValues,
     required this.profileImages,
+    required this.securityDeposit,
+    required this.brokerage,
+    required this.setup,
+    required this.description,
 
 
   });
@@ -149,6 +156,10 @@ class Room {
       'mobileNumber': mobileNumber,
       'selectedValues': selectedValues,
       'profileImages': profileImages,
+      'securityDeposit': securityDeposit,
+      'setupCost': setup,
+      'brokerage': brokerage,
+      'description': description,
 
     };
   }
@@ -163,6 +174,10 @@ class Room {
       roomType: map['roomType'] ?? '',
       userId: map['userId'] ?? '',
       mobileNumber: map['mobileNumber'] ?? '',
+      securityDeposit: map['securityDeposit'] ?? '',
+      setup: map['setupCost'] ?? '',
+      brokerage: map['brokerage'] ?? '',
+      description: map['description'] ?? '',
       selectedValues: List<String>.from(map['selectedValues'] ?? []),
       profileImages: List<String>.from(map['profileImages'] ?? []),
 

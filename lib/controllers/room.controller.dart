@@ -24,6 +24,10 @@ class RoomController extends GetxController {
   var selectedValues = <String>[].obs; // For multi-select dropdown
   var imageUrls = <String>[].obs;
 
+  var securityDeposit = ''.obs;
+  var brokerage = ''.obs;
+  var setupCost = ''.obs;
+  var description = ''.obs;
 
   Future<void> fetchRoomDetails(String roomId) async {
     try {
@@ -44,6 +48,8 @@ class RoomController extends GetxController {
   void updateSelectedValues(List<String> values) {
     selectedValues.assignAll(values); // Assign the entire list
   }
+
+
   // Functions to handle data changes
   void setRoomType(String value) {
     roomType.value = value;
@@ -76,16 +82,31 @@ class RoomController extends GetxController {
 
 
   void addProfileImage(String imageUrl) {
-    if (profileImages.length < 3) {
+    if (profileImages.length < 5) {
       profileImages.add(imageUrl);
     } else {
       // Limit to 3 images
-      Get.snackbar('Error', 'You can upload only 3 images.');
+      Get.snackbar('Error', 'You can upload only 5 images.');
     }
   }
 
   void removeProfileImage(String imageUrl) {
     profileImages.remove(imageUrl);
+  }
+  void setSecurityDeposit(String value) {
+    securityDeposit.value = value;
+  }
+
+  void setBrokerage(String value) {
+    brokerage.value = value;
+  }
+
+  void setSetupCost(String value) {
+    setupCost.value = value;
+  }
+
+  void setDescription(String value) {
+    description.value = value;
   }
 
   // void setMoveInDate(DateTime? date) {
@@ -124,9 +145,13 @@ class RoomController extends GetxController {
             .serverTimestamp(), // Timestamp of the room listing creation
         'images': imageUrls,
 
+        'securityDeposit': securityDeposit.value,
+        'brokerage': brokerage.value,
+        'setupCost': setupCost.value,
+        'description': description.value,
       };
-      await FirebaseFirestore.instance.collection('rooms').add(roomData);
-
+   //   await FirebaseFirestore.instance.collection('rooms').add(roomData);
+      await rooms.add(roomData);
     //  Get.snackbar('Success', 'Room listing added successfully!');
       Get.snackbar(
         'Success',
@@ -137,7 +162,7 @@ class RoomController extends GetxController {
         duration: Duration(seconds: 2),
       );
       // Add the data to Firestore
-      await rooms.add(roomData);
+
       Get.back();
     } catch (e, stackTrace) {
       Get.snackbar(
