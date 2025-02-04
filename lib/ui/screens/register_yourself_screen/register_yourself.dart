@@ -29,10 +29,10 @@ class RegisterUserScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
+                  /*  SizedBox(
                       height:
                           MediaQuery.of(context).size.height > 600 ? 60 : 1,
-                    ),
+                    ),*/
                     Image.asset(
                       'assets/icons/icon.png',
                       height: 80,

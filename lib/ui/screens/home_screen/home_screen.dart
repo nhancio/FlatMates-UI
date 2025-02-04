@@ -10,6 +10,8 @@ import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/room.controller.dart';
+
 
 class HomePage extends StatefulWidget {
   final String userId;
@@ -25,6 +27,12 @@ class _HomePageState extends State<HomePage> {
   BottomNavController bottomNavController = Get.put(BottomNavController());
   TabControllerState tabCtrl = Get.put(TabControllerState());
   final userId = FirebaseAuth.instance.currentUser?.uid;
+  final controller = Get.put(RoomController());
+  void createNewRoom() {
+    controller.imageUrls.clear(); // Clear previous images
+    controller.selectedValues.clear();
+    // Continue with new room creation logic
+  }
 
   String? selectedCity;
   final List<String> cities = [
@@ -372,10 +380,12 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               GestureDetector(
                                 onTap: () {
+                                  createNewRoom();
                                   Navigator.push(
                                     context,
                                     PageRouteBuilder(
                                       pageBuilder: (context, animation, secondaryAnimation) =>
+
                                           AddRoomPage(),
                                       transitionsBuilder:
                                           (context, animation, secondaryAnimation, child) {
