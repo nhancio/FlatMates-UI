@@ -100,7 +100,7 @@ class _EditRoomPageState extends State<EditRoomPage> {
             CustomTextField(
               label: "Address*",
               hintText: "Write your address...",
-              initialValue: controller.address.value, // Autofill value
+             // initialValue: controller.address.value, // Autofill value
               onChanged: (value) {
                 controller.setAddress(value);
               },
@@ -111,7 +111,7 @@ class _EditRoomPageState extends State<EditRoomPage> {
             CustomTextField(
               label: "Room Rent*",
               hintText: "e.g. \$5000",
-              initialValue: controller.roomRent.value, // Autofill value
+           //   initialValue: controller.roomRent.value, // Autofill value
               onChanged: (value) {
                 controller.setRoomRent(value);
               },

@@ -660,25 +660,26 @@ class _RoomListState extends State<RoomList> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        DropdownButton<String>(
-                          value: selectedRoomType,
-                          hint: const Text('Select Room Type'),
-                          isExpanded: true,
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedRoomType = newValue;
-                            });
-                          },
-                          items: roomTypes
-                              .map<DropdownMenuItem<String>>(
-                                  (type) => DropdownMenuItem<String>(
-                                value: type,
-                                child: Text(type),
-                              ))
-                              .toList(),
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+                      DropdownButtonFormField<String>(
+                      value: selectedRoomType,
+                      hint: const Text('Select Room Type'),
+                      isExpanded: true,
+                      onChanged: (newValue) {
+                        setState(() {
+                          selectedRoomType = newValue;
+                        });
+                      },
+                      items: roomTypes
+                          .map<DropdownMenuItem<String>>(
+                            (type) => DropdownMenuItem<String>(
+                          value: type,
+                          child: Text(type),
                         ),
-                        DropdownButton<String>(
+                      )
+                          .toList(),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
+                    ),
+                        DropdownButtonFormField<String>(
                           value: selectedHomeType,
                           hint: const Text('Home Type'),
                           isExpanded: true,
@@ -689,14 +690,16 @@ class _RoomListState extends State<RoomList> {
                           },
                           items: homeTypes
                               .map<DropdownMenuItem<String>>(
-                                  (type) => DropdownMenuItem<String>(
-                                value: type,
-                                child: Text(type),
-                              ))
+                                (type) => DropdownMenuItem<String>(
+                              value: type,
+                              child: Text(type),
+                            ),
+                          )
                               .toList(),
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
                         ),
-                        DropdownButton<String>(
+
+                        DropdownButtonFormField<String>(
                           value: selectedMoveDate,
                           hint: const Text('Move Date'),
                           isExpanded: true,
@@ -707,14 +710,16 @@ class _RoomListState extends State<RoomList> {
                           },
                           items: moveDate
                               .map<DropdownMenuItem<String>>(
-                                  (type) => DropdownMenuItem<String>(
-                                value: type,
-                                child: Text(type),
-                              ))
+                                (type) => DropdownMenuItem<String>(
+                              value: type,
+                              child: Text(type),
+                            ),
+                          )
                               .toList(),
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
                         ),
-                        DropdownButton<String>(
+
+                        DropdownButtonFormField<String>(
                           value: selectedOccupation,
                           hint: const Text('Select Occupation'),
                           isExpanded: true,
@@ -725,13 +730,17 @@ class _RoomListState extends State<RoomList> {
                           },
                           items: occupation
                               .map<DropdownMenuItem<String>>(
-                                  (type) => DropdownMenuItem<String>(
-                                value: type,
-                                child: Text(type),
-                              ))
+                                (type) => DropdownMenuItem<String>(
+                              value: type,
+                              child: Text(type),
+                            ),
+                          )
                               .toList(),
                           borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
                         ),
+
+
+                    
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {

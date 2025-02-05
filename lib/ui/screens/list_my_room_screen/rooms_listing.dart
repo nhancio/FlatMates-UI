@@ -12,7 +12,12 @@ class RoomListingPage extends StatefulWidget {
 
 class _RoomListingPageState extends State<RoomListingPage> {
   final RoomController roomController = Get.put(RoomController());
-
+  final controller = Get.put(RoomController());
+  void createNewRoom() {
+    controller.imageUrls.clear(); // Clear previous images
+    controller.selectedValues.clear();
+    // Continue with new room creation logic
+  }
   @override
   void initState() {
     super.initState();
@@ -56,6 +61,7 @@ class _RoomListingPageState extends State<RoomListingPage> {
               color: Color(0xFFB60F6E),
             ),
             onPressed: () {
+              createNewRoom();
               // Navigate to EditRoomPage for adding a new room
               Get.to(() => const AddRoomPage());
             },
@@ -63,8 +69,15 @@ class _RoomListingPageState extends State<RoomListingPage> {
         ],
       ),
       body: Obx(() {
+
+
         if (roomController.rooms.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: Text(
+              "No rooms available",
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+          );
         }
 
         return ListView.builder(
