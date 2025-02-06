@@ -216,7 +216,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
       // Delay the reload to allow UI rendering first
       await Future.delayed(Duration(milliseconds: 500));
-      html.window.location.reload(); // Reload the page after the UI is built
+      html.window.location.assign(html.window.location.href); // Reload the page after the UI is built
     }
   }
 
