@@ -190,9 +190,35 @@ import '../../../res/assets/images/images.dart';
 import '../../../res/colors/colors.dart';
 import '../../../res/dimensions/dimensions.dart';
 import '../../../res/font/text_style.dart';
+import 'dart:html' as html;
+class WelcomeScreen extends StatefulWidget {
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
 
-class WelcomeScreen extends StatelessWidget {
+class _WelcomeScreenState extends State<WelcomeScreen> {
   final GoogleController signInController = Get.put(GoogleController());
+
+  @override
+  void initState() {
+    super.initState();
+    _clearCacheIfNeeded();
+  }
+
+  void _clearCacheIfNeeded() async {
+    // Check if cache has already been cleared in this session
+    if (html.window.localStorage['cacheCleared'] != 'true') {
+      html.window.localStorage.clear();
+      html.window.sessionStorage.clear();
+
+      // Set flag to avoid cache clearing again
+      html.window.localStorage['cacheCleared'] = 'true';
+
+      // Delay the reload to allow UI rendering first
+      await Future.delayed(Duration(milliseconds: 500));
+      html.window.location.reload(); // Reload the page after the UI is built
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +256,7 @@ class WelcomeScreen extends StatelessWidget {
                          "assets/icons/icon.png",
                           height: 80,
                           width: 80,
-                    
+
                         ),
                         SizedBox(height: 80,),
                         Image.asset(
