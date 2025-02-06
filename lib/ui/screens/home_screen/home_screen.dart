@@ -95,11 +95,37 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  Future<bool> _onWillPop() async {
-    // Prevent the default browser behavior when back button is pressed
-    return false; // This will prevent closing the web app
-  }
+  Future<bool> _onWillPop(BuildContext context) async {
+    // Show the confirmation dialog
+    bool? closeApp = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm'),
+          content: Text('Do you want to exit the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return true to close the app
+                Navigator.of(context).pop(true);
+              },
+              child: Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return false to stay in the app
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
 
+    // If closeApp is true, allow the app to close
+    return closeApp ?? false; // Default to false if null
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +141,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () => _onWillPop(context),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: RefreshIndicator(
