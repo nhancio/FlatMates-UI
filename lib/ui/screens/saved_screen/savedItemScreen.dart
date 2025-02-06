@@ -12,52 +12,99 @@ import 'package:get/get.dart';
 
 import '../homemate_details_screen/homemate_details.dart';
 
-class SavedTabBarScreen extends StatelessWidget {
+class SavedTabBarScreen extends StatefulWidget {
+  @override
+  State<SavedTabBarScreen> createState() => _SavedTabBarScreenState();
+}
+
+class _SavedTabBarScreenState extends State<SavedTabBarScreen> {
   final TabControllerState tabControllerState = Get.put(TabControllerState());
+
+  Future<void> _refresh() async {
+    setState(() {});
+  }
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    // Show the confirmation dialog
+    bool? closeApp = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm'),
+          content: Text('Do you want to exit the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return true to close the app
+                Navigator.of(context).pop(true);
+              },
+              child: Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return false to stay in the app
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // If closeApp is true, allow the app to close
+    return closeApp ?? false; // Default to false if null
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xfff8e6f1),
-        elevation: 0,
-        /* leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xfff8e6f1),
+          elevation: 0,
+          /* leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
 
-            );
-          },
-        ),*/
-        automaticallyImplyLeading: false,
-        title: const Text(
-          "Homemates & Rooms",
-          style: TextStyle(color: Color(0xFFB60F6E)),
-        ),
-        bottom: TabBar(
-          controller: tabControllerState.tabController,
-          // Assign TabController
-          indicatorColor: Colors.purple,
-          labelColor: Colors.purple,
-          unselectedLabelColor: Colors.grey,
-          tabs: [
-            const Tab(text: 'Homemate'),
-            const Tab(text: 'Room'),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: tabControllerState.tabController, // Assign TabController
-        children: [
-          SavedHomematesScreen(
-            userId: userId,
+              );
+            },
+          ),*/
+          automaticallyImplyLeading: false,
+          title: const Text(
+            "Homemates & Rooms",
+            style: TextStyle(color: Color(0xFFB60F6E)),
           ),
-          SavedRoomsScreen(
-            currentUserId: userId,
+          bottom: TabBar(
+            controller: tabControllerState.tabController,
+            // Assign TabController
+            indicatorColor: Colors.purple,
+            labelColor: Colors.purple,
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              const Tab(text: 'Homemate'),
+              const Tab(text: 'Room'),
+            ],
           ),
-        ],
+        ),
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: TabBarView(
+            controller: tabControllerState.tabController, // Assign TabController
+            children: [
+              SavedHomematesScreen(
+                userId: userId,
+              ),
+              SavedRoomsScreen(
+                currentUserId: userId,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -65,222 +112,269 @@ class SavedTabBarScreen extends StatelessWidget {
 
 ///
 
-class SavedHomematesScreen extends StatelessWidget {
+class SavedHomematesScreen extends StatefulWidget {
   final String userId;
 
   const SavedHomematesScreen({Key? key, required this.userId})
       : super(key: key);
 
   @override
+  State<SavedHomematesScreen> createState() => _SavedHomematesScreenState();
+}
+
+class _SavedHomematesScreenState extends State<SavedHomematesScreen> {
+  Future<void> _refresh() async {
+    setState(() {});
+  }
+
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    // Show the confirmation dialog
+    bool? closeApp = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm'),
+          content: Text('Do you want to exit the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return true to close the app
+                Navigator.of(context).pop(true);
+              },
+              child: Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return false to stay in the app
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // If closeApp is true, allow the app to close
+    return closeApp ?? false; // Default to false if null
+  }
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('savedHomemates')
-            .doc(userId)
-            .collection('items')
-            .orderBy('timestamp', descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No saved homemates.'));
-          }
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Scaffold(
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('savedHomemates')
+                .doc(widget.userId)
+                .collection('items')
+                .orderBy('timestamp', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text('No saved homemates.'));
+              }
 
-          final savedHomemates = snapshot.data!.docs;
+              final savedHomemates = snapshot.data!.docs;
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: savedHomemates.length,
-            itemBuilder: (context, index) {
-              final homemate =
-                  savedHomemates[index].data() as Map<String, dynamic>;
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          HomemateDetailsScreen(homemate: homemate),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var tween = Tween(
-                                begin: const Offset(0.0, 0.0), end: Offset.zero)
-                            .chain(CurveTween(curve: Curves.ease));
-                        var offsetAnimation = animation.drive(tween);
-                        return SlideTransition(
-                          position: offsetAnimation,
-                          child: child,
-                        );
-                      },
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: savedHomemates.length,
+                itemBuilder: (context, index) {
+                  final homemate =
+                      savedHomemates[index].data() as Map<String, dynamic>;
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) =>
+                              HomemateDetailsScreen(homemate: homemate),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var tween = Tween(
+                                    begin: const Offset(0.0, 0.0), end: Offset.zero)
+                                .chain(CurveTween(curve: Curves.ease));
+                            var offsetAnimation = animation.drive(tween);
+                            return SlideTransition(
+                              position: offsetAnimation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      color: Colors.purple,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.asset(
+                                    "assets/images/user.jpg",
+                                    width: 80,
+                                    height: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Name: ${homemate['userName']}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text('Age: ${homemate['age']}',
+                                          style:
+                                              const TextStyle(color: Colors.white)),
+                                      Text('Profession: ${homemate['profession']}',
+                                          style:
+                                              const TextStyle(color: Colors.white)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () async {
+                                    final Uri _phoneUrl = Uri.parse(
+                                        'tel:${homemate['userPhoneNumber']}');
+                                    try {
+                                      await launchUrl(
+                                          _phoneUrl); // Directly launch the dialer
+                                    } catch (e) {
+                                      print('Could not launch the dialer: $e');
+                                    }
+                                  },
+                                  icon: const Icon(Icons.call),
+                                  label: Text(
+                                    //   'Call ${homemate['userPhoneNumber']}',
+                                    'Call',
+
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green.shade100,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: () async {
+                                    // Confirm before unsaving
+                                    final bool? confirm = await showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('Remove Homemate'),
+                                        content: const Text(
+                                            'Are you sure you want to unsave this homemate?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, false),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, true),
+                                            child: const Text('Remove'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+
+                                    if (confirm == true) {
+                                      try {
+                                        final homemateId = snapshot.data!
+                                            .docs[index].id; // Get document ID
+                                        print(
+                                            "Attempting to delete homemate with ID: $homemateId");
+                                        if (homemateId == null) {
+                                          print(
+                                              "Error: homemate['userId'] is null or undefined");
+                                          return;
+                                        }
+                                        // Delete the homemate from Firebase
+                                        await FirebaseFirestore.instance
+                                            .collection('savedHomemates')
+                                            .doc(widget.userId)
+                                            .collection('items')
+                                            .doc(
+                                                homemateId) // assuming userId is used for the document ID
+                                            .delete();
+
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Homemate removed successfully.')),
+                                        );
+                                      } catch (e) {
+                                        print('Error removing homemate: $e');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Failed to remove homemate.')),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                  label: const Text(
+                                    'Unsave',
+
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red.shade100,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 },
-                child: Card(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                  color: Colors.purple,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                "assets/images/user.jpg",
-                                width: 80,
-                                height: 80,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Name: ${homemate['userName']}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  Text('Age: ${homemate['age']}',
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                                  Text('Profession: ${homemate['profession']}',
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                final Uri _phoneUrl = Uri.parse(
-                                    'tel:${homemate['userPhoneNumber']}');
-                                try {
-                                  await launchUrl(
-                                      _phoneUrl); // Directly launch the dialer
-                                } catch (e) {
-                                  print('Could not launch the dialer: $e');
-                                }
-                              },
-                              icon: const Icon(Icons.call),
-                              label: Text(
-                                //   'Call ${homemate['userPhoneNumber']}',
-                                'Call',
-
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green.shade100,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                // Confirm before unsaving
-                                final bool? confirm = await showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text('Remove Homemate'),
-                                    content: const Text(
-                                        'Are you sure you want to unsave this homemate?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, false),
-                                        child: const Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, true),
-                                        child: const Text('Remove'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-
-                                if (confirm == true) {
-                                  try {
-                                    final homemateId = snapshot.data!
-                                        .docs[index].id; // Get document ID
-                                    print(
-                                        "Attempting to delete homemate with ID: $homemateId");
-                                    if (homemateId == null) {
-                                      print(
-                                          "Error: homemate['userId'] is null or undefined");
-                                      return;
-                                    }
-                                    // Delete the homemate from Firebase
-                                    await FirebaseFirestore.instance
-                                        .collection('savedHomemates')
-                                        .doc(userId)
-                                        .collection('items')
-                                        .doc(
-                                            homemateId) // assuming userId is used for the document ID
-                                        .delete();
-
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Homemate removed successfully.')),
-                                    );
-                                  } catch (e) {
-                                    print('Error removing homemate: $e');
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Failed to remove homemate.')),
-                                    );
-                                  }
-                                }
-                              },
-                              icon: const Icon(Icons.delete),
-                              label: const Text(
-                                'Unsave',
-
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red.shade100,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               );
             },
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -523,7 +617,42 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
       rethrow; // Optionally rethrow to catch it outside
     }
   }
+  Future<void> _refresh() async {
+    setState(() {});
+  }
 
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    // Show the confirmation dialog
+    bool? closeApp = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirm'),
+          content: Text('Do you want to exit the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return true to close the app
+                Navigator.of(context).pop(true);
+              },
+              child: Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Close the dialog and return false to stay in the app
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+
+    // If closeApp is true, allow the app to close
+    return closeApp ?? false; // Default to false if null
+  }
 
   @override
   void initState() {
@@ -542,218 +671,224 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
     // Fetch saved rooms when the screen is loaded
     roomController.fetchSavedRooms(widget.currentUserId);
 
-    return Scaffold(
-      /*   appBar: AppBar(
-        title: const Text("Saved Rooms"),
-      ),*/
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('saved_Rooms')
-            .doc(widget.currentUserId) // Assuming currentUserId is available
-            .collection('savedRooms')
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return const Center(child: Text('Error loading rooms'));
-          }
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: Scaffold(
+        /*   appBar: AppBar(
+          title: const Text("Saved Rooms"),
+        ),*/
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection('saved_Rooms')
+                .doc(widget.currentUserId) // Assuming currentUserId is available
+                .collection('savedRooms')
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return const Center(child: Text('Error loading rooms'));
+              }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No rooms saved yet."));
-          }
+              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(child: Text("No rooms saved yet."));
+              }
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              final room = snapshot.data!.docs[index];
-              final roomId = room.id;  // Get the document ID from Firestore
+              return ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final room = snapshot.data!.docs[index];
+                  final roomId = room.id;  // Get the document ID from Firestore
 
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RoomDetailPage(
-                        roomData: {
-                          'roomType': room['roomType'],
-                          'homeType': room['homeType'],
-                          'address': room['address'],
-                          'roomRent': room['roomRent'],
-                          'roomMoveInDate': room['roomMoveInDate'],
-                          'roomOccupationPerRoom': room['roomOccupationPerRoom'],
-                          'roomMobileNumber': room['roomMobileNumber'],
-                          'userId': room['userId'],
-                          'roomSelectedValues': room['roomSelectedValues'],
-                          'roomProfileImages': room['roomProfileImages'],
-                          'brokerage': room['brokerage'],
-                          'description': room['description'],
-                          'securityDeposit': room['securityDeposit'],
-                          'setupCost': room['setupCost'],
-                        },
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RoomDetailPage(
+                            roomData: {
+                              'roomType': room['roomType'],
+                              'homeType': room['homeType'],
+                              'address': room['address'],
+                              'roomRent': room['roomRent'],
+                              'roomMoveInDate': room['roomMoveInDate'],
+                              'roomOccupationPerRoom': room['roomOccupationPerRoom'],
+                              'roomMobileNumber': room['roomMobileNumber'],
+                              'userId': room['userId'],
+                              'roomSelectedValues': room['roomSelectedValues'],
+                              'roomProfileImages': room['roomProfileImages'],
+                              'brokerage': room['brokerage'],
+                              'description': room['description'],
+                              'securityDeposit': room['securityDeposit'],
+                              'setupCost': room['setupCost'],
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: Colors.purple,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      child: ListTile(
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(13.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.asset(
+                                        "assets/images/house.png",
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Room Type: ${room['roomType']}',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text('Address: ${room['address']}',
+                                          style: const TextStyle(color: Colors.white)),
+                                      Text('Rent: ${room['roomRent']}',
+                                          style: const TextStyle(color: Colors.white)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () async {
+                                    final Uri _phoneUrl =
+                                    Uri.parse('tel:${room["mobileNumber"]}');
+                                    try {
+                                      if (await canLaunchUrl(_phoneUrl)) {
+                                        await launchUrl(_phoneUrl);
+                                      } else {
+                                        throw 'Could not launch the dialer';
+                                      }
+                                    } catch (e) {
+                                      print('Could not launch the dialer: $e');
+                                    }
+                                  },
+                                  icon: const Icon(Icons.call),
+                                  // label: Text('Call: ${room.mobileNumber}'),
+                                  label: Text('Call'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green.shade100,
+                                    // Call button color
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 30,),
+                                ElevatedButton.icon(
+                                  onPressed: () async {
+                                    final bool? confirm = await showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text('Remove Room'),
+                                        content: const Text(
+                                            'Are you sure you want to unsave this room?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(context, false),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(context, true),
+                                            child: const Text('Remove'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+
+                                    if (confirm == true) {
+                                      try {
+                                        print("Room ID to delete: $roomId");
+
+                                        // Ensure that roomId is valid
+                                        if (roomId.isEmpty) {
+                                          print("Error: Room ID is empty!");
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                                content: Text('Room ID is empty. Cannot delete the room.')),
+                                          );
+                                          return;
+                                        }
+
+                                        // Call deleteRoom function and pass roomId
+                                        await deleteRoom(roomId); // Call the delete function with roomId
+
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Room removed successfully.')),
+                                        );
+                                      } catch (e) {
+                                        print('Error removing room: $e');
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Failed to remove room.')),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                  label: const Text('Unsave'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red.shade100,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
                 },
-                child: Card(
-                  color: Colors.purple,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  child: ListTile(
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(13.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.asset(
-                                    "assets/images/house.png",
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Room Type: ${room['roomType']}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text('Address: ${room['address']}',
-                                      style: const TextStyle(color: Colors.white)),
-                                  Text('Rent: ${room['roomRent']}',
-                                      style: const TextStyle(color: Colors.white)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                final Uri _phoneUrl =
-                                Uri.parse('tel:${room["mobileNumber"]}');
-                                try {
-                                  if (await canLaunchUrl(_phoneUrl)) {
-                                    await launchUrl(_phoneUrl);
-                                  } else {
-                                    throw 'Could not launch the dialer';
-                                  }
-                                } catch (e) {
-                                  print('Could not launch the dialer: $e');
-                                }
-                              },
-                              icon: const Icon(Icons.call),
-                              // label: Text('Call: ${room.mobileNumber}'),
-                              label: Text('Call'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green.shade100,
-                                // Call button color
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 30,),
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                final bool? confirm = await showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text('Remove Room'),
-                                    content: const Text(
-                                        'Are you sure you want to unsave this room?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context, false),
-                                        child: const Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context, true),
-                                        child: const Text('Remove'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-
-                                if (confirm == true) {
-                                  try {
-                                    print("Room ID to delete: $roomId");
-
-                                    // Ensure that roomId is valid
-                                    if (roomId.isEmpty) {
-                                      print("Error: Room ID is empty!");
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('Room ID is empty. Cannot delete the room.')),
-                                      );
-                                      return;
-                                    }
-
-                                    // Call deleteRoom function and pass roomId
-                                    await deleteRoom(roomId); // Call the delete function with roomId
-
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Room removed successfully.')),
-                                    );
-                                  } catch (e) {
-                                    print('Error removing room: $e');
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Failed to remove room.')),
-                                    );
-                                  }
-                                }
-                              },
-                              icon: const Icon(Icons.delete),
-                              label: const Text('Unsave'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red.shade100,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               );
             },
-          );
-        },
-      )
+          ),
+        )
+      ),
     );
   }
 }
