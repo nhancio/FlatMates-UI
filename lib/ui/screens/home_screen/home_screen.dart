@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   List<String> filteredCities = [];
   bool showDropdown = false; // Controls visibility of dropdown list
   TextEditingController searchController = TextEditingController();
-
+  bool _isBackButtonHandled = false;
   @override
   void initState() {
     super.initState();
@@ -95,22 +95,26 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  // Logic to handle the back button in Flutter Web
   void _handleBackNavigation() {
+    if (_isBackButtonHandled) return; // Prevent multiple calls to this function
+
+    // Listen for the back button event on web (popstate)
     html.window.onPopState.listen((event) {
-      _showExitConfirmation();
+      _showExitConfirmation(); // Show the exit confirmation when back is pressed
     });
+
+    _isBackButtonHandled = true; // Set flag to indicate back button handling is active
   }
 
-
+  // Show confirmation dialog when the user presses the back button
   Future<bool> _showExitConfirmation() async {
     final Completer<bool> completer = Completer<bool>();
 
-    // Using the window.confirm() and wrapping it in a Future<bool>
+    // Show the confirmation dialog
     final bool exitConfirmed = html.window.confirm("Are you sure you want to leave this page?");
     completer.complete(exitConfirmed);
 
-    return completer.future;  // Return a Future<bool> for the dialog result
+    return completer.future; // Return a Future<bool> based on user choice
   }
 
   @override
@@ -128,10 +132,14 @@ class _HomePageState extends State<HomePage> {
 
     return WillPopScope(
       onWillPop: () async {
-
+        // Trigger confirmation when back button is pressed
         bool exitConfirmed = await _showExitConfirmation();
         if (exitConfirmed) {
-          html.window.history.back();  // Proceed with going back in history
+          // Proceed with going back in history if user confirms
+          html.window.history.back();
+        } else {
+          // If "Cancel" clicked, use Navigator.pop() to prevent the back action
+          Navigator.pop(context);  // Close the current screen
         }
         return exitConfirmed;  // Return the confirmation result
       },
