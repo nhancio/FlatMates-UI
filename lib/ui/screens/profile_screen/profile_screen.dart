@@ -60,10 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     signInController.fetchUserProfile();
 
     return WillPopScope(
-      onWillPop: () async {
-        Navigator.pop(context); // Go back to Home
-        return false; // Prevent default back action (no dialog here)
-      },
+      onWillPop: () => _onWillPop(context),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Profile Details",  style: TextStyle(color: Color(0xFFB60F6E)),),
