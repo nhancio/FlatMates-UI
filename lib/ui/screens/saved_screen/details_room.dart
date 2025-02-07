@@ -54,387 +54,393 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xfff8e6f1),
-
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E)),
-          onPressed: () {
-           Navigator.of(context).pop();
-
-                   },
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xfff8e6f1),
+      
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back,color: Color(0xFFB60F6E)),
+            onPressed: () {
+             Navigator.of(context).pop();
+      
+                     },
+          ),
+          title: const Text(
+              'Room Detail'
+              ,style: TextStyle(color: Color(0xFFB60F6E))
+          ),
         ),
-        title: const Text(
-            'Room Detail'
-            ,style: TextStyle(color: Color(0xFFB60F6E))
-        ),
-      ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _imageUrls.isNotEmpty
-                ? CarouselSlider.builder(
-              itemCount: _imageUrls.length,
-              itemBuilder: (context, index, realIndex) {
-                return Stack(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _imageUrls.isNotEmpty
+                  ? CarouselSlider.builder(
+                itemCount: _imageUrls.length,
+                itemBuilder: (context, index, realIndex) {
+                  return Stack(
+                    children: [
+                      Center(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CircularProgressIndicator(), // Default circular progress
+                            Icon(
+                              Icons.image, // Your unique icon
+                              size: 30,
+                              color: Colors.blue, // Customize color as needed
+                            ),
+                          ],
+                        ),
+                      ),
+                      Image.network(
+                        _imageUrls[index],
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 350,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child; // Image is fully loaded
+                          }
+                          return Center(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                      : null,
+                                ),
+                                Icon(
+                                  Icons.image, // Unique icon
+                                  size: 30,
+                                  color: Colors.blue, // Customize color
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Text(
+                              'Failed to load image.',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+                options: CarouselOptions(
+                  height: 400, // Full height
+                  viewportFraction: 1.0, // Full width
+                  autoPlay: true, // Auto-scroll
+                  autoPlayInterval: const Duration(seconds: 5),
+                  enlargeCenterPage: true,
+                ),
+              )
+                  : const Center(
+                child: Text("No images available."),
+              ),
+      
+              const SizedBox(height: 16),
+              RichText(
+                text: TextSpan(
+                  text: 'Room Type: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
                   children: [
-                    Center(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CircularProgressIndicator(), // Default circular progress
-                          Icon(
-                            Icons.image, // Your unique icon
-                            size: 30,
-                            color: Colors.blue, // Customize color as needed
-                          ),
-                        ],
+                    TextSpan(
+                      text:widget.roomData['roomType'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
                       ),
                     ),
-                    Image.network(
-                      _imageUrls[index],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 350,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child; // Image is fully loaded
-                        }
-                        return Center(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                    (loadingProgress.expectedTotalBytes ?? 1)
-                                    : null,
-                              ),
-                              Icon(
-                                Icons.image, // Unique icon
-                                size: 30,
-                                color: Colors.blue, // Customize color
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Center(
-                          child: Text(
-                            'Failed to load image.',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        );
-                      },
+                  ],
+                ),
+              ),
+      
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Address: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['address'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
                     ),
                   ],
-                );
-              },
-              options: CarouselOptions(
-                height: 400, // Full height
-                viewportFraction: 1.0, // Full width
-                autoPlay: true, // Auto-scroll
-                autoPlayInterval: const Duration(seconds: 5),
-                enlargeCenterPage: true,
-              ),
-            )
-                : const Center(
-              child: Text("No images available."),
-            ),
-
-            const SizedBox(height: 16),
-            RichText(
-              text: TextSpan(
-                text: 'Room Type: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['roomType'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Address: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Home Type: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['homeType'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['address'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Home Type: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+      
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Rent: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['roomRent'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['homeType'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Rent: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+      
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Move-in Date: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['roomMoveInDate'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['roomRent'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Move-in Date: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+      
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Occupancy: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['roomOccupationPerRoom'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['roomMoveInDate'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Occupancy: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+      
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Amenities: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['roomSelectedValues'].join(", "),
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['roomOccupationPerRoom'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Amenities: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+      
+      
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Security deposit: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['securityDeposit'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['roomSelectedValues'].join(", "),
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-
-
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Security deposit: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Brokerage: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['brokerage'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['securityDeposit'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Brokerage: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Setup Cost: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['setupCost'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['brokerage'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Setup Cost: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Description: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['description'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['setupCost'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Description: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Contact Number: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['roomMobileNumber'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal, // Normal weight for value
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
                 ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['description'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
               ),
-            ),
-            const SizedBox(height: 11),
-            RichText(
-              text: TextSpan(
-                text: 'Contact Number: ',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600, // Medium weight for label
-                  color: Colors.black87,
-                ),
-                children: [
-                  TextSpan(
-                    text:widget.roomData['roomMobileNumber'],
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.normal, // Normal weight for value
-                      color: Color(0xff100f0f),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-
-
-            const SizedBox(height: 24),
-            Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  final Uri phoneUrl = Uri.parse('tel:${widget.roomData['roomMobileNumber']}');
-                  try {
-                    if (await canLaunchUrl(phoneUrl)) {
-                      await launchUrl(phoneUrl);
-                    } else {
-                      throw 'Could not launch the dialer';
+      
+      
+      
+              const SizedBox(height: 24),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final Uri phoneUrl = Uri.parse('tel:${widget.roomData['roomMobileNumber']}');
+                    try {
+                      if (await canLaunchUrl(phoneUrl)) {
+                        await launchUrl(phoneUrl);
+                      } else {
+                        throw 'Could not launch the dialer';
+                      }
+                    } catch (e) {
+                      print('Error launching dialer: $e');
                     }
-                  } catch (e) {
-                    print('Error launching dialer: $e');
-                  }
-                },
-                child: const Text('Call', style: TextStyle(color: Colors.white)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFB60F6E),
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                  },
+                  child: const Text('Call', style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFB60F6E),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );/*Scaffold(

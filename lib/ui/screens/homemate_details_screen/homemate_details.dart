@@ -9,65 +9,71 @@ class HomeMateDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-            color: Color(0xFFB60F6E)
-        ),
-        backgroundColor: Color(0xfff8e6f1),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation,
-                    secondaryAnimation) =>
-                    HomemateList(userId: '',),
-                transitionsBuilder: (context, animation,
-                    secondaryAnimation, child) {
-                  var tween = Tween(
-                      begin: const Offset(0.0, 0.0),
-                      end: Offset.zero)
-                      .chain(
-                      CurveTween(curve: Curves.ease));
-                  var offsetAnimation =
-                  animation.drive(tween);
-                  return SlideTransition(
-                    position: offsetAnimation,
-                    child: child,
-                  );
-                },
-              ),
-            );
-          },
-        ),
-        title: const Text(
-          'HomeMate Details',
-          style: TextStyle(
-            color: Color(0xFFB60F6E),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+              color: Color(0xFFB60F6E)
+          ),
+          backgroundColor: Color(0xfff8e6f1),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Color(0xFFB60F6E)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation,
+                      secondaryAnimation) =>
+                      HomemateList(userId: '',),
+                  transitionsBuilder: (context, animation,
+                      secondaryAnimation, child) {
+                    var tween = Tween(
+                        begin: const Offset(0.0, 0.0),
+                        end: Offset.zero)
+                        .chain(
+                        CurveTween(curve: Curves.ease));
+                    var offsetAnimation =
+                    animation.drive(tween);
+                    return SlideTransition(
+                      position: offsetAnimation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+          title: const Text(
+            'HomeMate Details',
+            style: TextStyle(
+              color: Color(0xFFB60F6E),
 
+            ),
           ),
         ),
-      ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProfileSection(),
-            const SizedBox(height: 20),
-            _buildDetailRow('Gender', homemate.gender ?? 'Not specified'),
-            _buildDetailRow('Age', homemate.age?.toString() ?? 'Not specified'),
-            _buildDetailRow('Profession', homemate.profession ?? 'Not specified'),
-            const SizedBox(height: 20),
-            _buildSectionTitle('Preferences'),
-            _buildPreferenceRow(homemate.preferences ?? []),
-            const SizedBox(height: 20),
-            _buildCallButton(homemate.userPhoneNumber),
-          ],
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildProfileSection(),
+              const SizedBox(height: 20),
+              _buildDetailRow('Gender', homemate.gender ?? 'Not specified'),
+              _buildDetailRow('Age', homemate.age?.toString() ?? 'Not specified'),
+              _buildDetailRow('Profession', homemate.profession ?? 'Not specified'),
+              const SizedBox(height: 20),
+              _buildSectionTitle('Preferences'),
+              _buildPreferenceRow(homemate.preferences ?? []),
+              const SizedBox(height: 20),
+              _buildCallButton(homemate.userPhoneNumber),
+            ],
+          ),
         ),
       ),
     );

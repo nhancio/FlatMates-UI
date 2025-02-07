@@ -95,8 +95,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  Future<bool> _onWillPop(BuildContext context) async {
-    // Show the confirmation dialog
+/*  Future<bool> _onWillPop(BuildContext context) async {
     bool? closeApp = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -106,14 +105,14 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                // Close the dialog and return true to close the app
+
                 Navigator.of(context).pop(true);
               },
               child: Text('OK'),
             ),
             TextButton(
               onPressed: () {
-                // Close the dialog and return false to stay in the app
+
                 Navigator.of(context).pop(false);
               },
               child: Text('Cancel'),
@@ -125,7 +124,7 @@ class _HomePageState extends State<HomePage> {
 
     // If closeApp is true, allow the app to close
     return closeApp ?? false; // Default to false if null
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +140,10 @@ class _HomePageState extends State<HomePage> {
     }
 
     return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
       child: Scaffold(
         backgroundColor: Colors.white,
         body: RefreshIndicator(

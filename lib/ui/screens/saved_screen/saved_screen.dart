@@ -129,43 +129,16 @@ Explore more details here: $roomUrl
   Future<void> _refresh() async {
     setState(() {});
   }
-  Future<bool> _onWillPop(BuildContext context) async {
-    // Show the confirmation dialog
-    bool? closeApp = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm'),
-          content: Text('Do you want to exit the app?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                // Close the dialog and return true to close the app
-                Navigator.of(context).pop(true);
-              },
-              child: Text('OK'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Close the dialog and return false to stay in the app
-                Navigator.of(context).pop(false);
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
 
-    // If closeApp is true, allow the app to close
-    return closeApp ?? false; // Default to false if null
-  }
   @override
   Widget build(BuildContext context) {
     final HomemateController homemateController = Get.put(HomemateController());
 
     return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xfff8e6f1),
@@ -652,41 +625,13 @@ class _RoomListState extends State<RoomList> {
   }
 
 
-  Future<bool> _onWillPop(BuildContext context) async {
-    // Show the confirmation dialog
-    bool? closeApp = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm'),
-          content: Text('Do you want to exit the app?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                // Close the dialog and return true to close the app
-                Navigator.of(context).pop(true);
-              },
-              child: Text('OK'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Close the dialog and return false to stay in the app
-                Navigator.of(context).pop(false);
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-
-    // If closeApp is true, allow the app to close
-    return closeApp ?? false; // Default to false if null
-  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xfff8e6f1),

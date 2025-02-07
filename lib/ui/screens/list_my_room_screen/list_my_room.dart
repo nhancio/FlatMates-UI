@@ -119,44 +119,16 @@ class _AddRoomPageState extends State<AddRoomPage> {
   }
 
 
-  Future<bool> _onWillPop(BuildContext context) async {
-    // Show the confirmation dialog
-    bool? closeApp = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm'),
-          content: Text('Do you want to exit the app?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                // Close the dialog and return true to close the app
-                Navigator.of(context).pop(true);
-              },
-              child: Text('OK'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Close the dialog and return false to stay in the app
-                Navigator.of(context).pop(false);
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
-    );
-
-    // If closeApp is true, allow the app to close
-    return closeApp ?? false; // Default to false if null
-  }
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
 
 
     return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
       child: Scaffold(
         backgroundColor:  Colors.white,
         appBar: AppBar(
