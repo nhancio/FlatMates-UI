@@ -33,42 +33,48 @@ class BottomNavBarScreen extends StatelessWidget {
      // VoiceInputScreen(),
     ];
 
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
 
-      body: Obx(() {
-        // Use Obx to update the body based on the current index from the controller
-        return _pages[_bottomNavController.currentIndex.value];
-      }),
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildBottomNavItem(
-                  Icons.home, 'Home', 0, _bottomNavController),
-             /* _buildBottomNavItem(
-                  Icons.wechat_sharp, 'Chat', 1, _bottomNavController),
-              const SizedBox(width: 48), // Space for the FAB*/
-              _buildBottomNavItem(
-                  Icons.save, 'Saved', 1, _bottomNavController),
-              _buildBottomNavItem(
-                  Icons.supervised_user_circle_sharp, 'Profile', 2, _bottomNavController),
-            ],
+        body: Obx(() {
+          // Use Obx to update the body based on the current index from the controller
+          return _pages[_bottomNavController.currentIndex.value];
+        }),
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: Container(
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildBottomNavItem(
+                    Icons.home, 'Home', 0, _bottomNavController),
+               /* _buildBottomNavItem(
+                    Icons.wechat_sharp, 'Chat', 1, _bottomNavController),
+                const SizedBox(width: 48), // Space for the FAB*/
+                _buildBottomNavItem(
+                    Icons.save, 'Saved', 1, _bottomNavController),
+                _buildBottomNavItem(
+                    Icons.supervised_user_circle_sharp, 'Profile', 2, _bottomNavController),
+              ],
+            ),
           ),
         ),
+      /*  floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Update index to navigate to VoiceInputScreen
+            _bottomNavController.setIndex(4); // Index for VoiceInputScreen
+          },
+          child: Image.asset(AppIcons.ai, height: 20, width: 20),
+          backgroundColor: Colors.white,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
       ),
-    /*  floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Update index to navigate to VoiceInputScreen
-          _bottomNavController.setIndex(4); // Index for VoiceInputScreen
-        },
-        child: Image.asset(AppIcons.ai, height: 20, width: 20),
-        backgroundColor: Colors.white,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,*/
     );
   }
 

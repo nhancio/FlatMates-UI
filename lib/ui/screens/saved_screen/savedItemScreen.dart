@@ -59,7 +59,10 @@ class _SavedTabBarScreenState extends State<SavedTabBarScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xfff8e6f1),
@@ -162,7 +165,10 @@ class _SavedHomematesScreenState extends State<SavedHomematesScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
       child: Scaffold(
         body: RefreshIndicator(
           onRefresh: _refresh,
@@ -672,7 +678,10 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
     roomController.fetchSavedRooms(widget.currentUserId);
 
     return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+      onWillPop: () async {
+        Navigator.pop(context); // Go back to Home
+        return false; // Prevent default back action (no dialog here)
+      },
       child: Scaffold(
         /*   appBar: AppBar(
           title: const Text("Saved Rooms"),

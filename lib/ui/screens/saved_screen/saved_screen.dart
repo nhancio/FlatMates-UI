@@ -241,17 +241,38 @@ Explore more details here: $roomUrl
 
 
                           const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFB60F6E),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  selectedAge.value = 0;
+                                  selectedProfession.value = '';
+                                  Get.back();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFFB60F6E),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Text('Clear', style: TextStyle(color: Colors.white)),
                               ),
-                            ),
-                            child: const Text('Apply Filter',style: TextStyle(color: Colors.white),),
+
+                              ElevatedButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFFB60F6E),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Text('Apply Filter',style: TextStyle(color: Colors.white),),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -386,7 +407,7 @@ Explore more details here: $roomUrl
                                         horizontal: 20, vertical: 10),
                                   ),
                                 ),
-                                SizedBox(width: 50),
+                                SizedBox(width: 30),
                                 ElevatedButton.icon(
                                   onPressed: () async {
                                     final Uri _phoneUrl =
@@ -765,20 +786,48 @@ class _RoomListState extends State<RoomList> {
 
 
                           const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFB60F6E),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    selectedRoomType = null;
+                                    selectedHomeType = null;
+                                    selectedMoveDate = null;
+                                    selectedOccupation = null;
+                                    Get.back();
+                                  });
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFB60F6E),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Clear',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                            ),
-                            child: const Text(
-                              'Apply Filter',
-                              style: TextStyle(color: Colors.white),
-                            ),
+
+                              ElevatedButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFB60F6E),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Apply Filter',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -934,7 +983,7 @@ class _RoomListState extends State<RoomList> {
                                             horizontal: 20, vertical: 10),
                                       ),
                                     ),
-                                    SizedBox(width: 50,),
+                                    SizedBox(width: 30,),
                                     // Call Button
                                     ElevatedButton.icon(
                                       onPressed: () async {
