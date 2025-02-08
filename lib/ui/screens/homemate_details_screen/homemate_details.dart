@@ -102,11 +102,12 @@ class HomeMateDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              homemate.userName ?? 'Unknown',
+              'Name: ${homemate.userName ?? 'Unknown'}',
+
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Text(
-              homemate.userPhoneNumber ?? 'No Phone Number',
+              'Phone: ${homemate.userPhoneNumber ?? 'No Phone Number'}',
               style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
             ),
           ],

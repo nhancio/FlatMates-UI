@@ -62,7 +62,7 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
           },
         ),
         title: const Text(
-          'Profile',
+          'Profile Details',
     style: TextStyle(color: Color(0xFFB60F6E)),
     )),
       backgroundColor: Colors.white,

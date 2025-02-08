@@ -86,8 +86,8 @@ class _SavedTabBarScreenState extends State<SavedTabBarScreen> {
             labelColor: Colors.purple,
             unselectedLabelColor: Colors.grey,
             tabs: [
-              const Tab(text: 'Homemate'),
-              const Tab(text: 'Room'),
+              const Tab(text: 'Homemates'),
+              const Tab(text: 'Rooms'),
             ],
           ),
         ),
@@ -394,7 +394,7 @@ class HomemateDetailsScreen extends StatelessWidget {
         backgroundColor: Color(0xfff8e6f1),
         elevation: 0,
         title: Text(
-          homemate['userName'],
+        "Homemate Details",
           style: TextStyle(color: Color(0xFFB60F6E)),
         ),
         leading: IconButton(
@@ -556,7 +556,7 @@ class HomemateDetailsScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                'tel:${homemate['userPhoneNumber']}',
+                'Phone: ${homemate['userPhoneNumber']}',
                 style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
               ),
             ],

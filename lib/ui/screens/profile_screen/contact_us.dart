@@ -33,30 +33,42 @@ class ContactUsScreen extends StatelessWidget {
           ),
           title: Text('Contact Us',   style: TextStyle(color: Color(0xFFB60F6E)),)),
       backgroundColor: Colors.white,
-      body: Padding(
+      body:Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Text(
-              //   'Context',
-              //   style: TextStyle(
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.bold,
-              //     color: Colors.purple,
-              //   ),
-              // ),
-              SizedBox(height: 16),
-              Text(
-                'Phone: +91-8247816401\n'
-                'Email: hello@nhancio.com\n',
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+              SizedBox(height: 300),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    'Phone: +91-8247816401\n'
+                        'Email: hello@nhancio.com\n',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                ),
               ),
             ],
           ),
         ),
-      ),
+      )
+
+
+
     );
   }
 }

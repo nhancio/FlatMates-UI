@@ -71,7 +71,7 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                      },
           ),
           title: const Text(
-              'Room Detail'
+              'Room Details'
               ,style: TextStyle(color: Color(0xFFB60F6E))
           ),
         ),

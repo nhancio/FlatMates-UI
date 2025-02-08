@@ -87,7 +87,7 @@ class FeedbackPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text('Submit Feedback',style: TextStyle(color: Colors.white),),
+                  child: Text('Submit',style: TextStyle(color: Colors.white),),
                 ),
               ],
             ),

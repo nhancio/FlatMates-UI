@@ -79,7 +79,7 @@ class _RoomListingPageState extends State<RoomListingPage> {
           if (roomController.rooms.isEmpty) {
             return const Center(
               child: Text(
-                "No rooms available",
+                "No listings by you",
                 style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
             );

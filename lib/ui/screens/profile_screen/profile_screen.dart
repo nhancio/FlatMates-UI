@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Profile Details",  style: TextStyle(color: Color(0xFFB60F6E)),),
+          title: const Text("Profile",  style: TextStyle(color: Color(0xFFB60F6E)),),
           backgroundColor: const Color(0xfff8e6f1),
           elevation: 0,
            automaticallyImplyLeading: false,

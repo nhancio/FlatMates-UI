@@ -90,7 +90,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                 },),);          },
         ),
         title: const Text(
-          'Room Detail'
+          'Room Details'
             ,style: TextStyle(color: Color(0xFFB60F6E))
         ),
       ),

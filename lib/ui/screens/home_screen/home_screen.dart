@@ -600,9 +600,9 @@ class HomeScreen1 extends StatefulWidget {
 
 class _HomeScreen1State extends State<HomeScreen1> {
   final List<String> infoBoxes = [
-    "Room Info Features :\n- Upload image\n- Rent/month\n- Amenities: Wi-Fi, Parking \n- Address: Hyderabad  \n- Call and Saved/Unsaved",
-    "User Info:\n- Name: John Doe\n- Gender: Male\n- Profession: Engineer \n- Call and Saved/Unsaved",
-    "Upcoming Features:\n- AI Recommendations\n- HubSpot Integration",
+    "Incubated by T-HUB  \nFounded by IITIANS",
+    //"User Info:\n- Name: John Doe\n- Gender: Male\n- Profession: Engineer \n- Call and Saved/Unsaved",
+   // "Upcoming Features:\n- AI Recommendations\n- HubSpot Integration",
   ];
 
   final ScrollController _scrollController = ScrollController();
@@ -658,27 +658,29 @@ class _HomeScreen1State extends State<HomeScreen1> {
 
   Widget _buildInfoBox(String text) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 200,
-        width: 300,
+      padding: const EdgeInsets.only(left: 80.0),
+      child: Center(
+        child: Container(
+          height: 100,
+          width: 200,
 
-        padding: EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.pink.shade50,
-          borderRadius: BorderRadius.circular(16.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 8.0,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          textAlign: TextAlign.left,
+          padding: EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.pink.shade50,
+            borderRadius: BorderRadius.circular(16.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                blurRadius: 8.0,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            textAlign: TextAlign.left,
+          ),
         ),
       ),
     );

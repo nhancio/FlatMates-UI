@@ -184,7 +184,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                     nextFocusNode: rentFocus,
                     controller: addressController,
                     label: "Address*",
-                    hintText: "Write your address...",
+                    hintText: "Write room's name and address",
                     onChanged: (value) {
                       controller.setAddress(value);
                     },
@@ -195,6 +195,42 @@ class _AddRoomPageState extends State<AddRoomPage> {
                       return null;
                     },
                     isContactNumber: false,
+                  ),
+                  const SizedBox(height: 12),
+                  // Room Type Dropdown
+                  CustomDropdownField(
+                    label: "Room Type*",
+                    hintText: "Select Room Type",
+                    options: const ["1BHK", "2BHK", "3BHK"],
+                    onChanged: (value) {
+                      controller.setRoomType(value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a room type';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  CustomDropdownField(
+                    label: "Home Type*",
+                    hintText: "Select Home Type",
+                    options: const [
+                      "Apartment",
+                      "Individual House",
+                      "Gated Community Flat",
+                      "Villa"
+                    ],
+                    onChanged: (value) {
+                      controller.setHomeType(value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a home type';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 12),
                   // Room Rent TextField
@@ -215,25 +251,8 @@ class _AddRoomPageState extends State<AddRoomPage> {
                     },
                     isContactNumber: true,
                   ),
-                  const SizedBox(height: 12),
 
-                  CustomTextField(
-                    focusNode: contactFocus,
-                    nextFocusNode: securityFocus,
-                    controller: contactController,
-                    label: "Contact Number*",
-                    hintText: "Enter Contact number",
-                    onChanged: (value) {
-                      controller.setMobileNumber(value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a contact number';
-                      }
-                      return null;
-                    },
-                    isContactNumber: true,
-                  ),
+
                   const SizedBox(height: 12),
                   CustomTextField(
                     focusNode: securityFocus,
@@ -285,42 +304,8 @@ class _AddRoomPageState extends State<AddRoomPage> {
 
                     isContactNumber: false,
                   ),
-                  const SizedBox(height: 12),
-                  // Room Type Dropdown
-                  CustomDropdownField(
-                    label: "Room Type*",
-                    hintText: "Select Room Type",
-                    options: const ["1BHK", "2BHK", "3BHK"],
-                    onChanged: (value) {
-                      controller.setRoomType(value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a room type';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  CustomDropdownField(
-                    label: "Home Type*",
-                    hintText: "Select Home Type",
-                    options: const [
-                      "Apartment",
-                      "Individual House",
-                      "Gated Community Flat",
-                      "Villa"
-                    ],
-                    onChanged: (value) {
-                      controller.setHomeType(value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a home type';
-                      }
-                      return null;
-                    },
-                  ),
+
+
 
                   const SizedBox(height: 12),
                   // Move In Date Dropdown
@@ -354,7 +339,25 @@ class _AddRoomPageState extends State<AddRoomPage> {
                       return null;
                     },
                   ),
+                  const SizedBox(height: 12),
 
+                  CustomTextField(
+                    focusNode: contactFocus,
+                    nextFocusNode: securityFocus,
+                    controller: contactController,
+                    label: "Contact Number*",
+                    hintText: "Enter Contact number",
+                    onChanged: (value) {
+                      controller.setMobileNumber(value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a contact number';
+                      }
+                      return null;
+                    },
+                    isContactNumber: true,
+                  ),
                   const SizedBox(height: 12),
                   Text(
                     "Select Amenities",
