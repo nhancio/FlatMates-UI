@@ -658,11 +658,11 @@ class _HomeScreen1State extends State<HomeScreen1> {
 
   Widget _buildInfoBox(String text) {
     return Padding(
-      padding: const EdgeInsets.only(left: 80.0),
+      padding: const EdgeInsets.only(left: 48.0),
       child: Center(
         child: Container(
-          height: 100,
-          width: 200,
+          height: 140,
+          width: 290,
 
           padding: EdgeInsets.all(16.0),
           decoration: BoxDecoration(
@@ -678,7 +678,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
           ),
           child: Text(
             text,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
             textAlign: TextAlign.left,
           ),
         ),

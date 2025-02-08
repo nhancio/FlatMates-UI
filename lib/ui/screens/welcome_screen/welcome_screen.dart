@@ -200,27 +200,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   final GoogleController signInController = Get.put(GoogleController());
 
   @override
-  void initState() {
-    super.initState();
-    _clearCacheIfNeeded();
-  }
-
-  void _clearCacheIfNeeded() async {
-    // Check if cache has already been cleared in this session
-    if (html.window.localStorage['cacheCleared'] != 'true') {
-      html.window.localStorage.clear();
-      html.window.sessionStorage.clear();
-
-      // Set flag to avoid cache clearing again
-      html.window.localStorage['cacheCleared'] = 'true';
-
-      // Delay the reload to allow UI rendering first
-      await Future.delayed(Duration(milliseconds: 500));
-      html.window.location.assign(html.window.location.href); // Reload the page after the UI is built
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
