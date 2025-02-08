@@ -646,7 +646,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
     backgroundColor: Colors.white,
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        controller: _scrollController,
+       // controller: _scrollController,
         child: Row(
           children: infoBoxes
               .map((text) => _buildInfoBox(text))
@@ -662,7 +662,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
       child: Center(
         child: Container(
           height: 140,
-          width: 290,
+          width: 240,
 
           padding: EdgeInsets.all(16.0),
           decoration: BoxDecoration(
@@ -678,7 +678,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
           ),
           child: Text(
             text,
-            style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             textAlign: TextAlign.left,
           ),
         ),
