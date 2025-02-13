@@ -24,6 +24,17 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
 
 
   }
+  final Map<String, String> amenitiesMap = {
+    "Fridge": "assets/amenities/fridge.png",
+    "Washing Machine": "assets/amenities/washing.png",
+    "Mattress": "assets/amenities/mattress.png",
+    "Smart TV": "assets/amenities/tv.png",
+    "Sofa": "assets/amenities/sofa.png",
+    "Dining Table": "assets/amenities/dining.png",
+    "AC": "assets/amenities/ac.png",
+    "Water Purifier": "assets/amenities/water.png",
+    "Geyser": "assets/amenities/geyser.png",
+  };
 
 
   Future<void> _loadRoomImages() async {
@@ -284,7 +295,7 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
               ),
       
               const SizedBox(height: 11),
-              RichText(
+          /*    RichText(
                 text: TextSpan(
                   text: 'Amenities: ',
                   style: const TextStyle(
@@ -303,10 +314,12 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                     ),
                   ],
                 ),
-              ),
-      
-      
-              const SizedBox(height: 11),
+              ),*/
+
+
+
+
+
               RichText(
                 text: TextSpan(
                   text: 'Security deposit: ',
@@ -411,8 +424,67 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                   ],
                 ),
               ),
-      
-      
+
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'Amenities: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600, // Medium weight for label
+                    color: Colors.black87,
+                  ),
+
+                ),
+              ),
+              const SizedBox(height: 5),
+              Wrap(
+                spacing: 16.0,
+                runSpacing: 16.0,
+                children: (widget.roomData['roomSelectedValues'] as List<dynamic>).map((amenity) {
+                  String amenityName = amenity.toString(); // Convert to string safely
+
+                  return Container(
+                    width: 80,
+                    height: 100,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300, width: 1),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2), // Soft shadow
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          amenitiesMap[amenityName] ?? 'assets/placeholder.png',
+                          width: 25, // Image width
+                          height: 25, // Image height
+                          fit: BoxFit.cover,
+                        ),
+                        const SizedBox(height: 6), // Space between image and text
+                        Text(
+                          amenityName,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black87,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
       
               const SizedBox(height: 24),
               Center(

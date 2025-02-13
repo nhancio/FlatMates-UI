@@ -17,6 +17,17 @@ class UserProfile {
     this.userEmail = '',
     this.profession = '',
   });
+  Map<String, dynamic> toMap() {
+    return {
+      'userName': userName,
+      'userEmail': userEmail,
+      'userPhoneNumber': userPhoneNumber,
+      'profession': profession,
+      'gender': gender,
+      'age': age,
+
+    };
+  }
 
   factory UserProfile.fromMap(Map<String, dynamic> map) {
     return UserProfile(

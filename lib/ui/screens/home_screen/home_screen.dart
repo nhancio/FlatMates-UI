@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/bottomnav.controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/ui/a.dart';
+import 'package:flatemates_ui/ui/b.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,10 @@ class _HomePageState extends State<HomePage> {
 
   String? selectedCity;
   final List<String> cities = [
-    'Hitech City, Hyderabad',
-    'Kondapur, Hyderabad',
-    'Marathahalli, Bangalore',
+    'Hyderabad',
+    'Bangalore',
+    'Ahmedabad',
+    'Delhi',
   ];
   List<String> filteredCities = [];
   bool showDropdown = false; // Controls visibility of dropdown list
@@ -170,6 +172,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),*/
                   // Main Content
+
                   SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
@@ -241,94 +244,105 @@ class _HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(height: 20),
                           // Search Bar with city dropdown
-                         /* Container(
+                        /*  TextButton(onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddressMapWeb(address: "New York, USA"),
+                              ),
+                            );
+                          }, child: Text("Hello")),*/
+                          Container(
+                            height: 180,
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.9),
                               borderRadius: BorderRadius.circular(12),
-
+                          
                               border: Border.all(
                                   color: Colors.grey
                                       .withOpacity(0.5)), // Adding border
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Search Bar
-                                  TextFormField(
-                                    controller: searchController,
-                                    readOnly: true, // Prevent manual typing
-                                    onTap: () {
-                                      setState(() {
-                                        showDropdown =
-                                            !showDropdown; // Toggle dropdown visibility
-                                        if (!showDropdown) {
-                                          filteredCities =
-                                              cities; // Reset list when closing dropdown
-                                        }
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      prefixIcon: Icon(Icons.search,
-                                          color: Colors.grey[600]),
-                                      hintText: selectedCity ??
-                                          'Search or select locality',
-                                      filled: true,
-                                      fillColor: Colors.grey[200],
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide.none,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Search Bar
+                                    TextFormField(
+                                      controller: searchController,
+                                      readOnly: true, // Prevent manual typing
+                                      onTap: () {
+                                        setState(() {
+                                          showDropdown =
+                                              !showDropdown; // Toggle dropdown visibility
+                                          if (!showDropdown) {
+                                            filteredCities =
+                                                cities; // Reset list when closing dropdown
+                                          }
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(Icons.search,
+                                            color: Colors.grey[600]),
+                                        hintText: selectedCity ??
+                                            'Search or select locality',
+                                        filled: true,
+                                        fillColor: Colors.grey[200],
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide.none,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  // Dropdown Items
-                                  if (showDropdown)
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.grey[300]!),
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            spreadRadius: 2,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 3),
-                                          ),
-                                        ],
-                                      ),
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        // Ensures dropdown doesn't overflow
-                                        itemCount: filteredCities.length,
-                                        itemBuilder: (context, index) {
-                                          final city = filteredCities[index];
-                                          return ListTile(
-                                            title: Text(city),
-                                            onTap: () {
-                                              setState(() {
-                                                selectedCity =
-                                                    city; // Update selected city
-                                                searchController.text =
-                                                    city; // Show in search bar
-                                                showDropdown =
-                                                    false; // Hide dropdown
-                                              });
+                                    const SizedBox(height: 10),
+                                    // Dropdown Items
+                                    if (showDropdown)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border:
+                                              Border.all(color: Colors.grey[300]!),
+                                          borderRadius: BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 5,
+                                              offset: const Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: SizedBox(
+                                          height: 90,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            physics: AlwaysScrollableScrollPhysics(), // Ensures scrolling
+                                            // Ensures dropdown doesn't overflow
+                                            itemCount: filteredCities.length,
+                                            itemBuilder: (context, index) {
+                                              final city = filteredCities[index];
+                                              return ListTile(
+                                                title: Text(city),
+                                                onTap: () {
+                                                  setState(() {
+                                                    selectedCity =
+                                                        city; // Update selected city
+                                                    searchController.text =
+                                                        city; // Show in search bar
+                                                    showDropdown =
+                                                        false; // Hide dropdown
+                                                  });
+                                                },
+                                              );
                                             },
-                                          );
-                                        },
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),*/
-                          SizedBox(
-                            height: 200,
-                            child:    HomeScreen1(),
                           ),
 
                           Column(

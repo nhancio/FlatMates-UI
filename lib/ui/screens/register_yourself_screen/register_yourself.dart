@@ -59,13 +59,24 @@ class RegisterUserScreen extends StatelessWidget {
                               ? constraints.maxWidth * 0.45
                               : double.infinity,
                         ),
-                        _buildTextField(
+                      /*  _buildTextField(
+
                           controller: controller.phoneController,
                           labelText: 'Phone number*',
                           keyboardType: TextInputType.number,
                           width: isWideScreen ? constraints.maxWidth * 0.45 : double.infinity,
                           isPhoneField: true,
                           errorText: phoneError, // Pass the error message here
+                        ),
+*/
+                        _buildTextFieldPhone(
+                          context: context,
+                          controller: controller.phoneController,
+                          labelText: 'Phone number*',
+                          keyboardType: TextInputType.number,
+                          width: isWideScreen ? constraints.maxWidth * 0.45 : double.infinity,
+                          isPhoneField: true,
+                          errorText: phoneError,
                         ),
 
 
@@ -363,4 +374,65 @@ class RegisterUserScreen extends StatelessWidget {
       }),
     );
   }
+
+  Widget _buildTextFieldPhone({
+    required TextEditingController controller,
+    required String labelText,
+    TextInputType keyboardType = TextInputType.text,
+    required double width,
+    bool isPhoneField = false, // Flag for phone validation
+    String? errorText, // Error text to show when the phone number is invalid
+    required BuildContext context, // Add context for SnackBar
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: width,
+          child: TextField(
+            controller: controller,
+            keyboardType: keyboardType,
+            inputFormatters: isPhoneField
+                ? [FilteringTextInputFormatter.digitsOnly] // Only allow digits for phone number
+                : [],
+            decoration: InputDecoration(
+              labelText: labelText,
+              border: OutlineInputBorder(),
+              errorText: errorText, // Display error message if any
+            ),
+            onChanged: (value) {
+              if (isPhoneField) {
+                // Limit input to 10 digits
+                if (value.length > 10) {
+                  controller.text = value.substring(0, 10);
+                  controller.selection = TextSelection.fromPosition(
+                      TextPosition(offset: controller.text.length));
+                }
+
+                // Validate if the number starts with 9, 8, 7, or 6
+                if (value.isNotEmpty && !RegExp(r'^[9876]\d*$').hasMatch(value)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Contact number must start with 9, 8, 7, or 6"),
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                }
+              }
+            },
+          ),
+        ),
+        if (errorText != null && errorText.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0),
+            child: Text(
+              errorText,
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ),
+      ],
+    );
+  }
+
 }

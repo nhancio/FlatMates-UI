@@ -306,7 +306,6 @@ class _AddRoomPageState extends State<AddRoomPage> {
                   ),
 
 
-
                   const SizedBox(height: 12),
                   // Move In Date Dropdown
                   CustomDropdownField(
@@ -341,7 +340,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                   ),
                   const SizedBox(height: 12),
 
-                  CustomTextField(
+                /*  CustomTextField(
                     focusNode: contactFocus,
                     nextFocusNode: securityFocus,
                     controller: contactController,
@@ -357,7 +356,37 @@ class _AddRoomPageState extends State<AddRoomPage> {
                       return null;
                     },
                     isContactNumber: true,
+                  ),*/
+                  CustomTextField(
+                    focusNode: contactFocus,
+                    nextFocusNode: securityFocus,
+                    controller: contactController,
+                    label: "Contact Number*",
+                    hintText: "Enter Contact number",
+                    onChanged: (value) {
+                      if (value.isNotEmpty && !RegExp(r'^[9876]\d*$').hasMatch(value)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Contact number must start with 9, 8, 7, or 6"),
+                            backgroundColor: Colors.red,
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                      controller.setMobileNumber(value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a contact number';
+                      }
+                      if (!RegExp(r'^[9876]\d*$').hasMatch(value)) {
+                        return 'Contact number must start with 9, 8, 7, or 6';
+                      }
+                      return null;
+                    },
+                    isContactNumber: true,
                   ),
+
                   const SizedBox(height: 12),
                   Text(
                     "Select Amenities",
@@ -393,7 +422,6 @@ class _AddRoomPageState extends State<AddRoomPage> {
                     "Select Amenities",
                     style: TextStyle(
                       fontSize: 16,
-
                       color: Color(0xff949292),
                     ),
                   ),
@@ -409,8 +437,8 @@ class _AddRoomPageState extends State<AddRoomPage> {
                       width: 1,
                     ),
                   ),
-                  dialogHeight: 400, // Adjust height
-                  dialogWidth: 300, // Adjust width
+                  dialogHeight: 400,
+                  dialogWidth: 300,
 
                 ),
 

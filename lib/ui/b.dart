@@ -1483,3 +1483,65 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   }
 }
 */
+import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+
+class AddressMapWeb extends StatefulWidget {
+  final String address;
+
+  const AddressMapWeb({Key? key, required this.address}) : super(key: key);
+
+  @override
+  _AddressMapWebState createState() => _AddressMapWebState();
+}
+
+class _AddressMapWebState extends State<AddressMapWeb> {
+  late InAppWebViewController _webViewController;
+  String googleMapsApiKey = "YOUR_GOOGLE_MAPS_API_KEY";
+
+  @override
+  Widget build(BuildContext context) {
+    String mapHtml = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <script src="https://maps.googleapis.com/maps/api/js?key=$googleMapsApiKey"></script>
+      <script>
+        function initMap() {
+          var geocoder = new google.maps.Geocoder();
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: { lat: 0, lng: 0 }
+          });
+
+          geocoder.geocode({ 'address': '${widget.address}' }, function(results, status) {
+            if (status === 'OK') {
+              map.setCenter(results[0].geometry.location);
+              new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+              });
+            } else {
+              alert('Geocode was not successful: ' + status);
+            }
+          });
+        }
+      </script>
+    </head>
+    <body onload="initMap()">
+      <div id="map" style="width:100%; height:100vh;"></div>
+    </body>
+    </html>
+    """;
+
+    return Scaffold(
+      appBar: AppBar(title: Text("Map View")),
+      body: InAppWebView(
+        initialData: InAppWebViewInitialData(data: mapHtml),
+        onWebViewCreated: (controller) {
+          _webViewController = controller;
+        },
+      ),
+    );
+  }
+}

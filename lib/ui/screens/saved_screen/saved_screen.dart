@@ -1,11 +1,13 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/homemates.controller.dart';
 import 'package:flatemates_ui/controllers/room_controller.dart';
+import 'package:flatemates_ui/models/userprofile.model.dart';
 import 'package:flatemates_ui/ui/screens/homemate_details_screen/homemate_details.dart';
 import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../res/bottom/bottom_bar.dart';
 import 'package:get/get.dart';
@@ -26,11 +28,19 @@ class _HomemateListState extends State<HomemateList> {
   final RxInt selectedAge = 0.obs;
   final RxString selectedProfession = ''.obs;
   String userGender = 'Loading...';
+  UserProfile? loggedInUser;
+
 
   @override
   void initState() {
     super.initState();
     fetchUserGender(userId!);
+    getLoggedInUserProfile(FirebaseAuth.instance.currentUser?.uid ?? "").then((userData) {
+
+      setState(() {
+        loggedInUser = userData;
+      });
+    });
   }
 
 
@@ -130,10 +140,52 @@ Explore more details here: $roomUrl
     setState(() {});
   }
 
+
+  Future<UserProfile?> getLoggedInUserProfile(String uid) async {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    if (userDoc.exists) {
+      return UserProfile.fromMap(userDoc.data() as Map<String, dynamic>);
+    }
+    return null; // Return null if user does not exist
+  }
+
+  double calculateMatchPercentage(Map<String, dynamic> userProfile, Map<String, dynamic> homemateProfile) {
+    double score = 0;
+    double totalWeight = 10.0;
+
+
+    if (userProfile['gender'] == homemateProfile['gender']) score += 2;
+
+
+    if (userProfile['profession'] == homemateProfile['profession']) score += 3;
+
+
+    int ageDiff = (userProfile['age'] - homemateProfile['age']).abs();
+    if (ageDiff <= 2) {
+      score += 2;
+    } else if (ageDiff <= 5) {
+      score += 1;
+    }
+
+
+    if (userProfile['preference'] == homemateProfile['preference']) score += 3;
+
+
+    double randomFactor = (5 - (Random().nextInt(10))) / 100.0;
+
+
+    double finalPercentage = ((score / totalWeight) * 100) * (1 + randomFactor);
+
+    return finalPercentage.clamp(50.0, 98.0); // Ensures no match is too low or too high
+  }
+
   @override
   Widget build(BuildContext context) {
     final HomemateController homemateController = Get.put(HomemateController());
-
+    if (loggedInUser == null) {
+      return const Center(child: Text(""));  // Show a loader until data loads
+    }
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context); // Go back to Home
@@ -312,6 +364,9 @@ Explore more details here: $roomUrl
               itemCount: filteredHomemates.length,
               itemBuilder: (context, index) {
                 final homemate = filteredHomemates[index];
+                final matchPercentage = calculateMatchPercentage(loggedInUser!.toMap(), homemate.toMap());
+
+
 
                 return GestureDetector(
                   onTap: () {
@@ -379,6 +434,8 @@ Explore more details here: $roomUrl
                                     Text('Profession: ${homemate.profession}',
                                         style:
                                         const TextStyle(color: Colors.white)),
+                                    Text('Match: ${matchPercentage.toStringAsFixed(1)}%',   style:
+                                    const TextStyle(color: Colors.white)),
                                   ],
                                 ),
                               ),
