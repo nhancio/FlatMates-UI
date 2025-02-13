@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/savedItemScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RoomDetailPage extends StatefulWidget {
@@ -21,6 +23,7 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
   void initState() {
     super.initState();
     _loadRoomImages();
+    _getLatLngFromAddress();
 
 
   }
@@ -63,6 +66,23 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
       print('Error loading room images: ${e.toString()}');
     }
   }
+  LatLng? _location;
+  late GoogleMapController mapController;
+
+
+  Future<void> _getLatLngFromAddress() async {
+    try {
+      List<Location> locations = await locationFromAddress(widget.roomData['address']);
+      if (locations.isNotEmpty) {
+        setState(() {
+          _location = LatLng(locations.first.latitude, locations.first.longitude);
+        });
+      }
+    } catch (e) {
+      print("Error fetching location: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -204,6 +224,26 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                       ),
                     ),
                   ],
+                ),
+              ),
+              _location == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : SizedBox(
+                height: 300,
+                width: double.infinity,
+                child: GoogleMap(
+                  onMapCreated: (controller) => mapController = controller,
+                  initialCameraPosition: CameraPosition(
+                    target: _location!,
+                    zoom: 14,
+                  ),
+                  markers: {
+                    Marker(
+                      markerId: const MarkerId("roomLocation"),
+                      position: _location!,
+                      infoWindow: InfoWindow(title: widget.roomData['address']),
+                    ),
+                  },
                 ),
               ),
               const SizedBox(height: 11),

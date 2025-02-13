@@ -561,7 +561,12 @@ class _RoomListState extends State<RoomList> {
     "Individual House",
     "Gated Community Flat",
     "Villa"];
-
+  @override
+  void initState() {
+    super.initState();
+    final selectedCity = Get.arguments?['city'] ?? "";
+    searchController.text = selectedCity;
+  }
 
   /*void saveRoom(Room room) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;

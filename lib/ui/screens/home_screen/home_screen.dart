@@ -269,31 +269,22 @@ class _HomePageState extends State<HomePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Search Bar
-                                    TextFormField(
+                                    TextField(
                                       controller: searchController,
-                                      readOnly: true, // Prevent manual typing
-                                      onTap: () {
+                                      decoration: InputDecoration(
+                                        hintText: "Search City",
+                                        prefixIcon: Icon(Icons.search),
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                      ),
+                                      onChanged: (query) {
                                         setState(() {
-                                          showDropdown =
-                                              !showDropdown; // Toggle dropdown visibility
-                                          if (!showDropdown) {
-                                            filteredCities =
-                                                cities; // Reset list when closing dropdown
-                                          }
+                                          filteredCities = cities
+                                              .where((city) =>
+                                              city.toLowerCase().contains(query.toLowerCase()))
+                                              .toList();
+                                          showDropdown = query.isNotEmpty;
                                         });
                                       },
-                                      decoration: InputDecoration(
-                                        prefixIcon: Icon(Icons.search,
-                                            color: Colors.grey[600]),
-                                        hintText: selectedCity ??
-                                            'Search or select locality',
-                                        filled: true,
-                                        fillColor: Colors.grey[200],
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                      ),
                                     ),
                                     const SizedBox(height: 10),
                                     // Dropdown Items
@@ -333,7 +324,10 @@ class _HomePageState extends State<HomePage> {
                                                     showDropdown =
                                                         false; // Hide dropdown
                                                   });
-                                                },
+
+                                                              if (city == "Ahmedabad") {
+                                                    Get.to(() => RoomList(), arguments: {'city': city});}
+                                                         },
                                               );
                                             },
                                           ),

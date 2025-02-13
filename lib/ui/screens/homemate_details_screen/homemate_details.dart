@@ -52,7 +52,6 @@ class HomeMateDetailsScreen extends StatelessWidget {
             'HomeMate Details',
             style: TextStyle(
               color: Color(0xFFB60F6E),
-
             ),
           ),
         ),
