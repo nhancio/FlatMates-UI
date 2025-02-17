@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:html' as html;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -118,24 +119,6 @@ class _HomemateListState extends State<HomemateList> {
   }
 
 
-
-  void shareHomemateDetails(homemate) {
-    // Construct the unique URL for the room
-    final String roomUrl = 'https://homemates-app.web.app/room/${userId}';
-
-    // Create the shareable content
-    final String shareText = '''
-Check out this homemate:
-Name: ${homemate.userName}
-Age: ${homemate.age}
-Profession: ${homemate.profession}
-
-Explore more details here: $roomUrl
-''';
-
-
-    Share.share(shareText);
-  }
   Future<void> _refresh() async {
     setState(() {});
   }
@@ -1072,31 +1055,26 @@ class _RoomListState extends State<RoomList> {
                                     ),
                                     // Share Button
                                     SizedBox(width: 8,),
-                               /*     ElevatedButton.icon(
-                                      onPressed: () async {
-                                        final String shareContent =
-                                            'Check out this room:\nRoom Type: ${room.roomType}\nAddress: ${room.address}\nRent: ${room.roomRent}\nContact: ${room.mobileNumber}';
+                                 /*   ElevatedButton.icon(
+                                      onPressed: () {
+                                        User? user = FirebaseAuth.instance.currentUser;
 
-                                        final String whatsappUrl = 'whatsapp://send?text=$shareContent';
+                                        if (user == null) {
 
-                                        // Check if WhatsApp is installed
-                                        if (await canLaunch(whatsappUrl)) {
-                                          await launch(whatsappUrl);
                                         } else {
-                                          Get.snackbar(
-                                            'Error',
-                                            'WhatsApp is not installed',
-                                            snackPosition: SnackPosition.TOP,
-                                            backgroundColor: Colors.red.shade100,
-                                            colorText: Colors.black,
-                                            duration: Duration(seconds: 2),
+                                          // If the user is logged in, share the content
+                                          final String shareText = "Check out this amazing website! 🚀\nhttps://homemates-app.web.app/";
+
+                                          html.window.open(
+                                            "https://api.whatsapp.com/send?text=${Uri.encodeComponent(shareText)}",
+                                            "_blank",
                                           );
                                         }
                                       },
                                       icon: const Icon(Icons.share),
                                       label: const Text('Share'),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xffFAD4E4), // Share button color
+                                        backgroundColor: const Color(0xffFAD4E4),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(8),
                                         ),

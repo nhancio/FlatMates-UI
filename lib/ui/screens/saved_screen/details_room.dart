@@ -1,10 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
-import 'package:flatemates_ui/ui/screens/saved_screen/savedItemScreen.dart';
+
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 class RoomDetailPage extends StatefulWidget {
@@ -23,8 +21,6 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
   void initState() {
     super.initState();
     _loadRoomImages();
-    _getLatLngFromAddress();
-
 
   }
   final Map<String, String> amenitiesMap = {
@@ -66,22 +62,7 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
       print('Error loading room images: ${e.toString()}');
     }
   }
-  LatLng? _location;
-  late GoogleMapController mapController;
 
-
-  Future<void> _getLatLngFromAddress() async {
-    try {
-      List<Location> locations = await locationFromAddress(widget.roomData['address']);
-      if (locations.isNotEmpty) {
-        setState(() {
-          _location = LatLng(locations.first.latitude, locations.first.longitude);
-        });
-      }
-    } catch (e) {
-      print("Error fetching location: $e");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,26 +207,7 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                   ],
                 ),
               ),
-              _location == null
-                  ? const Center(child: CircularProgressIndicator())
-                  : SizedBox(
-                height: 300,
-                width: double.infinity,
-                child: GoogleMap(
-                  onMapCreated: (controller) => mapController = controller,
-                  initialCameraPosition: CameraPosition(
-                    target: _location!,
-                    zoom: 14,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId("roomLocation"),
-                      position: _location!,
-                      infoWindow: InfoWindow(title: widget.roomData['address']),
-                    ),
-                  },
-                ),
-              ),
+
               const SizedBox(height: 11),
               RichText(
                 text: TextSpan(
@@ -555,61 +517,6 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
           ),
         ),
       ),
-    );/*Scaffold(
-      appBar: AppBar(title: Text("Room Details")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Room Type: ${roomData['roomType']}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            Text("Home Type: ${roomData['homeType']}"),
-            SizedBox(height: 8),
-            Text("Address: ${roomData['address']}"),
-            SizedBox(height: 8),
-            Text("Rent: ${roomData['roomRent']}"),
-            SizedBox(height: 8),
-            Text("Move-in Date: ${roomData['roomMoveInDate']}"),
-            SizedBox(height: 8),
-            Text("Occupation Per Room: ${roomData['roomOccupationPerRoom']}"),
-            SizedBox(height: 8),
-            Text("Mobile Number: ${roomData['roomMobileNumber']}"),
-            SizedBox(height: 8),
-            Text("User ID: ${roomData['userId']}"),
-            SizedBox(height: 8),
-            Text("Selected Values: ${roomData['roomSelectedValues']}"),
-            SizedBox(height: 8),
-            roomData['roomProfileImages'] != null
-                ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Room Images:"),
-                SizedBox(height: 8),
-                SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: roomData['roomProfileImages'].length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Image.network(
-                          roomData['roomProfileImages'][index],
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            )
-                : Container(),
-          ],
-        ),
-      ),
-    );*/
+    );
   }
 }
