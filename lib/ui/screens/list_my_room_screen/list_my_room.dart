@@ -304,10 +304,8 @@ class _AddRoomPageState extends State<AddRoomPage> {
 
                   const SizedBox(height: 12),
                   // Move In Date Dropdown
-                  CustomDropdownField(
-                    label: "Move in Date",
-                    hintText: "Select an option",
-                    options: const ["Immediately", "1 Month", "3 Months"],
+                  CustomDatePickerField(
+                    label: "Move-in Date",
                     onChanged: (value) {
                       controller.setMoveInDate(value);
                     },
@@ -318,6 +316,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                       return null;
                     },
                   ),
+
                   const SizedBox(height: 12),
                   // Occupation per room Dropdown
                   CustomDropdownField(
@@ -693,6 +692,61 @@ class CustomDropdownField extends StatelessWidget {
           validator: validator,
         ),
       ],
+    );
+  }
+}
+
+
+class CustomDatePickerField extends StatefulWidget {
+  final String label;
+  final Function(String) onChanged;
+  final String? Function(String?)? validator;
+
+  const CustomDatePickerField({
+    required this.label,
+    required this.onChanged,
+    this.validator,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _CustomDatePickerFieldState createState() => _CustomDatePickerFieldState();
+}
+
+class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
+  String? selectedDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        selectedDate = "${pickedDate.toLocal()}".split(' ')[0]; // Format: YYYY-MM-DD
+      });
+      widget.onChanged(selectedDate!);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      readOnly: true,
+      decoration: InputDecoration(
+        labelText: widget.label,
+        hintText: "Select Move-in Date",
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.calendar_today),
+          onPressed: () => _selectDate(context),
+        ),
+      ),
+      controller: TextEditingController(text: selectedDate),
+      onTap: () => _selectDate(context),
+      validator: widget.validator,
     );
   }
 }

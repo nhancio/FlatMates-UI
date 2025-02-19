@@ -191,6 +191,7 @@ import '../../../res/colors/colors.dart';
 import '../../../res/dimensions/dimensions.dart';
 import '../../../res/font/text_style.dart';
 import 'dart:html' as html;
+
 class WelcomeScreen extends StatefulWidget {
   @override
   State<WelcomeScreen> createState() => _WelcomeScreenState();
