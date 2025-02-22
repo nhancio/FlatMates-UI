@@ -13,6 +13,7 @@ class RoomController extends GetxController {
   var roomType = ''.obs;
   var homeType = ''.obs;
   var address = ''.obs;
+  var addressType = ''.obs;
   var roomRent = ''.obs;
   var moveInDate = ''.obs;
   var occupationPerRoom = ''.obs;
@@ -53,6 +54,10 @@ class RoomController extends GetxController {
   // Functions to handle data changes
   void setRoomType(String value) {
     roomType.value = value;
+  }
+
+  void setAddressType(String value) {
+    addressType.value = value;
   }
 
   void setHomeType(String value) {
@@ -134,17 +139,16 @@ class RoomController extends GetxController {
         'roomType': roomType.value,
         'homeType': homeType.value,
         'address': address.value,
+        'addressType': addressType.value,
         'roomRent': roomRent.value,
         'moveInDate': moveInDate.value,
         'occupationPerRoom': occupationPerRoom.value,
         'mobileNumber': mobileNumber.value,
         'userId': user.uid, // Store the user's UID
         'selectedValues': selectedValues.toList(), // Store selected values (single or multiple)
-
         'createdAt': FieldValue
             .serverTimestamp(), // Timestamp of the room listing creation
         'images': imageUrls,
-
         'securityDeposit': securityDeposit.value,
         'brokerage': brokerage.value,
         'setupCost': setupCost.value,

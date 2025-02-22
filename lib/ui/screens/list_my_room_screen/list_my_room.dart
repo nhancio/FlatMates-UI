@@ -199,6 +199,21 @@ class _AddRoomPageState extends State<AddRoomPage> {
                     isContactNumber: false,
                   ),
                   const SizedBox(height: 12),
+                  CustomDropdownField(
+                    label: "Select City*",
+                    hintText: "Select City",
+                    options: const ["Ahmedabad", "Hyderabad", "Bangalore"],
+                    onChanged: (value) {
+                      controller.setAddressType(value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a city';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
                   // Room Type Dropdown
                   CustomDropdownField(
                     label: "Room Type*",
@@ -304,17 +319,25 @@ class _AddRoomPageState extends State<AddRoomPage> {
 
                   const SizedBox(height: 12),
                   // Move In Date Dropdown
-                  CustomDatePickerField(
-                    label: "Move-in Date",
-                    onChanged: (value) {
-                      controller.setMoveInDate(value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please select a move-in date';
-                      }
-                      return null;
-                    },
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Move-in Date" ,style: const TextStyle(fontWeight: FontWeight.bold)),
+
+                      SizedBox(height: 5,),
+                      CustomDatePickerField(
+                        label: "Move-in Date",
+                        onChanged: (value) {
+                          controller.setMoveInDate(value);
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a move-in date';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
 
                   const SizedBox(height: 12),
@@ -718,10 +741,30 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
 
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
+
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData(
+            primaryColor: Colors.purple, // Primary color (affects header)
+            hintColor: Colors.green, // Affects selected text color
+            colorScheme: ColorScheme.light(
+              primary: Colors.purple, // Header background & selected date
+              onPrimary: Colors.white, // Text color on header
+              onSurface: Colors.black, // Text color on calendar
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.purple, // Button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (pickedDate != null) {
@@ -737,6 +780,17 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
     return TextFormField(
       readOnly: true,
       decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.grey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Color(0xFFB60F6E)),
+        ),
         labelText: widget.label,
         hintText: "Select Move-in Date",
         suffixIcon: IconButton(

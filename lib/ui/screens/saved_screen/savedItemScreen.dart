@@ -3,14 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/room_controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
-import 'package:flatemates_ui/ui/screens/room_details_screen/room_details.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/details_room.dart';
 import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
-
-import '../homemate_details_screen/homemate_details.dart';
 
 class SavedTabBarScreen extends StatefulWidget {
   @override
@@ -674,9 +671,7 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
-        /*   appBar: AppBar(
-          title: const Text("Saved Rooms"),
-        ),*/
+
         body: RefreshIndicator(
           onRefresh: _refresh,
           child: StreamBuilder<QuerySnapshot>(
@@ -689,6 +684,7 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
+
               if (snapshot.hasError) {
                 return const Center(child: Text('Error loading rooms'));
               }
@@ -702,8 +698,7 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   final room = snapshot.data!.docs[index];
-                  final roomId = room.id;  // Get the document ID from Firestore
-
+                  final roomId = room.id;
                   return InkWell(
                     onTap: () {
                       Navigator.push(
@@ -714,6 +709,7 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                               'roomType': room['roomType'],
                               'homeType': room['homeType'],
                               'address': room['address'],
+                              'addressType': room['addressType'] ?? "N/A",
                               'roomRent': room['roomRent'],
                               'roomMoveInDate': room['roomMoveInDate'],
                               'roomOccupationPerRoom': room['roomOccupationPerRoom'],
@@ -849,8 +845,8 @@ class _SavedRoomsScreenState extends State<SavedRoomsScreen> {
                                           return;
                                         }
 
-                                        // Call deleteRoom function and pass roomId
-                                        await deleteRoom(roomId); // Call the delete function with roomId
+
+                                        await deleteRoom(roomId);
 
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(content: Text('Room removed successfully.')),

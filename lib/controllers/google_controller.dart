@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/routes_get.dart';
 
 class GoogleController extends GetxController {
+  var preferences = <String>[].obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   var isLoading = false.obs;
@@ -29,6 +30,7 @@ class GoogleController extends GetxController {
   void onInit() {
     super.onInit();
     _checkLoginStatus();();
+    fetchPreferences();
   }
 
   // Check if the user is already logged in
@@ -47,6 +49,30 @@ class GoogleController extends GetxController {
     }
 
   }
+
+  Future<void> fetchPreferences() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        print('User not authenticated');
+        return;
+      }
+
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      DocumentSnapshot userDoc = await firestore.collection('users').doc(user.uid).get();
+
+      if (userDoc.exists) {
+        var data = userDoc.data() as Map<String, dynamic>;
+        if (data.containsKey('preferences')) {
+          preferences.value = List<String>.from(data['preferences']);
+        }
+      }
+    } catch (e) {
+      print('Error fetching preferences: $e');
+    }
+  }
+
 
   // Google Sign-In method
   Future<void> signInWithGoogle() async {

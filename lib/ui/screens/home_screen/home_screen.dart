@@ -42,30 +42,18 @@ class _HomePageState extends State<HomePage> {
     'Hyderabad',
     'Bangalore',
     'Ahmedabad',
-    'Delhi',
   ];
   List<String> filteredCities = [];
-  bool showDropdown = false; // Controls visibility of dropdown list
+  bool showDropdown = false;
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    filteredCities = cities; // Initialize filtered list with all cities
-
+    filteredCities = cities;
   }
 
-  void filterCities(String query) {
-    setState(() {
-      if (query.isEmpty) {
-        filteredCities = cities;
-      } else {
-        filteredCities = cities
-            .where((city) => city.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      }
-    });
-  }
+
 
   Future<Map<String, String>> fetchUserDetails(String userId) async {
     try {
@@ -143,8 +131,8 @@ class _HomePageState extends State<HomePage> {
 
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context); // Go back to Home
-        return false; // Prevent default back action (no dialog here)
+        Navigator.pop(context);
+        return false;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -322,10 +310,11 @@ class _HomePageState extends State<HomePage> {
                                                     searchController.text =
                                                         city; // Show in search bar
                                                     showDropdown =
-                                                        false; // Hide dropdown
+                                                        false;
                                                   });
 
-                                                              if (city == "Ahmedabad") {
+                                                              if (city == "Ahmedabad" || city =="Hyderabad" || city == "Bangalore") {
+
                                                     Get.to(() => RoomList(), arguments: {'city': city});}
                                                          },
                                               );

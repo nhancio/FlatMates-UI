@@ -1,4 +1,3 @@
-import 'package:flatemates_ui/Jay/ui/screens/profile_screen/profile_screen.dart';
 import 'package:flatemates_ui/controllers/google_controller.dart';
 import 'package:flatemates_ui/res/bottom/bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,11 @@ class ProfileIntroScreen extends StatefulWidget {
 }
 
 class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
-  // GetX controller for managing the user profile
+  @override
+  void initState() {
+    super.initState();
+    profileController.fetchPreferences();
+  }
   final GoogleController profileController = Get.put(GoogleController());
 
   // Controllers for text fields (UI binding)
@@ -29,7 +32,23 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
   final TextEditingController smokingController = TextEditingController();
 
   final TextEditingController petController = TextEditingController();
-
+// Map of preferences and their corresponding icons
+  final Map<String, String> preferenceIcons = {
+    'Pet Lover': 'assets/icons/pet.png',
+    'Gym Person': 'assets/icons/gym.png',
+    'Travel Person': 'assets/icons/travel.png',
+    'Party Person': 'assets/icons/party.png',
+    'Music Person': 'assets/icons/music.png',
+    'Vegan Person': 'assets/icons/vegan.png',
+    'Sports Person': 'assets/icons/sport.png',
+    'Yoga Person': 'assets/icons/yoga.png',
+    'Non-Alcoholic': 'assets/icons/alcoholic.png',
+    'Shopping Person': 'assets/icons/shopping.png',
+    'Friendly Person': 'assets/icons/friends.png',
+    'Studious': 'assets/icons/studious.png',
+    'Growth': 'assets/icons/growth.png',
+    'Non-Smoker': 'assets/icons/non_smoker.png',
+  };
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,13 +156,61 @@ class _ProfileIntroScreenState extends State<ProfileIntroScreen> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
-                _buildPreferenceRow(),
+               // _buildPreferenceRow(),
+                Obx(() {
+                  return profileController.preferences.isNotEmpty
+                      ? Wrap(
+                    spacing: 12.0,
+                    runSpacing: 12.0,
+                    children: profileController.preferences.map((preference) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        elevation: 4,
+                        shadowColor: Colors.grey.withOpacity(0.3),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (preferenceIcons.containsKey(preference))
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 6.0),
+                                  child: Image.asset(
+                                    preferenceIcons[preference]!,
+                                    width: 28,
+                                    height: 28,
+                                  ),
+                                ),
+                              Text(
+                                preference,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFFB60F6E), // Match theme color
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  )
+                      : const Center(
+                    child: Text(
+                      "No preferences saved",
+                      style: TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                  );
+                }),
+
                 const SizedBox(height: 20),
                 // Save Button
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Call the saveProfile function from the controller
+
                       profileController.saveProfile(
                         gender: genderController.text,
                         age: int.tryParse(ageController.text) ?? 0,

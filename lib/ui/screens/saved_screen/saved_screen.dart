@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'dart:html' as html;
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/homemates.controller.dart';
@@ -538,12 +537,14 @@ class _RoomListState extends State<RoomList> {
   String? selectedOccupation;
   double? selectedRent;
   List<String> roomTypes = ["1BHK", "2BHK", "3BHK"];
+  List<String> addressType = ["Ahmedabad", "Hyderabad", "Bangalore"];
   List<String> moveDate = ["Immediately", "1 Month", "3 Months"];
   List<String> occupation = ["1 Person", "2 Persons", "3 Persons"];
   List<String> homeTypes = [ "Apartment",
     "Individual House",
     "Gated Community Flat",
     "Villa"];
+
   @override
   void initState() {
     super.initState();
@@ -551,61 +552,7 @@ class _RoomListState extends State<RoomList> {
     searchController.text = selectedCity;
   }
 
-  /*void saveRoom(Room room) async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    var uuid = Uuid();
 
-    String? userId = _auth.currentUser?.uid;
-    if (userId == null) {
-      print("User not logged in.");
-      return;
-    }
-
-    try {
-      // Generate a unique ID for each room
-      String roomId = uuid.v4();
-
-      DocumentReference roomRef = _firestore
-          .collection('saved_Rooms')
-          .doc(userId)
-          .collection('savedRooms')
-          .doc(roomId); // Use unique ID
-
-      await roomRef.set({
-        'roomId': roomId, // Store room ID
-        'roomType': room.roomType,
-        'homeType': room.homeType,
-        'address': room.address,
-        'roomRent': room.roomRent,
-        'roomMoveInDate': room.moveInDate,
-        'roomOccupationPerRoom': room.occupationPerRoom,
-        'roomMobileNumber': room.mobileNumber,
-        'userId': userId,
-        'roomSelectedValues': room.selectedValues,
-        'roomProfileImages': room.profileImages,
-      });
-      Get.snackbar(
-        'Success',
-        'Room saved successfully!',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.grey.shade100,
-        colorText: Colors.black,
-        duration: Duration(seconds: 2),
-      );
-
-      print('Homemate saved successfully');
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed  saving room',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.black,
-        duration: Duration(seconds: 3),
-      );
-    }
-  }*/
 
   void saveRoom(Room room) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -661,6 +608,7 @@ class _RoomListState extends State<RoomList> {
         'description': room.description,
         'securityDeposit': room.securityDeposit,
         'setupCost': room.setup,
+        'addressType': room.addressType,
       });
 
       Get.snackbar(
@@ -936,13 +884,13 @@ class _RoomListState extends State<RoomList> {
                         .toList();
                   }
 
-
                   if (filteredRooms.isEmpty) {
                     return const Center(child: Text('No rooms available'));
                   }
                   String query = searchController.text.toLowerCase();
                   if (query.isNotEmpty) {
-                    filteredRooms = filteredRooms.where((room) => room.address.toLowerCase().contains(query)).toList();
+                    filteredRooms = filteredRooms.where((room) => room.addressType.toLowerCase().contains(query)||
+                        room.address.toLowerCase().contains(query.toLowerCase())).toList();
                   }
 
                   if (filteredRooms.isEmpty) {

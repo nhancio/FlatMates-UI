@@ -73,6 +73,7 @@ class RoomControllerFirebase extends GetxController {
     }
   }
 }*/
+
   Future<void> fetchSavedRooms(String userId) async {
     try {
       final querySnapshot = await FirebaseFirestore.instance
@@ -110,6 +111,7 @@ class RoomControllerFirebase extends GetxController {
 class Room {
 
   final String address;
+  final String addressType;
   final String homeType;
   final String moveInDate;
   final String occupationPerRoom;
@@ -127,6 +129,7 @@ class Room {
 
   Room({
     required this.address,
+    required this.addressType,
     required this.homeType,
     required this.moveInDate,
     required this.occupationPerRoom,
@@ -147,6 +150,7 @@ class Room {
   Map<String, dynamic> toMap() {
     return {
       'address': address,
+      'addressType': addressType,
       'homeType': homeType,
       'moveInDate': moveInDate,
       'occupationPerRoom': occupationPerRoom,
@@ -167,6 +171,7 @@ class Room {
 
     return Room(
       address: map['address'] ?? '',
+      addressType: map['addressType'] ?? '',
       homeType: map['homeType'] ?? '',
       moveInDate: map['moveInDate'] ?? '',
       occupationPerRoom: map['occupationPerRoom'] ?? '',

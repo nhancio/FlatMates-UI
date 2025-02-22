@@ -207,14 +207,34 @@ class _RoomDetailPageState extends State<RoomDetailPage> {
                   ],
                 ),
               ),
-
+              const SizedBox(height: 11),
+              RichText(
+                text: TextSpan(
+                  text: 'City: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:widget.roomData['addressType'],
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal,
+                        color: Color(0xff100f0f),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 11),
               RichText(
                 text: TextSpan(
                   text: 'Home Type: ',
                   style: const TextStyle(
                     fontSize: 18,
-                    fontWeight: FontWeight.w600, // Medium weight for label
+                    fontWeight: FontWeight.w600,
                     color: Colors.black87,
                   ),
                   children: [
