@@ -1,13 +1,9 @@
 import 'dart:async';
-import 'dart:html' as html;
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flatemates_ui/controllers/bottomnav.controller.dart';
 import 'package:flatemates_ui/controllers/tab.controller.dart';
-import 'package:flatemates_ui/ui/a.dart';
-import 'package:flatemates_ui/ui/b.dart';
 import 'package:flatemates_ui/ui/screens/list_my_room_screen/list_my_room.dart';
 import 'package:flatemates_ui/ui/screens/saved_screen/saved_screen.dart';
 import 'package:flutter/material.dart';

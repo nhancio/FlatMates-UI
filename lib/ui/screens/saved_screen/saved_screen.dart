@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../res/bottom/bottom_bar.dart';
 import 'package:get/get.dart';
-import 'package:share_plus/share_plus.dart';
+
 
 class HomemateList extends StatefulWidget {
   final String userId;
