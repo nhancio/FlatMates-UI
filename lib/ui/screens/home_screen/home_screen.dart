@@ -116,6 +116,196 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     if (userId == null) {
       return Scaffold(
+        backgroundColor: Colors.white,
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              bool isWideScreen = constraints.maxWidth > 600;
+              return Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isWideScreen ? 100.0 : 20.0,
+                        vertical: 10.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Hi, let's find peace for you!",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFB60F6E),
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => Get.toNamed(AppRoutes.welcome),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFB60F6E),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Sign In',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Image.asset(
+                                      'assets/icons/google.png',
+                                      height: 20,
+                                      width: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            height: 180,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.grey.withOpacity(0.5)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextField(
+                                      controller: searchController,
+                                      decoration: InputDecoration(
+                                        hintText: "Search City",
+                                        prefixIcon: Icon(Icons.search),
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                      ),
+                                      onChanged: (query) {
+                                        setState(() {
+                                          filteredCities = cities
+                                              .where((city) =>
+                                              city.toLowerCase().contains(query.toLowerCase()))
+                                              .toList();
+                                          showDropdown = query.isNotEmpty;
+                                        });
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                    if (showDropdown)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(color: Colors.grey[300]!),
+                                          borderRadius: BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 5,
+                                              offset: const Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: SizedBox(
+                                          height: 90,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            physics: AlwaysScrollableScrollPhysics(),
+                                            itemCount: filteredCities.length,
+                                            itemBuilder: (context, index) {
+                                              final city = filteredCities[index];
+                                              return ListTile(
+                                                title: Text(city),
+                                                onTap: () {
+                                                  setState(() {
+                                                    selectedCity = city;
+                                                    searchController.text = city;
+                                                    showDropdown = false;
+                                                  });
+                                                  if (city == "Ahmedabad" || city =="Hyderabad" || city == "Bangalore") {
+                                                    Get.to(() => RoomList(), arguments: {'city': city});
+                                                  }
+                                                },
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => Get.toNamed(AppRoutes.welcome),
+                                    child: _buildServiceCard(
+                                      'assets/images/look_roommate.png',
+                                      160.0,
+                                      160.0,
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => Get.toNamed(AppRoutes.welcome),
+                                    child: _buildServiceCard(
+                                      'assets/images/look_room.png',
+                                      160.0,
+                                      160.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => Get.toNamed(AppRoutes.welcome),
+                                    child: _buildServiceCard(
+                                      'assets/images/list_room.png',
+                                      160.0,
+                                      160.0,
+                                    ),
+                                  ),
+                                  _buildUpcomingFeatureCard(),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      );
+    }
+
+    // Rest of the existing build method for logged-in users...
+    if (userId == null) {
+      return Scaffold(
         body: Center(
           child: Text(
             'User not logged in. Please log in first.',
@@ -578,6 +768,48 @@ class _HomePageState extends State<HomePage> {
           ),
           // Optionally, you can add a title or other content here
         ],
+      ),
+    );
+  }
+
+  Widget _buildUpcomingFeatureCard() {
+    return Padding(
+      padding: EdgeInsets.only(top: 20.0, right: 10),
+      child: Container(
+        height: 140.0,
+        width: 140.0,
+        child: Card(
+          color: Color(0xffF8E7F1),
+          elevation: 6,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 1.0, top: 1),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Upcoming Features",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 6),
+                Text(
+                  "AI Match Making",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black54,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

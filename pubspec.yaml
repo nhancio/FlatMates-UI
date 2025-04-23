@@ -96,6 +96,10 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/amenities/
+    - assets/icons/night_owl.png
+    - assets/icons/non_smoker.png
+    - assets/icons/alcoholic.png
+    - assets/icons/party.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

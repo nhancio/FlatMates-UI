@@ -135,9 +135,9 @@ class _RoomListingPageState extends State<RoomListingPage> {
                                 style: const TextStyle(color: Colors.grey),
                               ),
                               const SizedBox(height: 4),
-                              // Display the address
+                              // Display the building name and locality
                               Text(
-                                'Location: ${room.address}',
+                                'Location: ${room.buildingName}, ${room.locality}',
                                 style: const TextStyle(color: Colors.grey),
                               ),
                               const SizedBox(height: 4),
@@ -146,11 +146,63 @@ class _RoomListingPageState extends State<RoomListingPage> {
                                 'Move-In: ${room.moveInDate}',
                                 style: const TextStyle(color: Colors.grey),
                               ),
+                              const SizedBox(height: 8),
+                              // Additional Bills Section
+                              if (int.parse(room.wifiBill) > 0 || 
+                                  int.parse(room.waterBill) > 0 || 
+                                  int.parse(room.gasBill) > 0)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Additional Bills:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Color(0xFFB60F6E),
+                                      ),
+                                    ),
+                                    if (int.parse(room.wifiBill) > 0)
+                                      Text('WiFi: ${room.wifiBill}',
+                                          style: const TextStyle(color: Colors.grey)),
+                                    if (int.parse(room.waterBill) > 0)
+                                      Text('Water: ${room.waterBill}',
+                                          style: const TextStyle(color: Colors.grey)),
+                                    if (int.parse(room.gasBill) > 0)
+                                      Text('Gas: ${room.gasBill}',
+                                          style: const TextStyle(color: Colors.grey)),
+                                  ],
+                                ),
+                              const SizedBox(height: 4),
+                              // Service Costs Section
+                              if (int.parse(room.maidCost) > 0 || 
+                                  int.parse(room.cookCost) > 0 || 
+                                  int.parse(room.otherCosts) > 0)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Service Costs:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Color(0xFFB60F6E),
+                                      ),
+                                    ),
+                                    if (int.parse(room.maidCost) > 0)
+                                      Text('Maid: ${room.maidCost}',
+                                          style: const TextStyle(color: Colors.grey)),
+                                    if (int.parse(room.cookCost) > 0)
+                                      Text('Cook: ${room.cookCost}',
+                                          style: const TextStyle(color: Colors.grey)),
+                                    if (int.parse(room.otherCosts) > 0)
+                                      Text('Other: ${room.otherCosts}',
+                                          style: const TextStyle(color: Colors.grey)),
+                                  ],
+                                ),
                             ],
                           ),
                         ),
-                        // Optionally add an icon for favorite/bookmark (if needed)
-                        // const Icon(Icons.bookmark_border, color: Colors.grey),
                       ],
                     ),
                   ), // You can adjust the color or add any other visual styles

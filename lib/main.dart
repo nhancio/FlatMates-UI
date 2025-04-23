@@ -1,4 +1,3 @@
-
 import 'package:flatemates_ui/controllers/homemates.controller.dart';
 import 'package:flatemates_ui/controllers/preference_controller.dart';
 import 'package:flatemates_ui/controllers/register.controller.dart';
@@ -12,9 +11,6 @@ import 'controllers/google_controller.dart';
 import 'navigation/app_routes/routes.dart';
 
 void main() async {
-
-
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -35,9 +31,9 @@ class MyApp extends StatelessWidget {
           bodyLarge: TextStyle(fontSize: 16.0, color: Colors.black),
         ),
       ),
-      initialRoute: AppRoutes.welcome,
+      initialRoute: AppRoutes.bottomNavBar, // Changed to start with home page
       getPages: AppRoutes.routes,
-      initialBinding: InitialBindings(), // Add the binding here
+      initialBinding: InitialBindings(),
     );
   }
 }
@@ -45,10 +41,9 @@ class MyApp extends StatelessWidget {
 class InitialBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put(GoogleController()); // Initialize the AuthController
+    Get.put(GoogleController());
     Get.put(RegisterUserController());
     Get.put(PreferenceController());
-   // Get.put(HomemateController());
   }
 }
 

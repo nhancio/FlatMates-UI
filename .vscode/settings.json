@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/Users/apple/AndroidStudioProjects/FlatMates-UI/linux"
+    "cmake.sourceDirectory": "/Users/apple/AndroidStudioProjects/FlatMates-UI/linux",
+    "files.autoSave": "afterDelay"
 }

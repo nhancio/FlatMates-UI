@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,26 +8,51 @@ import 'package:get/get.dart';
 
 
 class RoomController extends GetxController {
-  // Rx variables to observe changes
-  var roomType = ''.obs;
+  // Address Package
+  var buildingName = ''.obs;
+  var locality = ''.obs;
+  var city = ''.obs;
+
+  // Property Details
   var homeType = ''.obs;
-  var address = ''.obs;
-  var addressType = ''.obs;
-  var roomRent = ''.obs;
+  var furnishType = ''.obs;
+  var roomsAvailable = ''.obs;
+  var roomType = ''.obs;
+  var washroomType = ''.obs;
+  var parkingType = ''.obs;
+  var societyType = ''.obs;
   var moveInDate = ''.obs;
   var occupationPerRoom = ''.obs;
-  var mobileNumber = ''.obs;
-  var profileImages = <String>[].obs; // Store URLs or file paths for images
-  // var moveInDate = Rx<DateTime?>(null); // To hold the selected date
-  var roomDetails =
-      Rxn<Room>(); // Assuming RoomModel is a class to store room data
-  var selectedValues = <String>[].obs; // For multi-select dropdown
-  var imageUrls = <String>[].obs;
+  var roomRent = ''.obs;
 
+  // Additional fields for setup costs
   var securityDeposit = ''.obs;
   var brokerage = ''.obs;
   var setupCost = ''.obs;
   var description = ''.obs;
+
+  // Tenant Preferences
+  var preferredTenant = ''.obs;
+  var tenantPreferences = <String>[].obs;
+
+  // Contact Info
+  var ownerName = ''.obs;
+  var mobileNumber = ''.obs;
+
+  // Other existing variables
+  var profileImages = <String>[].obs;
+  var roomDetails = Rxn<Room>();
+  var selectedValues = <String>[].obs;
+  var amenities = <String>[].obs;
+  var imageUrls = <String>[].obs;
+
+  // Additional Bills
+  var wifiBill = '0'.obs;
+  var waterBill = '0'.obs;
+  var gasBill = '0'.obs;
+  var maidCost = '0'.obs;
+  var cookCost = '0'.obs;
+  var otherCosts = '0'.obs;
 
   Future<void> fetchRoomDetails(String roomId) async {
     try {
@@ -56,17 +80,11 @@ class RoomController extends GetxController {
     roomType.value = value;
   }
 
-  void setAddressType(String value) {
-    addressType.value = value;
-  }
-
   void setHomeType(String value) {
     homeType.value = value;
   }
 
-  void setAddress(String value) {
-    address.value = value;
-  }
+  // Remove setAddressType and setAddress methods since we now use buildingName, locality, and city
 
   void setRoomRent(String value) {
     roomRent.value = value;
@@ -114,9 +132,49 @@ class RoomController extends GetxController {
     description.value = value;
   }
 
-  // void setMoveInDate(DateTime? date) {
-  //   moveInDate.value = date;
-  // }
+  void setWifiBill(String value) {
+    wifiBill.value = value;
+  }
+
+  void setWaterBill(String value) {
+    waterBill.value = value;
+  }
+
+  void setGasBill(String value) {
+    gasBill.value = value;
+  }
+
+  void setMaidCost(String value) {
+    maidCost.value = value;
+  }
+
+  void setCookCost(String value) {
+    cookCost.value = value;
+  }
+
+  void setOtherCosts(String value) {
+    otherCosts.value = value;
+  }
+
+  // Setter methods for new fields
+  void setBuildingName(String value) => buildingName.value = value;
+  void setLocality(String value) => locality.value = value;
+  void setCity(String value) => city.value = value;
+  void setFurnishType(String value) => furnishType.value = value;
+  void setRoomsAvailable(String value) => roomsAvailable.value = value;
+  void setWashroomType(String value) => washroomType.value = value;
+  void setParkingType(String value) => parkingType.value = value;
+  void setSocietyType(String value) => societyType.value = value;
+  void setPreferredTenant(String value) => preferredTenant.value = value;
+  void setOwnerName(String value) => ownerName.value = value;
+
+  void updateTenantPreferences(List<String> values) {
+    tenantPreferences.assignAll(values);
+  }
+
+  void updateAmenities(List<String> values) {
+    amenities.assignAll(values);
+  }
 
   // Function to submit room listing (e.g., to Firebase)
   // Submit room listing to Firestore
@@ -136,13 +194,22 @@ class RoomController extends GetxController {
 
       // Prepare the room data
       Map<String, dynamic> roomData = {
-        'roomType': roomType.value,
+        'buildingName': buildingName.value,
+        'locality': locality.value,
+        'city': city.value,
         'homeType': homeType.value,
-        'address': address.value,
-        'addressType': addressType.value,
-        'roomRent': roomRent.value,
+        'furnishType': furnishType.value,
+        'roomsAvailable': roomsAvailable.value,
+        'roomType': roomType.value,
+        'washroomType': washroomType.value,
+        'parkingType': parkingType.value,
+        'societyType': societyType.value,
         'moveInDate': moveInDate.value,
         'occupationPerRoom': occupationPerRoom.value,
+        'roomRent': roomRent.value,
+        'preferredTenant': preferredTenant.value,
+        'tenantPreferences': tenantPreferences.toList(),
+        'ownerName': ownerName.value,
         'mobileNumber': mobileNumber.value,
         'userId': user.uid, // Store the user's UID
         'selectedValues': selectedValues.toList(), // Store selected values (single or multiple)
@@ -153,6 +220,12 @@ class RoomController extends GetxController {
         'brokerage': brokerage.value,
         'setupCost': setupCost.value,
         'description': description.value,
+        'wifiBill': wifiBill.value,
+        'waterBill': waterBill.value,
+        'gasBill': gasBill.value,
+        'maidCost': maidCost.value,
+        'cookCost': cookCost.value,
+        'otherCosts': otherCosts.value,
       };
    //   await FirebaseFirestore.instance.collection('rooms').add(roomData);
       await rooms.add(roomData);

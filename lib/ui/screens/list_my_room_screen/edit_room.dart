@@ -18,12 +18,22 @@ class _EditRoomPageState extends State<EditRoomPage> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController rentController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
+  final TextEditingController wifiBillController = TextEditingController();
+  final TextEditingController waterBillController = TextEditingController();
+  final TextEditingController gasBillController = TextEditingController();
+  final TextEditingController maidCostController = TextEditingController();
+  final TextEditingController cookCostController = TextEditingController();
+  final TextEditingController otherCostsController = TextEditingController();
+  
   late FocusNode addressFocus;
   late FocusNode rentFocus;
   late FocusNode contactFocus;
-
-
-
+  late FocusNode wifiBillFocus;
+  late FocusNode waterBillFocus;
+  late FocusNode gasBillFocus;
+  late FocusNode maidCostFocus;
+  late FocusNode cookCostFocus;
+  late FocusNode otherCostsFocus;
 
   @override
   void dispose() {
@@ -33,22 +43,47 @@ class _EditRoomPageState extends State<EditRoomPage> {
     addressFocus.dispose();
     rentFocus.dispose();
     contactFocus.dispose();
+    wifiBillController.dispose();
+    waterBillController.dispose();
+    gasBillController.dispose();
+    maidCostController.dispose();
+    cookCostController.dispose();
+    otherCostsController.dispose();
+    wifiBillFocus.dispose();
+    waterBillFocus.dispose();
+    gasBillFocus.dispose();
+    maidCostFocus.dispose();
+    cookCostFocus.dispose();
+    otherCostsFocus.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
     addressFocus = FocusNode();
     rentFocus = FocusNode();
     contactFocus = FocusNode();
+    wifiBillFocus = FocusNode();
+    waterBillFocus = FocusNode();
+    gasBillFocus = FocusNode();
+    maidCostFocus = FocusNode();
+    cookCostFocus = FocusNode();
+    otherCostsFocus = FocusNode();
     // Autofill fields with room data when editing
     if (widget.room != null) {
       controller.setRoomType(widget.room!.roomType);
       controller.setHomeType(widget.room!.homeType);
-      controller.setAddress(widget.room!.address);
+      controller.setBuildingName(widget.room!.buildingName);
       controller.setRoomRent(widget.room!.roomRent);
       controller.setMoveInDate(widget.room!.moveInDate);
       controller.setOccupationPerRoom(widget.room!.occupationPerRoom);
+      wifiBillController.text = widget.room!.wifiBill;
+      waterBillController.text = widget.room!.waterBill;
+      gasBillController.text = widget.room!.gasBill;
+      maidCostController.text = widget.room!.maidCost;
+      cookCostController.text = widget.room!.cookCost;
+      otherCostsController.text = widget.room!.otherCosts;
     }
   }
 
@@ -75,48 +110,22 @@ class _EditRoomPageState extends State<EditRoomPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 12),
-              // Room Type Dropdown
-              CustomDropdownField(
-                label: "Room Type*",
-                hintText: "Select Room Type",
-                options: const ["1BHK", "2BHK", "3BHK"],
-                selectedValue: controller.roomType.value, // Autofill value
-                onChanged: (value) {
-                  controller.setRoomType(value);
-                },
-              ),
-              const SizedBox(height: 12),
-              CustomDropdownField(
-                label: "Home Type*",
-                hintText: "Select Home Type",
-                options: const [
-                  "Apartment",
-                  "Individual House",
-                  "Gated Community Flat",
-                  "Villa"
-                ],
-                selectedValue: controller.homeType.value, // Autofill value
-                onChanged: (value) {
-                  controller.setHomeType(value);
-                },
-              ),
-              const SizedBox(height: 12),
-              // Address TextField
+              // Building Name TextField
               CustomTextField(
-                label: "Address*",
-                hintText: "Write your address...",
-               // initialValue: controller.address.value, // Autofill value
+                label: "Building/Society*",
+                hintText: "Write building or society name",
                 onChanged: (value) {
-                  controller.setAddress(value);
+                  controller.setBuildingName(value);
                 },
-                isContactNumber: false, controller: addressController, focusNode: addressFocus,
+                isContactNumber: false, 
+                controller: addressController, 
+                focusNode: addressFocus,
               ),
               const SizedBox(height: 12),
               // Room Rent TextField
               CustomTextField(
                 label: "Room Rent*",
                 hintText: "e.g. \$5000",
-             //   initialValue: controller.roomRent.value, // Autofill value
                 onChanged: (value) {
                   controller.setRoomRent(value);
                 },
@@ -145,21 +154,139 @@ class _EditRoomPageState extends State<EditRoomPage> {
                   controller.setOccupationPerRoom(value);
                 },
               ),
+              const SizedBox(height: 24),
+              // Additional Bills Section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'ADDITIONAL BILLS',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFB60F6E),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextField(
+                      label: "WiFi Bill",
+                      hintText: "Enter WiFi bill amount",
+                      controller: wifiBillController,
+                      focusNode: wifiBillFocus,
+                      isContactNumber: true,
+                      onChanged: (value) {},
+                    ),
+                    const SizedBox(height: 12),
+                    CustomTextField(
+                      label: "Water Bill",
+                      hintText: "Enter water bill amount",
+                      controller: waterBillController,
+                      focusNode: waterBillFocus,
+                      isContactNumber: true,
+                      onChanged: (value) {},
+                    ),
+                    const SizedBox(height: 12),
+                    CustomTextField(
+                      label: "Gas Bill",
+                      hintText: "Enter gas bill amount",
+                      controller: gasBillController,
+                      focusNode: gasBillFocus,
+                      isContactNumber: true,
+                      onChanged: (value) {},
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+              // Service Costs Section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'SERVICE COSTS',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFB60F6E),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    CustomTextField(
+                      label: "Maid Cost",
+                      hintText: "Enter maid service cost",
+                      controller: maidCostController,
+                      focusNode: maidCostFocus,
+                      isContactNumber: true,
+                      onChanged: (value) {},
+                    ),
+                    const SizedBox(height: 12),
+                    CustomTextField(
+                      label: "Cook Cost",
+                      hintText: "Enter cook service cost",
+                      controller: cookCostController,
+                      focusNode: cookCostFocus,
+                      isContactNumber: true,
+                      onChanged: (value) {},
+                    ),
+                    const SizedBox(height: 12),
+                    CustomTextField(
+                      label: "Other Costs",
+                      hintText: "Enter any other costs",
+                      controller: otherCostsController,
+                      focusNode: otherCostsFocus,
+                      isContactNumber: true,
+                      onChanged: (value) {},
+                    ),
+                  ],
+                ),
+              ),
+              
               const SizedBox(height: 30),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     final updatedRoom = Room(
-                        id: widget.room?.id ??
-                            UniqueKey()
-                                .toString(), // If editing, keep the same ID
-                        roomType: controller.roomType.value,
-                        homeType: controller.homeType.value,
-                        address: controller.address.value,
-                        roomRent: controller.roomRent.value,
-                        moveInDate: controller.moveInDate.value,
-                        occupationPerRoom: controller.occupationPerRoom.value,
-                        userId: widget.room?.userId ?? "", selectedValues: controller.selectedValues);
+                      id: widget.room?.id ?? UniqueKey().toString(),
+                      buildingName: controller.buildingName.value,
+                      locality: controller.locality.value,
+                      city: controller.city.value,
+                      homeType: controller.homeType.value,
+                      furnishType: controller.furnishType.value,
+                      roomsAvailable: controller.roomsAvailable.value,
+                      roomType: controller.roomType.value,
+                      washroomType: controller.washroomType.value,
+                      parkingType: controller.parkingType.value,
+                      societyType: controller.societyType.value,
+                      moveInDate: controller.moveInDate.value,
+                      occupationPerRoom: controller.occupationPerRoom.value,
+                      roomRent: controller.roomRent.value,
+                      userId: widget.room?.userId ?? "",
+                      selectedValues: controller.selectedValues,
+                      amenities: controller.amenities,
+                      preferredTenant: controller.preferredTenant.value,
+                      tenantPreferences: controller.tenantPreferences,
+                      ownerName: controller.ownerName.value,
+                      mobileNumber: controller.mobileNumber.value,
+                      wifiBill: wifiBillController.text,
+                      waterBill: waterBillController.text,
+                      gasBill: gasBillController.text,
+                      maidCost: maidCostController.text,
+                      cookCost: cookCostController.text,
+                      otherCosts: otherCostsController.text,
+                    );
                     controller.updateRoom(updatedRoom); // Pass the updated room
                     Get.back();
                   },
