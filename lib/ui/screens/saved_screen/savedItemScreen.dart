@@ -10,12 +10,30 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 
 class SavedTabBarScreen extends StatefulWidget {
+  final String? userId;  // Make userId nullable
+
+  const SavedTabBarScreen({Key? key, required this.userId}) : super(key: key);
+
   @override
   State<SavedTabBarScreen> createState() => _SavedTabBarScreenState();
 }
 
 class _SavedTabBarScreenState extends State<SavedTabBarScreen> {
   final TabControllerState tabControllerState = Get.put(TabControllerState());
+  String? userId;  // Add this field
+  
+  @override
+  void initState() {
+    super.initState();
+    // Initialize userId, for example from shared preferences or auth service
+    _initializeUserId();
+  }
+
+  Future<void> _initializeUserId() async {
+    // Get userId from your auth service, for example:
+    // userId = await AuthService.getCurrentUserId();
+    setState(() {});
+  }
 
   Future<void> _refresh() async {
     setState(() {});
@@ -55,6 +73,9 @@ class _SavedTabBarScreenState extends State<SavedTabBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Add null check and provide default value
+    final safeUserId = widget.userId ?? '';
+
     return WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
@@ -94,10 +115,10 @@ class _SavedTabBarScreenState extends State<SavedTabBarScreen> {
             controller: tabControllerState.tabController, // Assign TabController
             children: [
               SavedHomematesScreen(
-                userId: userId,
+                userId: safeUserId, // Pass non-null userId
               ),
               SavedRoomsScreen(
-                currentUserId: userId,
+                currentUserId: safeUserId, // Pass non-null userId
               ),
             ],
           ),
@@ -110,7 +131,7 @@ class _SavedTabBarScreenState extends State<SavedTabBarScreen> {
 ///
 
 class SavedHomematesScreen extends StatefulWidget {
-  final String userId;
+  final String userId; // Keep as non-nullable since we ensure non-null value is passed
 
   const SavedHomematesScreen({Key? key, required this.userId})
       : super(key: key);
@@ -567,7 +588,7 @@ class HomemateDetailsScreen extends StatelessWidget {
 ///
 
 class SavedRoomsScreen extends StatefulWidget {
-  final String currentUserId;
+  final String currentUserId; // Keep as non-nullable since we ensure non-null value is passed
 
   SavedRoomsScreen({required this.currentUserId});
 

@@ -16,7 +16,7 @@ class BottomNavBarScreen extends StatelessWidget {
     // Define pages with guest mode handling
     final List<Widget> _pages = [
       HomePage(userId: userId),
-      SavedTabBarScreen(),
+      SavedTabBarScreen(userId: FirebaseAuth.instance.currentUser?.uid),
       userId.isEmpty ? Container() : ProfileScreen(),
     ];
 
